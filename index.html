@@ -1,2593 +1,2283 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Живой Сайт</title>
-    <link href="https://cdn.jsdelivr.net/npm/fontsource-nunito@4.0.0/index.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #e0f7fa;
-            --blob-color: #4fc3f7;
-            --blob-shadow: #0288d1;
-            --text-color: #01579b;
-            --xp-bar-bg: #b2dfdb;
-            --xp-bar-fill: #26a69a;
-            --fridge-bg: #eceff1;
-            --achievement-locked: #cfd8dc;
-            --achievement-unlocked: #ffca28;
-            --save-success: #4caf50;
-            --save-error: #f44336;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-            font-family: 'Nunito', sans-serif;
-            overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .scene {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* XP Bar */
-        .xp-container {
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            max-width: 90%;
-            z-index: 50;
-        }
-
-        .xp-bar-bg {
-            width: 100%;
-            height: 25px;
-            background: var(--xp-bar-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .xp-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--xp-bar-fill), #4dd0e1);
-            border-radius: 15px;
-            transition: width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            position: relative;
-        }
-
-        .xp-bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255,255,255,0.3) 50%, 
-                transparent 100%);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .xp-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            color: var(--text-color);
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .level-badge {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #ffca28;
-            color: #5d4037;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 1rem;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-
-        /* The Living Blob */
-        .blob-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: breathe 4s ease-in-out infinite;
-            z-index: 10;
-        }
-
-        .blob {
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 30%, #81d4fa, var(--blob-color));
-            border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 
-                        0 20px 40px rgba(2, 136, 209, 0.3);
-            position: relative;
-            transition: border-radius 0.5s ease, background 0.5s ease, transform 0.3s ease;
-        }
-
-        .blob:hover {
-            transform: scale(1.03);
-        }
-
-        .blob.drinking {
-            background: radial-gradient(circle at 30% 30%, #80deea, #26c6da);
-        }
-
-        .blob.tickled {
-            animation: tickle 0.3s infinite !important;
-        }
-
-        .blob.annoyed {
-            background: radial-gradient(circle at 30% 30%, #ffccbc, #ff8a65) !important;
-        }
-
-        .blob.eating {
-            animation: eatBounce 0.2s infinite !important;
-        }
-
-        .blob.playing {
-            background: radial-gradient(circle at 30% 30%, #ce93d8, #ab47bc);
-        }
-
-        /* Face Features */
-        .face {
-            position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 160px;
-            height: 100px;
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        .eyes {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .eye {
-            width: 40px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: height 0.1s;
-            cursor: pointer;
-            pointer-events: auto !important;
-            z-index: 100 !important;
-        }
-
-        .eye:hover {
-            transform: scale(1.05);
-        }
-
-        .eye.squint {
-            height: 8px !important;
-            border-radius: 5px;
-        }
-
-        .eye.winner {
-            animation: eyeWinner 0.5s infinite;
-        }
-
-        @keyframes eyeWinner {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        .pupil {
-            width: 16px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.1s;
-        }
-
-        .mouth {
-            width: 60px;
-            height: 30px;
-            background: #d84315;
-            border-radius: 0 0 60px 60px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.2);
-        }
-
-        .mouth.annoyed {
-            height: 15px;
-            border-radius: 60px 60px 0 0;
-            background: #5d4037;
-        }
-
-        .mouth.laughing {
-            height: 50px;
-            width: 70px;
-            border-radius: 0 0 70px 70px;
-        }
-
-        .mouth.eating {
-            animation: chew 0.15s infinite !important;
-        }
-
-        .mouth.drinking {
-            animation: drink 0.25s infinite !important;
-        }
-
-        .mouth.winner {
-            height: 50px;
-            width: 70px;
-            border-radius: 0 0 70px 70px;
-            background: #4caf50;
-        }
-
-        .mouth.loser {
-            height: 20px;
-            border-radius: 60px 60px 0 0;
-            background: #f44336;
-        }
-
-        .tongue {
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 20px;
-            background: #ff8a80;
-            border-radius: 50%;
-            transition: bottom 0.3s;
-        }
-
-        .teeth {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 10px;
-            background: white;
-            border-radius: 0 0 5px 5px;
-        }
-
-        /* Dialogue Bubble */
-        .bubble {
-            position: absolute;
-            top: -80px;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 20px;
-            color: var(--text-color);
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            white-space: nowrap;
-            z-index: 20;
-        }
-
-        .bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 10px 10px 0;
-            border-style: solid;
-            border-color: white transparent;
-        }
-
-        .bubble.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .bubble.annoyed {
-            background: #ffccbc;
-            color: #bf360c;
-        }
-
-        .bubble.laughing {
-            background: #c8e6c9;
-            color: #2e7d32;
-        }
-
-        .bubble.winner {
-            background: #c8e6c9;
-            color: #2e7d32;
-        }
-
-        .bubble.loser {
-            background: #ffcdd2;
-            color: #c62828;
-        }
-
-        /* Draggable Items Container */
-        .items-container {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 30px;
-            z-index: 100;
-        }
-
-        .draggable-item {
-            width: 100px;
-            height: 100px;
-            cursor: grab;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.1s;
-            position: relative;
-            background: rgba(255,255,255,0.5);
-            border-radius: 15px;
-            padding: 10px;
-        }
-
-        .draggable-item:active {
-            cursor: grabbing;
-            transform: scale(1.15);
-        }
-
-        .draggable-item img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-            pointer-events: none;
-        }
-
-        .item-label {
-            font-size: 0.75rem;
-            color: var(--text-color);
-            font-weight: 600;
-            text-align: center;
-            margin-top: 5px;
-            white-space: nowrap;
-        }
-
-        .item-xp {
-            font-size: 0.7rem;
-            color: #26a69a;
-            font-weight: bold;
-        }
-
-        /* Menu Buttons Container */
-        .menu-buttons {
-            position: absolute;
-            right: 30px;
-            bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        .menu-btn {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #cfd8dc 0%, #b0bec5 100%);
-            border-radius: 15px;
-            border: 3px solid #90a4ae;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .menu-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .menu-btn:active {
-            transform: scale(0.98);
-        }
-
-        .menu-btn-icon {
-            font-size: 2rem;
-        }
-
-        .menu-btn-label {
-            font-size: 0.7rem;
-            color: #37474f;
-            font-weight: bold;
-            margin-top: 3px;
-        }
-
-        .fridge-btn .fridge-handle {
-            width: 8px;
-            height: 25px;
-            background: #546e7a;
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-
-        /* Modal Base Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--fridge-bg);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-            border: 5px solid #90a4ae;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            color: #37474f;
-            font-weight: bold;
-        }
-
-        .modal-close {
-            width: 40px;
-            height: 40px;
-            background: #ef5350;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .modal-close:hover {
-            transform: scale(1.1);
-        }
-
-        /* Fridge Specific */
-        .fridge-section {
-            margin-bottom: 25px;
-        }
-
-        .fridge-section-title {
-            font-size: 1.2rem;
-            color: #546e7a;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .fridge-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-        }
-
-        .fridge-item {
-            background: white;
-            border-radius: 15px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 3px solid transparent;
-        }
-
-        .fridge-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
-
-        .fridge-item.selected {
-            border-color: #26a69a;
-            background: #e8f5e9;
-        }
-
-        .fridge-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-        }
-
-        .fridge-item-name {
-            font-size: 0.85rem;
-            color: #37474f;
-            font-weight: 600;
-            margin-top: 8px;
-            text-align: center;
-        }
-
-        .fridge-item-xp {
-            font-size: 0.75rem;
-            color: #26a69a;
-            font-weight: bold;
-        }
-
-        /* Achievements Specific */
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .achievement-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 3px solid var(--achievement-locked);
-            opacity: 0.6;
-        }
-
-        .achievement-card.unlocked {
-            border-color: var(--achievement-unlocked);
-            opacity: 1;
-            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-            box-shadow: 0 5px 20px rgba(255, 202, 40, 0.4);
-        }
-
-        .achievement-card.unlocked:hover {
-            transform: translateY(-5px);
-        }
-
-        .achievement-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--achievement-locked);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .achievement-card.unlocked .achievement-icon {
-            background: var(--achievement-unlocked);
-            animation: achievementGlow 2s infinite;
-        }
-
-        @keyframes achievementGlow {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 202, 40, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 202, 40, 0.8); }
-        }
-
-        .achievement-info {
-            flex: 1;
-        }
-
-        .achievement-name {
-            font-size: 0.95rem;
-            color: #37474f;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .achievement-desc {
-            font-size: 0.75rem;
-            color: #78909c;
-        }
-
-        .achievement-card.unlocked .achievement-desc {
-            color: #5d4037;
-        }
-
-        .achievement-progress {
-            font-size: 0.7rem;
-            color: #90a4ae;
-            margin-top: 5px;
-        }
-
-        .achievement-card.unlocked .achievement-progress {
-            color: #26a69a;
-            font-weight: bold;
-        }
-
-        /* Mini Games - Tic Tac Toe */
-        .minigames-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .minigame-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .minigame-tab {
-            padding: 10px 20px;
-            background: #cfd8dc;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #546e7a;
-            transition: all 0.2s;
-        }
-
-        .minigame-tab.active {
-            background: #26a69a;
-            color: white;
-        }
-
-        .minigame-tab:hover {
-            background: #80cbc4;
-        }
-
-        .tic-tac-toe-board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            background: #90a4ae;
-            padding: 15px;
-            border-radius: 15px;
-            margin: 20px auto;
-        }
-
-        .tic-tac-toe-cell {
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .tic-tac-toe-cell:hover:not(.taken) {
-            background: #e8f5e9;
-            transform: scale(1.05);
-        }
-
-        .tic-tac-toe-cell.taken {
-            cursor: not-allowed;
-        }
-
-        .tic-tac-toe-cell.x {
-            color: #e53935;
-        }
-
-        .tic-tac-toe-cell.o {
-            color: #1e88e5;
-        }
-
-        .tic-tac-toe-cell.winner {
-            background: #c8e6c9;
-            animation: cellWinner 0.5s infinite;
-        }
-
-        @keyframes cellWinner {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .tic-tac-toe-info {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .tic-tac-toe-status {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #37474f;
-            margin-bottom: 10px;
-        }
-
-        .tic-tac-toe-score {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            font-size: 0.95rem;
-            color: #546e7a;
-        }
-
-        .tic-tac-toe-score span {
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(38, 166, 154, 0.4);
-            margin: 5px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(38, 166, 154, 0.6);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary:disabled {
-            background: #cfd8dc;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
-            box-shadow: 0 4px 15px rgba(239, 83, 80, 0.4);
-        }
-
-        .btn-danger:hover {
-            box-shadow: 0 6px 20px rgba(239, 83, 80, 0.6);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
-            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
-        }
-
-        .btn-secondary:hover {
-            box-shadow: 0 6px 20px rgba(66, 165, 245, 0.6);
-        }
-
-        /* Settings Modal */
-        .settings-section {
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 2px solid #cfd8dc;
-        }
-
-        .settings-section:last-child {
-            border-bottom: none;
-        }
-
-        .settings-title {
-            font-size: 1.2rem;
-            color: #546e7a;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .settings-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .save-status {
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 15px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .save-status.success {
-            background: #c8e6c9;
-            color: #2e7d32;
-            opacity: 1;
-        }
-
-        .save-status.error {
-            background: #ffcdd2;
-            color: #c62828;
-            opacity: 1;
-        }
-
-        .auto-save-indicator {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #546e7a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .auto-save-indicator.saving {
-            color: #26a69a;
-        }
-
-        .auto-save-indicator.saving::before {
-            content: '💾';
-            animation: savePulse 0.5s infinite;
-        }
-
-        .auto-save-indicator.saved::before {
-            content: '✓';
-            color: #4caf50;
-        }
-
-        .auto-save-indicator::before {
-            content: '🕐';
-        }
-
-        @keyframes savePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .player-id-display {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .player-id-label {
-            font-size: 0.85rem;
-            color: #78909c;
-            margin-bottom: 5px;
-        }
-
-        .player-id-value {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #26a69a;
-            word-break: break-all;
-        }
-
-        .export-import-area {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-
-        .export-import-area textarea {
-            width: 100%;
-            height: 100px;
-            border: 2px solid #cfd8dc;
-            border-radius: 10px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            resize: vertical;
-            margin-bottom: 10px;
-        }
-
-        .export-import-area textarea:focus {
-            outline: none;
-            border-color: #26a69a;
-        }
-
-        /* Stats Panel */
-        .stats-panel {
-            position: absolute;
-            left: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.9);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 60;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            color: var(--text-color);
-        }
-
-        .stat-icon {
-            font-size: 1.5rem;
-        }
-
-        .stat-value {
-            font-weight: bold;
-        }
-
-        /* XP Gain Animation */
-        .xp-gain {
-            position: absolute;
-            color: #26a69a;
-            font-weight: bold;
-            font-size: 1.5rem;
-            pointer-events: none;
-            animation: xpFloat 1s ease-out forwards;
-            z-index: 200;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        @keyframes xpFloat {
-            0% { 
-                opacity: 1; 
-                transform: translateY(0) scale(1); 
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(-50px) scale(1.2); 
-            }
-        }
-
-        /* Animations */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
-            50% { transform: scale(1.02); border-radius: 50% 50% 45% 55% / 50% 50% 55% 45%; }
-        }
-
-        @keyframes blink {
-            0%, 90%, 100% { height: 50px; }
-            95% { height: 2px; }
-        }
-
-        @keyframes chew {
-            0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
-            50% { height: 20px; border-radius: 0 0 30px 30px; }
-        }
-
-        @keyframes drink {
-            0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
-            50% { height: 45px; border-radius: 50%; }
-        }
-
-        @keyframes tickle {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.05) rotate(-5deg); }
-            75% { transform: scale(1.05) rotate(5deg); }
-        }
-
-        @keyframes eatBounce {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.05) translateY(-5px); }
-        }
-
-        /* Achievement Notification */
-        .achievement-notification {
-            position: fixed;
-            top: 100px;
-            right: -400px;
-            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-            padding: 15px 25px;
-            border-radius: 15px;
-            border: 3px solid #ffca28;
-            box-shadow: 0 5px 20px rgba(255, 202, 40, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 3000;
-            transition: right 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .achievement-notification.show {
-            right: 30px;
-        }
-
-        .achievement-notification-icon {
-            width: 50px;
-            height: 50px;
-            background: #ffca28;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-        }
-
-        .achievement-notification-text {
-            color: #5d4037;
-        }
-
-        .achievement-notification-title {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        .achievement-notification-name {
-            font-size: 0.85rem;
-            color: #78909c;
-        }
-
-        /* Level Up Celebration */
-        .levelup-celebration {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2000;
-            display: none;
-        }
-
-        .levelup-celebration.active {
-            display: block;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            animation: confettiFall 3s ease-out forwards;
-        }
-
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* Dragging clone */
-        .drag-clone {
-            position: fixed;
-            width: 100px;
-            height: 100px;
-            pointer-events: none;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(255,255,255,0.9);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .drag-clone img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-        }
-
-        .drag-clone .item-label {
-            font-size: 0.75rem;
-            color: var(--text-color);
-            font-weight: 600;
-            margin-top: 5px;
-        }
-
-        .hint {
-            position: absolute;
-            bottom: 10px;
-            color: rgba(1, 87, 155, 0.5);
-            font-size: 0.85rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* Welcome Modal */
-        .welcome-content {
-            text-align: center;
-        }
-
-        .welcome-content h2 {
-            color: #37474f;
-            margin-bottom: 15px;
-        }
-
-        .welcome-content p {
-            color: #546e7a;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .welcome-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        /* Save Instructions */
-        .save-instructions {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: #1565c0;
-            border-left: 4px solid #2196f3;
-        }
-
-        .save-instructions h4 {
-            margin: 0 0 10px 0;
-            color: #0d47a1;
-        }
-
-        .save-instructions ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .save-instructions li {
-            margin-bottom: 5px;
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Живой Сайт</title>
+<link href="https://cdn.jsdelivr.net/npm/fontsource-nunito@4.0.0/index.css" rel="stylesheet">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<style>
+:root {
+--bg-color: #e0f7fa;
+--blob-color: #4fc3f7;
+--blob-shadow: #0288d1;
+--text-color: #01579b;
+--xp-bar-bg: #b2dfdb;
+--xp-bar-fill: #26a69a;
+--fridge-bg: #eceff1;
+--achievement-locked: #cfd8dc;
+--achievement-unlocked: #ffca28;
+}
+* {
+box-sizing: border-box;
+-webkit-tap-highlight-color: transparent;
+}
+body {
+margin: 0;
+padding: 0;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+font-family: 'Nunito', sans-serif;
+overflow: hidden;
+user-select: none;
+-webkit-user-select: none;
+touch-action: manipulation;
+}
+.scene {
+position: relative;
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.xp-container {
+position: absolute;
+top: 30px;
+left: 50%;
+transform: translateX(-50%);
+width: 400px;
+max-width: 90%;
+z-index: 50;
+}
+.xp-bar-bg {
+width: 100%;
+height: 25px;
+background: var(--xp-bar-bg);
+border-radius: 15px;
+overflow: hidden;
+box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+position: relative;
+}
+.xp-bar-fill {
+height: 100%;
+width: 0%;
+background: linear-gradient(90deg, var(--xp-bar-fill), #4dd0e1);
+border-radius: 15px;
+transition: width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.xp-bar-fill::after {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+0% { transform: translateX(-100%); }
+100% { transform: translateX(100%); }
+}
+.xp-text {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-weight: bold;
+color: var(--text-color);
+font-size: 0.9rem;
+white-space: nowrap;
+}
+.level-badge {
+position: absolute;
+top: -10px;
+right: -10px;
+background: #ffca28;
+color: #5d4037;
+width: 35px;
+height: 35px;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-weight: bold;
+font-size: 1rem;
+box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+.blob-container {
+position: relative;
+width: 300px;
+height: 300px;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 10;
+}
+.blob {
+width: 100%;
+height: 100%;
+background: radial-gradient(circle at 30% 30%, #81d4fa, var(--blob-color));
+border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 20px 40px rgba(2, 136, 209, 0.3);
+position: relative;
+cursor: pointer;
+animation: breathe 4s ease-in-out infinite;
+}
+.blob:hover {
+transform: scale(1.03);
+}
+@keyframes breathe {
+0%, 100% { transform: scale(1); border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
+50% { transform: scale(1.02); border-radius: 50% 50% 45% 55% / 50% 50% 55% 45%; }
+}
+.blob.drinking {
+background: radial-gradient(circle at 30% 30%, #80deea, #26c6da) !important;
+}
+.blob.tickled {
+animation: tickle 0.3s infinite !important;
+}
+@keyframes tickle {
+0%, 100% { transform: scale(1) rotate(0deg); }
+25% { transform: scale(1.05) rotate(-5deg); }
+75% { transform: scale(1.05) rotate(5deg); }
+}
+.blob.annoyed {
+background: radial-gradient(circle at 30% 30%, #ffccbc, #ff8a65) !important;
+}
+.blob.eating {
+animation: eatBounce 0.2s infinite !important;
+}
+@keyframes eatBounce {
+0%, 100% { transform: scale(1) translateY(0); }
+50% { transform: scale(1.05) translateY(-5px); }
+}
+.blob.playing {
+background: radial-gradient(circle at 30% 30%, #ce93d8, #ab47bc);
+}
+.face {
+position: absolute;
+top: 35%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 160px;
+height: 100px;
+pointer-events: none;
+z-index: 20;
+}
+.eyes {
+display: flex;
+justify-content: space-between;
+width: 100%;
+margin-bottom: 10px;
+pointer-events: none;
+}
+.eye {
+width: 40px;
+height: 50px;
+background: white;
+border-radius: 50%;
+position: relative;
+overflow: hidden;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+cursor: pointer;
+z-index: 100;
+transition: transform 0.1s;
+pointer-events: auto !important;
+-webkit-tap-highlight-color: transparent;
+}
+.eye:active {
+transform: scale(0.95);
+}
+.eye.squint {
+height: 8px !important;
+border-radius: 5px;
+}
+.eye.winner {
+animation: eyeWinner 0.5s infinite;
+}
+@keyframes eyeWinner {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.2); }
+}
+.pupil {
+width: 16px;
+height: 20px;
+background: #333;
+border-radius: 50%;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+transition: all 0.1s;
+pointer-events: none;
+}
+.mouth {
+width: 60px;
+height: 30px;
+background: #d84315;
+border-radius: 0 0 60px 60px;
+margin: 0 auto;
+position: relative;
+overflow: hidden;
+transition: all 0.3s;
+box-shadow: inset 0 5px 10px rgba(0,0,0,0.2);
+pointer-events: none;
+}
+.mouth.annoyed {
+height: 15px;
+border-radius: 60px 60px 0 0;
+background: #5d4037;
+}
+.mouth.laughing {
+height: 50px;
+width: 70px;
+border-radius: 0 0 70px 70px;
+}
+.mouth.eating {
+animation: chew 0.15s infinite;
+}
+@keyframes chew {
+0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
+50% { height: 20px; border-radius: 0 0 30px 30px; }
+}
+.mouth.drinking {
+animation: drink 0.25s infinite;
+}
+@keyframes drink {
+0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
+50% { height: 45px; border-radius: 50%; }
+}
+.mouth.winner {
+height: 50px;
+width: 70px;
+border-radius: 0 0 70px 70px;
+background: #4caf50;
+}
+.mouth.loser {
+height: 20px;
+border-radius: 60px 60px 0 0;
+background: #f44336;
+}
+.tongue {
+position: absolute;
+bottom: -10px;
+left: 50%;
+transform: translateX(-50%);
+width: 40px;
+height: 20px;
+background: #ff8a80;
+border-radius: 50%;
+pointer-events: none;
+}
+.teeth {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 10px;
+background: white;
+border-radius: 0 0 5px 5px;
+pointer-events: none;
+}
+.bubble {
+position: absolute;
+top: -80px;
+background: white;
+padding: 15px 25px;
+border-radius: 20px;
+color: var(--text-color);
+font-weight: bold;
+font-size: 1.2rem;
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+opacity: 0;
+transform: translateY(20px);
+transition: all 0.5s ease;
+white-space: nowrap;
+z-index: 20;
+pointer-events: none;
+}
+.bubble::after {
+content: '';
+position: absolute;
+bottom: -10px;
+left: 50%;
+transform: translateX(-50%);
+border-width: 10px 10px 0;
+border-style: solid;
+border-color: white transparent;
+}
+.bubble.show {
+opacity: 1;
+transform: translateY(0);
+}
+.bubble.annoyed {
+background: #ffccbc;
+color: #bf360c;
+}
+.bubble.laughing {
+background: #c8e6c9;
+color: #2e7d32;
+}
+.bubble.winner {
+background: #c8e6c9;
+color: #2e7d32;
+}
+.bubble.loser {
+background: #ffcdd2;
+color: #c62828;
+}
+.items-container {
+position: absolute;
+bottom: 50px;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+gap: 30px;
+z-index: 100;
+}
+.draggable-item {
+width: 100px;
+height: 100px;
+cursor: grab;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+position: relative;
+background: rgba(255,255,255,0.5);
+border-radius: 15px;
+padding: 10px;
+transition: transform 0.1s;
+-webkit-tap-highlight-color: transparent;
+}
+.draggable-item:active {
+cursor: grabbing;
+transform: scale(1.15);
+}
+.draggable-item img {
+width: 70px;
+height: 70px;
+object-fit: contain;
+filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+pointer-events: none;
+}
+.item-label {
+font-size: 0.75rem;
+color: var(--text-color);
+font-weight: 600;
+text-align: center;
+margin-top: 5px;
+white-space: nowrap;
+pointer-events: none;
+}
+.item-xp {
+font-size: 0.7rem;
+color: #26a69a;
+font-weight: bold;
+pointer-events: none;
+}
+.menu-buttons {
+position: absolute;
+right: 30px;
+bottom: 50px;
+display: flex;
+flex-direction: column;
+gap: 15px;
+z-index: 100;
+}
+.menu-btn {
+width: 80px;
+height: 80px;
+background: linear-gradient(135deg, #cfd8dc 0%, #b0bec5 100%);
+border-radius: 15px;
+border: 3px solid #90a4ae;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+-webkit-tap-highlight-color: transparent;
+}
+.menu-btn:hover {
+transform: scale(1.05);
+box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.menu-btn:active {
+transform: scale(0.98);
+}
+.menu-btn-icon {
+font-size: 2rem;
+}
+.menu-btn-label {
+font-size: 0.7rem;
+color: #37474f;
+font-weight: bold;
+margin-top: 3px;
+}
+.fridge-btn .fridge-handle {
+width: 8px;
+height: 25px;
+background: #546e7a;
+border-radius: 4px;
+margin-top: 5px;
+}
+.modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.5);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+opacity: 0;
+transition: opacity 0.3s;
+}
+.modal.active {
+display: flex;
+opacity: 1;
+}
+.modal-content {
+background: var(--fridge-bg);
+border-radius: 20px;
+padding: 30px;
+max-width: 600px;
+width: 90%;
+max-height: 80vh;
+overflow-y: auto;
+position: relative;
+border: 5px solid #90a4ae;
+transform: scale(0.9);
+transition: transform 0.3s;
+}
+.modal.active .modal-content {
+transform: scale(1);
+}
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+.modal-title {
+font-size: 1.5rem;
+color: #37474f;
+font-weight: bold;
+}
+.modal-close {
+width: 40px;
+height: 40px;
+background: #ef5350;
+border: none;
+border-radius: 50%;
+color: white;
+font-size: 1.5rem;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+-webkit-tap-highlight-color: transparent;
+}
+.modal-close:hover {
+transform: scale(1.1);
+}
+.stats-panel {
+position: absolute;
+left: 10px;
+top: 50%;
+transform: translateY(-50%);
+background: rgba(255,255,255,0.6);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+padding: 12px 15px;
+border-radius: 12px;
+box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+z-index: 60;
+border: 1px solid rgba(255,255,255,0.3);
+}
+.stat-item {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 8px;
+font-size: 0.8rem;
+color: var(--text-color);
+white-space: nowrap;
+}
+.stat-item:last-child {
+margin-bottom: 0;
+}
+.stat-icon {
+font-size: 1.2rem;
+}
+.stat-value {
+font-weight: bold;
+font-size: 0.85rem;
+}
+@media (max-width: 480px) {
+.stats-panel {
+padding: 6px 8px;
+left: 3px;
+}
+.stat-item {
+font-size: 0.65rem;
+gap: 3px;
+}
+.stat-icon {
+font-size: 0.9rem;
+}
+.stat-label {
+display: none;
+}
+}
+.online-indicator {
+position: absolute;
+top: 30px;
+left: 30px;
+background: rgba(255,255,255,0.9);
+padding: 8px 15px;
+border-radius: 20px;
+font-size: 0.85rem;
+color: #546e7a;
+display: flex;
+align-items: center;
+gap: 8px;
+box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+z-index: 100;
+}
+.online-dot {
+width: 10px;
+height: 10px;
+background: #4caf50;
+border-radius: 50%;
+animation: onlinePulse 2s infinite;
+}
+@keyframes onlinePulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+.auto-save-indicator {
+position: absolute;
+top: 30px;
+right: 30px;
+background: rgba(255,255,255,0.9);
+padding: 8px 15px;
+border-radius: 20px;
+font-size: 0.85rem;
+color: #546e7a;
+display: flex;
+align-items: center;
+gap: 8px;
+box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+z-index: 100;
+}
+.auto-save-indicator.saving::before {
+content: '💾';
+animation: savePulse 0.5s infinite;
+}
+.auto-save-indicator.saved::before {
+content: '✓';
+color: #4caf50;
+}
+.auto-save-indicator::before {
+content: '🕐';
+}
+@keyframes savePulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.3); }
+}
+.xp-gain {
+position: absolute;
+color: #26a69a;
+font-weight: bold;
+font-size: 1.5rem;
+pointer-events: none;
+animation: xpFloat 1s ease-out forwards;
+z-index: 200;
+text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+@keyframes xpFloat {
+0% { opacity: 1; transform: translateY(0) scale(1); }
+100% { opacity: 0; transform: translateY(-50px) scale(1.2); }
+}
+.achievement-notification {
+position: fixed;
+top: 100px;
+right: -400px;
+background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+padding: 15px 25px;
+border-radius: 15px;
+border: 3px solid #ffca28;
+box-shadow: 0 5px 20px rgba(255, 202, 40, 0.5);
+display: flex;
+align-items: center;
+gap: 15px;
+z-index: 3000;
+transition: right 0.5s;
+}
+.achievement-notification.show {
+right: 30px;
+}
+.achievement-notification-icon {
+width: 50px;
+height: 50px;
+background: #ffca28;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 1.5rem;
+}
+.achievement-notification-text {
+color: #5d4037;
+}
+.achievement-notification-title {
+font-weight: bold;
+font-size: 1rem;
+}
+.achievement-notification-name {
+font-size: 0.85rem;
+color: #78909c;
+}
+.levelup-celebration {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 2000;
+display: none;
+}
+.levelup-celebration.active {
+display: block;
+}
+.confetti {
+position: absolute;
+width: 10px;
+height: 10px;
+animation: confettiFall 3s ease-out forwards;
+}
+@keyframes confettiFall {
+0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+.drag-clone {
+position: fixed;
+width: 100px;
+height: 100px;
+pointer-events: none;
+z-index: 1001;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+background: rgba(255,255,255,0.9);
+border-radius: 15px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.drag-clone img {
+width: 70px;
+height: 70px;
+object-fit: contain;
+}
+.drag-clone .item-label {
+font-size: 0.75rem;
+color: var(--text-color);
+font-weight: 600;
+margin-top: 5px;
+}
+.hint {
+position: absolute;
+bottom: 10px;
+color: rgba(1, 87, 155, 0.5);
+font-size: 0.85rem;
+animation: pulse 2s infinite;
+}
+@keyframes pulse {
+0%, 100% { opacity: 0.5; }
+50% { opacity: 1; }
+}
+.btn-primary {
+padding: 12px 30px;
+background: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+margin: 5px;
+-webkit-tap-highlight-color: transparent;
+}
+.btn-primary:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(38, 166, 154, 0.6);
+}
+.btn-secondary {
+padding: 12px 30px;
+background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+margin: 5px;
+-webkit-tap-highlight-color: transparent;
+}
+.btn-danger {
+padding: 12px 30px;
+background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+margin: 5px;
+-webkit-tap-highlight-color: transparent;
+}
+.input-field {
+width: 100%;
+padding: 12px 15px;
+border: 2px solid #cfd8dc;
+border-radius: 10px;
+font-size: 1rem;
+font-family: 'Nunito', sans-serif;
+margin-bottom: 15px;
+}
+.input-field:focus {
+outline: none;
+border-color: #26a69a;
+}
+.save-status {
+text-align: center;
+padding: 10px;
+border-radius: 10px;
+margin-top: 15px;
+font-weight: bold;
+opacity: 0;
+transition: opacity 0.3s;
+}
+.save-status.success {
+background: #c8e6c9;
+color: #2e7d32;
+opacity: 1;
+}
+.save-status.error {
+background: #ffcdd2;
+color: #c62828;
+opacity: 1;
+}
+.leaderboard-list {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+.leaderboard-item {
+display: flex;
+align-items: center;
+padding: 15px;
+background: white;
+border-radius: 10px;
+margin-bottom: 10px;
+}
+.leaderboard-item.current-user {
+background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+border: 2px solid #26a69a;
+}
+.leaderboard-rank {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-weight: bold;
+margin-right: 15px;
+}
+.leaderboard-rank.gold { background: linear-gradient(135deg, #ffd700, #ffecb3); color: #5d4037; }
+.leaderboard-rank.silver { background: linear-gradient(135deg, #c0c0c0, #e0e0e0); color: #37474f; }
+.leaderboard-rank.bronze { background: linear-gradient(135deg, #cd7f32, #ffe0b2); color: #5d4037; }
+.leaderboard-rank.normal { background: #cfd8dc; color: #546e7a; }
+.leaderboard-info { flex: 1; }
+.leaderboard-name { font-weight: bold; color: #37474f; }
+.leaderboard-stats { font-size: 0.8rem; color: #78909c; margin-top: 3px; }
+.leaderboard-xp { font-weight: bold; color: #26a69a; margin-left: 15px; }
+.achievements-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 15px;
+}
+.achievement-card {
+background: white;
+border-radius: 15px;
+padding: 20px;
+display: flex;
+align-items: center;
+gap: 15px;
+border: 3px solid var(--achievement-locked);
+opacity: 0.6;
+}
+.achievement-card.unlocked {
+border-color: var(--achievement-unlocked);
+opacity: 1;
+background: linear-gradient(135deg, #fff8e1, #ffecb3);
+}
+.achievement-icon {
+width: 50px;
+height: 50px;
+background: var(--achievement-locked);
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 1.5rem;
+}
+.achievement-card.unlocked .achievement-icon {
+background: var(--achievement-unlocked);
+}
+.achievement-info { flex: 1; }
+.achievement-name { font-size: 0.95rem; color: #37474f; font-weight: bold; }
+.achievement-desc { font-size: 0.75rem; color: #78909c; }
+.achievement-progress { font-size: 0.7rem; color: #90a4ae; margin-top: 5px; }
+.fridge-items {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+gap: 15px;
+}
+.fridge-item {
+background: white;
+border-radius: 15px;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+cursor: pointer;
+border: 3px solid transparent;
+-webkit-tap-highlight-color: transparent;
+}
+.fridge-item.selected {
+border-color: #26a69a;
+background: #e8f5e9;
+}
+.fridge-item img {
+width: 60px;
+height: 60px;
+object-fit: contain;
+}
+.fridge-item-name {
+font-size: 0.85rem;
+color: #37474f;
+font-weight: 600;
+margin-top: 8px;
+text-align: center;
+}
+.fridge-item-xp {
+font-size: 0.75rem;
+color: #26a69a;
+font-weight: bold;
+}
+/* FIXED Tic Tac Toe - Symmetrical & Beautiful */
+.tic-tac-toe-board {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 8px;
+background: #90a4ae;
+padding: 8px;
+border-radius: 15px;
+margin: 20px auto;
+width: 266px;
+height: 266px;
+}
+.tic-tac-toe-cell {
+width: 80px;
+height: 80px;
+background: white;
+border-radius: 10px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 2.5rem;
+font-weight: bold;
+cursor: pointer;
+-webkit-tap-highlight-color: transparent;
+position: relative;
+}
+.tic-tac-toe-cell.taken { cursor: not-allowed; }
+.tic-tac-toe-cell.x { 
+color: #e53935;
+font-size: 3rem;
+}
+.tic-tac-toe-cell.o { 
+background: radial-gradient(circle at 30% 30%, #81d4fa, #4fc3f7);
+border-radius: 50%;
+width: 70px;
+height: 70px;
+}
+.tic-tac-toe-cell.winner { background: #c8e6c9; }
+/* Mini blob face for tic-tac-toe */
+.tic-tac-toe-blob-face {
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+.tic-tac-toe-blob-eyes {
+display: flex;
+gap: 10px;
+margin-bottom: 5px;
+}
+.tic-tac-toe-blob-eye {
+width: 14px;
+height: 18px;
+background: white;
+border-radius: 50%;
+position: relative;
+}
+.tic-tac-toe-blob-eye::after {
+content: '';
+position: absolute;
+width: 6px;
+height: 8px;
+background: #333;
+border-radius: 50%;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+.tic-tac-toe-blob-mouth {
+width: 24px;
+height: 12px;
+background: #d84315;
+border-radius: 0 0 24px 24px;
+}
+.tic-tac-toe-info { text-align: center; margin-bottom: 15px; }
+.tic-tac-toe-status { font-size: 1.2rem; font-weight: bold; color: #37474f; margin-bottom: 10px; }
+.tic-tac-toe-score { display: flex; justify-content: center; gap: 30px; font-size: 0.95rem; color: #546e7a; }
+.tic-tac-toe-score span { font-weight: bold; }
+/* Obstacle Game - FIXED Collision */
+.obstacle-game-container {
+position: relative;
+width: 400px;
+height: 400px;
+background: #263238;
+border-radius: 15px;
+margin: 20px auto;
+overflow: hidden;
+}
+.obstacle-player {
+position: absolute;
+width: 60px;
+height: 60px;
+background: radial-gradient(circle at 30% 30%, #81d4fa, #4fc3f7);
+border-radius: 50%;
+cursor: grab;
+z-index: 10;
+box-shadow: 0 4px 15px rgba(79, 195, 247, 0.5);
+}
+.obstacle-player:active {
+cursor: grabbing;
+}
+.obstacle-player-face {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 100%;
+height: 100%;
+pointer-events: none;
+}
+.obstacle-player-eyes {
+display: flex;
+justify-content: center;
+gap: 8px;
+position: absolute;
+top: 15px;
+left: 50%;
+transform: translateX(-50%);
+}
+.obstacle-player-eye {
+width: 14px;
+height: 18px;
+background: white;
+border-radius: 50%;
+position: relative;
+}
+.obstacle-player-eye::after {
+content: '';
+position: absolute;
+width: 6px;
+height: 8px;
+background: #333;
+border-radius: 50%;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+.obstacle-player-mouth {
+position: absolute;
+bottom: 12px;
+left: 50%;
+transform: translateX(-50%);
+width: 24px;
+height: 12px;
+background: #d84315;
+border-radius: 0 0 24px 24px;
+}
+.obstacle {
+position: absolute;
+background: #ef5350;
+border-radius: 5px;
+}
+.obstacle-game-info {
+text-align: center;
+margin-bottom: 15px;
+}
+.obstacle-game-status {
+font-size: 1.2rem;
+font-weight: bold;
+color: #37474f;
+margin-bottom: 10px;
+}
+.obstacle-game-score {
+display: flex;
+justify-content: center;
+gap: 30px;
+font-size: 0.95rem;
+color: #546e7a;
+}
+.obstacle-game-score span {
+font-weight: bold;
+}
+.settings-section { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 2px solid #cfd8dc; }
+.settings-section:last-child { border-bottom: none; }
+.settings-title { font-size: 1.2rem; color: #546e7a; font-weight: bold; margin-bottom: 15px; }
+.settings-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.player-id-display { background: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px; }
+.player-id-label { font-size: 0.85rem; color: #78909c; margin-bottom: 5px; }
+.player-id-value { font-size: 1.1rem; font-weight: bold; color: #26a69a; word-break: break-all; }
+.export-import-area { background: white; padding: 15px; border-radius: 10px; margin-top: 15px; }
+.export-import-area textarea { width: 100%; height: 100px; border: 2px solid #cfd8dc; border-radius: 10px; padding: 10px; font-family: monospace; font-size: 0.8rem; resize: vertical; margin-bottom: 10px; }
+.welcome-content { text-align: center; }
+.welcome-content h2 { color: #37474f; margin-bottom: 15px; }
+.welcome-content p { color: #546e7a; margin-bottom: 20px; line-height: 1.6; }
+.welcome-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+.user-nickname-display { font-weight: bold; color: #26a69a; }
+.minigame-tabs {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
+}
+.minigame-tab {
+padding: 10px 20px;
+background: #cfd8dc;
+border: none;
+border-radius: 10px;
+cursor: pointer;
+font-weight: bold;
+color: #546e7a;
+transition: all 0.2s;
+-webkit-tap-highlight-color: transparent;
+}
+.minigame-tab.active {
+background: #26a69a;
+color: white;
+}
+.minigame-tab:hover {
+background: #80cbc4;
+}
+.game-content {
+display: none;
+}
+.game-content.active {
+display: block;
+}
+</style>
 </head>
 <body>
-
-    <div class="scene">
-        <!-- XP Bar -->
-        <div class="xp-container">
-            <div class="xp-bar-bg">
-                <div class="xp-bar-fill" id="xpFill"></div>
-                <div class="xp-text" id="xpText">Уровень 1 • 0/100 XP</div>
-            </div>
-            <div class="level-badge" id="levelBadge">1</div>
-        </div>
-
-        <!-- Auto Save Indicator -->
-        <div class="auto-save-indicator" id="autoSaveIndicator">Автосохранение</div>
-
-        <!-- Stats Panel -->
-        <div class="stats-panel">
-            <div class="stat-item">
-                <span class="stat-icon">🍗</span>
-                <span>Съедено: <span class="stat-value" id="foodCount">0</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">💧</span>
-                <span>Выпито: <span class="stat-value" id="drinkCount">0</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">👆</span>
-                <span>Пощекотано: <span class="stat-value" id="tickleCount">0</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🎮</span>
-                <span>Игр выиграно: <span class="stat-value" id="gamesWon">0</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🏆</span>
-                <span>Ачивки: <span class="stat-value" id="achievementCount">0/0</span></span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">⭐</span>
-                <span>Всего XP: <span class="stat-value" id="totalXp">0</span></span>
-            </div>
-        </div>
-
-        <!-- The Character -->
-        <div class="blob-container" id="blobContainer">
-            <div class="bubble" id="bubble">Привет!</div>
-            <div class="blob" id="blob">
-                <div class="face">
-                    <div class="eyes">
-                        <div class="eye" id="eyeLeft" data-side="left"><div class="pupil"></div></div>
-                        <div class="eye" id="eyeRight" data-side="right"><div class="pupil"></div></div>
-                    </div>
-                    <div class="mouth" id="mouth">
-                        <div class="teeth"></div>
-                        <div class="tongue"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Draggable Items -->
-        <div class="items-container">
-            <div class="draggable-item" id="foodItem" data-type="food">
-                <img id="foodImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png" alt="Food">
-                <div class="item-label">
-                    <span id="foodName">Курица</span>
-                    <div class="item-xp" id="foodXp">+25 XP</div>
-                </div>
-            </div>
-            <div class="draggable-item" id="drinkItem" data-type="drink">
-                <img id="drinkImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png" alt="Drink">
-                <div class="item-label">
-                    <span id="drinkName">Вода</span>
-                    <div class="item-xp" id="drinkXp">+15 XP</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Menu Buttons -->
-        <div class="menu-buttons">
-            <div class="menu-btn fridge-btn" id="fridgeBtn">
-                <span class="menu-btn-icon">🧊</span>
-                <span class="menu-btn-label">Еда</span>
-                <div class="fridge-handle"></div>
-            </div>
-            <div class="menu-btn" id="minigamesBtn">
-                <span class="menu-btn-icon">🎮</span>
-                <span class="menu-btn-label">Игры</span>
-            </div>
-            <div class="menu-btn" id="achievementsBtn">
-                <span class="menu-btn-icon">🏆</span>
-                <span class="menu-btn-label">Ачивки</span>
-            </div>
-            <div class="menu-btn" id="settingsBtn">
-                <span class="menu-btn-icon">⚙️</span>
-                <span class="menu-btn-label">Настройки</span>
-            </div>
-        </div>
-
-        <div class="hint">Перетащи еду или воду в рот!</div>
-
-        <!-- Level Up Celebration -->
-        <div class="levelup-celebration" id="celebration"></div>
-
-        <!-- Achievement Notification -->
-        <div class="achievement-notification" id="achievementNotification">
-            <div class="achievement-notification-icon">🏆</div>
-            <div class="achievement-notification-text">
-                <div class="achievement-notification-title">Новая ачивка!</div>
-                <div class="achievement-notification-name" id="achievementNotificationName">Название</div>
-            </div>
-        </div>
-
-        <!-- Fridge Modal -->
-        <div class="modal" id="fridgeModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title">🧊 Холодильник</span>
-                    <button class="modal-close" id="fridgeClose">×</button>
-                </div>
-                
-                <div class="fridge-section">
-                    <div class="fridge-section-title">🍗 Еда</div>
-                    <div class="fridge-items" id="foodItems"></div>
-                </div>
-                
-                <div class="fridge-section">
-                    <div class="fridge-section-title">💧 Напитки</div>
-                    <div class="fridge-items" id="drinkItems"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Achievements Modal -->
-        <div class="modal" id="achievementsModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title">🏆 Достижения</span>
-                    <button class="modal-close" id="achievementsClose">×</button>
-                </div>
-                <div class="achievements-grid" id="achievementsGrid"></div>
-            </div>
-        </div>
-
-        <!-- Mini Games Modal -->
-        <div class="modal" id="minigamesModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title">🎮 Мини-игры</span>
-                    <button class="modal-close" id="minigamesClose">×</button>
-                </div>
-                
-                <div class="minigames-container">
-                    <div class="minigame-tabs">
-                        <button class="minigame-tab active" data-game="tictactoe">Крестики-Нолики</button>
-                    </div>
-                    
-                    <div id="tictactoeGame">
-                        <div class="tic-tac-toe-info">
-                            <div class="tic-tac-toe-status" id="tttStatus">Твой ход! (X)</div>
-                            <div class="tic-tac-toe-score">
-                                <div>Ты (X): <span id="tttPlayerScore">0</span></div>
-                                <div>Блоб (O): <span id="tttBlobScore">0</span></div>
-                                <div>Ничьи: <span id="tttDraws">0</span></div>
-                            </div>
-                        </div>
-                        
-                        <div class="tic-tac-toe-board" id="tttBoard">
-                            <div class="tic-tac-toe-cell" data-index="0"></div>
-                            <div class="tic-tac-toe-cell" data-index="1"></div>
-                            <div class="tic-tac-toe-cell" data-index="2"></div>
-                            <div class="tic-tac-toe-cell" data-index="3"></div>
-                            <div class="tic-tac-toe-cell" data-index="4"></div>
-                            <div class="tic-tac-toe-cell" data-index="5"></div>
-                            <div class="tic-tac-toe-cell" data-index="6"></div>
-                            <div class="tic-tac-toe-cell" data-index="7"></div>
-                            <div class="tic-tac-toe-cell" data-index="8"></div>
-                        </div>
-                        
-                        <button class="btn-primary" id="tttResetBtn">Новая игра</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Settings Modal -->
-        <div class="modal" id="settingsModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="modal-title">⚙️ Настройки</span>
-                    <button class="modal-close" id="settingsClose">×</button>
-                </div>
-                
-                <div class="settings-section">
-                    <div class="settings-title">💾 Сохранение прогресса</div>
-                    <div class="player-id-display">
-                        <div class="player-id-label">Ваш ID сохранения:</div>
-                        <div class="player-id-value" id="playerId">Загрузка...</div>
-                    </div>
-                    <div class="settings-buttons">
-                        <button class="btn-primary" id="saveBtn">Сохранить</button>
-                        <button class="btn-secondary" id="loadBtn">Загрузить</button>
-                        <button class="btn-danger" id="resetBtn">Сбросить прогресс</button>
-                    </div>
-                    <div class="save-status" id="saveStatus"></div>
-                    
-                    <div class="save-instructions">
-                        <h4>📋 Как проверить сохранение:</h4>
-                        <ol>
-                            <li>Покормите блоба или пощекочите его</li>
-                            <li>Нажмите "Сохранить" или подождите 30 сек (автосохранение)</li>
-                            <li>Обновите страницу (F5)</li>
-                            <li>Прогресс восстановится автоматически!</li>
-                        </ol>
-                        <p style="margin-top: 10px; font-style: italic;">
-                            💡 Для переноса на другое устройство используйте "Экспортировать" и "Импортировать"
-                        </p>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <div class="settings-title">📤 Экспорт / Импорт</div>
-                    <div class="export-import-area">
-                        <textarea id="exportImportData" placeholder="Вставьте код сохранения здесь..."></textarea>
-                        <div class="settings-buttons">
-                            <button class="btn-secondary" id="exportBtn">Экспортировать</button>
-                            <button class="btn-primary" id="importBtn">Импортировать</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <div class="settings-title">🔄 Автосохранение</div>
-                    <p style="color: #78909c; font-size: 0.85rem; margin-bottom: 10px;">
-                        Прогресс автоматически сохраняется каждые 30 секунд и при закрытии страницы.
-                    </p>
-                    <div class="settings-buttons">
-                        <button class="btn-secondary" id="toggleAutoSave">Отключить автосохранение</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Welcome Modal -->
-        <div class="modal" id="welcomeModal">
-            <div class="modal-content">
-                <div class="welcome-content">
-                    <h2>👋 Добро пожаловать!</h2>
-                    <p>
-                        Это живой сайт-питомец! Кормите его, поите, щекочите и играйте в игры, чтобы получать опыт и открывать достижения.
-                    </p>
-                    <p>
-                        <strong>👆 Пощекочите живот</strong> или <strong>👁️ нажмите на глаз</strong> для взаимодействия!
-                    </p>
-                    <p>
-                        Ваш прогресс автоматически сохраняется в браузере.
-                    </p>
-                    <div class="welcome-buttons">
-                        <button class="btn-primary" id="welcomeStartBtn">Начать игру!</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Food and Drink Data
-        const foodData = [
-            { id: 'chicken', name: 'Курица', xp: 25, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png' },
-            { id: 'burger', name: 'Бургер', xp: 35, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/134fe074b-69dc-4957-a33a-4f0751c46d5e.png' },
-            { id: 'pizza', name: 'Пицца', xp: 30, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1e0797689-ad14-4043-8359-49d8981c4f2c.png' },
-            { id: 'apple', name: 'Яблоко', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1571d8010-90fa-4d26-8844-cd052898cfd6.png' }
-        ];
-
-        const drinkData = [
-            { id: 'water', name: 'Вода', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png' },
-            { id: 'juice', name: 'Сок', xp: 20, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/122a8fae9-253e-4b9e-a8b1-38a8fd5a541c.png' },
-            { id: 'soda', name: 'Газировка', xp: 18, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/184eb8fcd-63bc-4bd0-bbc2-55382b073aa6.png' },
-            { id: 'milk', name: 'Молоко', xp: 22, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1c3d69fed-7c01-47f8-acbd-b8dc39f72196.png' }
-        ];
-
-        // Achievements Data
-        const achievementsData = [
-            { id: 'first_feed', name: 'Первый обед', desc: 'Покормите персонажа впервые', icon: '🍗', condition: (state) => state.foodCount >= 1 },
-            { id: 'first_drink', name: 'Первый глоток', desc: 'Напоите персонажа впервые', icon: '💧', condition: (state) => state.drinkCount >= 1 },
-            { id: 'first_tickle', name: 'Щекотка!', desc: 'Пощекочите персонажа впервые', icon: '😂', condition: (state) => state.tickleCount >= 1 },
-            { id: 'first_eye_click', name: 'Не трогай!', desc: 'Нажмите на глаз', icon: '👁️', condition: (state) => state.eyeClickCount >= 1 },
-            { id: 'first_win', name: 'Первая победа', desc: 'Выиграйте в крестики-нолики', icon: '🎮', condition: (state) => state.gamesWon >= 1 },
-            { id: 'feed_5', name: 'Обжора', desc: 'Покормите 5 раз', icon: '🍽️', condition: (state) => state.foodCount >= 5 },
-            { id: 'feed_10', name: 'Гурман', desc: 'Покормите 10 раз', icon: '👨‍🍳', condition: (state) => state.foodCount >= 10 },
-            { id: 'feed_25', name: 'Мега Обжора', desc: 'Покормите 25 раз', icon: '🤤', condition: (state) => state.foodCount >= 25 },
-            { id: 'drink_5', name: 'Водохлёб', desc: 'Напоите 5 раз', icon: '🥤', condition: (state) => state.drinkCount >= 5 },
-            { id: 'drink_10', name: 'Сомелье', desc: 'Напоите 10 раз', icon: '🍷', condition: (state) => state.drinkCount >= 10 },
-            { id: 'tickle_5', name: 'Щекотун', desc: 'Пощекочите 5 раз', icon: '🤣', condition: (state) => state.tickleCount >= 5 },
-            { id: 'tickle_10', name: 'Комик', desc: 'Пощекочите 10 раз', icon: '🎭', condition: (state) => state.tickleCount >= 10 },
-            { id: 'level_5', name: 'Новичок', desc: 'Достигните 5 уровня', icon: '⭐', condition: (state) => state.level >= 5 },
-            { id: 'level_10', name: 'Опытный', desc: 'Достигните 10 уровня', icon: '🌟', condition: (state) => state.level >= 10 },
-            { id: 'level_20', name: 'Мастер', desc: 'Достигните 20 уровня', icon: '💫', condition: (state) => state.level >= 20 },
-            { id: 'xp_500', name: 'Коллекционер XP', desc: 'Получите 500 XP', icon: '💎', condition: (state) => state.totalXp >= 500 },
-            { id: 'xp_1000', name: 'XP Магнат', desc: 'Получите 1000 XP', icon: '💰', condition: (state) => state.totalXp >= 1000 },
-            { id: 'xp_5000', name: 'XP Легенда', desc: 'Получите 5000 XP', icon: '👑', condition: (state) => state.totalXp >= 5000 }
-        ];
-
-        // Dialogue responses
-        const annoyedResponses = [
-            "Эй! Не надо!",
-            "Бля, ты чего?!",
-            "Отстань!",
-            "Мне неприятно!",
-            "Прекрати!",
-            "Ай! Мои глаза!"
-        ];
-
-        const tickleResponses = [
-            "Ха-ха-ха! Щекотно!",
-            "Ой! Прекрати!",
-            "Ха-ха! Щекотка!",
-            "Ахаха! Смешно!",
-            "Хи-хи! Ещё!",
-            "Ой-ой-ой! Ха-ха!"
-        ];
-
-        // Tic Tac Toe State
-        let tttBoard = ['', '', '', '', '', '', '', '', ''];
-        let tttPlayerTurn = true;
-        let tttGameActive = true;
-        let tttPlayerScore = 0;
-        let tttBlobScore = 0;
-        let tttDraws = 0;
-
-        // Elements
-        const blob = document.getElementById('blob');
-        const blobContainer = document.getElementById('blobContainer');
-        const bubble = document.getElementById('bubble');
-        const mouth = document.getElementById('mouth');
-        const eyes = document.querySelectorAll('.eye');
-        const pupils = document.querySelectorAll('.pupil');
-        const xpFill = document.getElementById('xpFill');
-        const xpText = document.getElementById('xpText');
-        const levelBadge = document.getElementById('levelBadge');
-        const foodCountEl = document.getElementById('foodCount');
-        const drinkCountEl = document.getElementById('drinkCount');
-        const tickleCountEl = document.getElementById('tickleCount');
-        const gamesWonEl = document.getElementById('gamesWon');
-        const achievementCountEl = document.getElementById('achievementCount');
-        const totalXpEl = document.getElementById('totalXp');
-        const celebration = document.getElementById('celebration');
-        const fridgeBtn = document.getElementById('fridgeBtn');
-        const minigamesBtn = document.getElementById('minigamesBtn');
-        const achievementsBtn = document.getElementById('achievementsBtn');
-        const settingsBtn = document.getElementById('settingsBtn');
-        const fridgeModal = document.getElementById('fridgeModal');
-        const achievementsModal = document.getElementById('achievementsModal');
-        const minigamesModal = document.getElementById('minigamesModal');
-        const settingsModal = document.getElementById('settingsModal');
-        const welcomeModal = document.getElementById('welcomeModal');
-        const fridgeClose = document.getElementById('fridgeClose');
-        const achievementsClose = document.getElementById('achievementsClose');
-        const minigamesClose = document.getElementById('minigamesClose');
-        const settingsClose = document.getElementById('settingsClose');
-        const foodItemsContainer = document.getElementById('foodItems');
-        const drinkItemsContainer = document.getElementById('drinkItems');
-        const achievementsGrid = document.getElementById('achievementsGrid');
-        const foodItem = document.getElementById('foodItem');
-        const drinkItem = document.getElementById('drinkItem');
-        const foodImg = document.getElementById('foodImg');
-        const drinkImg = document.getElementById('drinkImg');
-        const foodName = document.getElementById('foodName');
-        const drinkName = document.getElementById('drinkName');
-        const foodXp = document.getElementById('foodXp');
-        const drinkXp = document.getElementById('drinkXp');
-        const achievementNotification = document.getElementById('achievementNotification');
-        const achievementNotificationName = document.getElementById('achievementNotificationName');
-        const tttCells = document.querySelectorAll('.tic-tac-toe-cell');
-        const tttStatus = document.getElementById('tttStatus');
-        const tttPlayerScoreEl = document.getElementById('tttPlayerScore');
-        const tttBlobScoreEl = document.getElementById('tttBlobScore');
-        const tttDrawsEl = document.getElementById('tttDraws');
-        const tttResetBtn = document.getElementById('tttResetBtn');
-        const autoSaveIndicator = document.getElementById('autoSaveIndicator');
-        const saveBtn = document.getElementById('saveBtn');
-        const loadBtn = document.getElementById('loadBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const exportBtn = document.getElementById('exportBtn');
-        const importBtn = document.getElementById('importBtn');
-        const toggleAutoSaveBtn = document.getElementById('toggleAutoSave');
-        const saveStatus = document.getElementById('saveStatus');
-        const exportImportData = document.getElementById('exportImportData');
-        const playerIdEl = document.getElementById('playerId');
-        const welcomeStartBtn = document.getElementById('welcomeStartBtn');
-
-        // Game State
-        let level = 1;
-        let currentXp = 0;
-        let xpToNextLevel = 100;
-        let totalXp = 0;
-        let foodCount = 0;
-        let drinkCount = 0;
-        let tickleCount = 0;
-        let eyeClickCount = 0;
-        let gamesWon = 0;
-        let isBusy = false;
-        let selectedFood = foodData[0];
-        let selectedDrink = drinkData[0];
-        let dragClone = null;
-        let dragType = null;
-        let isAnnoyed = false;
-        let isTickled = false;
-        let unlockedAchievements = [];
-        let playerId = '';
-        let autoSaveEnabled = true;
-        let autoSaveInterval = null;
-        let isFirstVisit = true;
-        let modalOpen = false;
-
-        // Check localStorage availability
-        function isLocalStorageAvailable() {
-            try {
-                const test = '__storage_test__';
-                localStorage.setItem(test, test);
-                localStorage.removeItem(test);
-                return true;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        // Save System
-        const SAVE_KEY_PREFIX = 'livingBlob_';
-        const PLAYER_IDS_KEY = 'livingBlob_playerIds';
-
-        function generatePlayerId() {
-            return 'player_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
-        }
-
-        function getPlayerId() {
-            if (!isLocalStorageAvailable()) {
-                return 'no_storage';
-            }
-            
-            let storedIds = JSON.parse(localStorage.getItem(PLAYER_IDS_KEY) || '[]');
-            
-            if (storedIds.length === 0) {
-                playerId = generatePlayerId();
-                storedIds.push(playerId);
-                localStorage.setItem(PLAYER_IDS_KEY, JSON.stringify(storedIds));
-            } else {
-                playerId = storedIds[storedIds.length - 1];
-            }
-            
-            return playerId;
-        }
-
-        function getSaveKey() {
-            return SAVE_KEY_PREFIX + playerId;
-        }
-
-        function getGameState() {
-            return {
-                level,
-                currentXp,
-                xpToNextLevel,
-                totalXp,
-                foodCount,
-                drinkCount,
-                tickleCount,
-                eyeClickCount,
-                gamesWon,
-                selectedFoodId: selectedFood.id,
-                selectedDrinkId: selectedDrink.id,
-                unlockedAchievements,
-                tttPlayerScore,
-                tttBlobScore,
-                tttDraws,
-                autoSaveEnabled,
-                lastSaved: new Date().toISOString()
-            };
-        }
-
-        function loadGameState(data) {
-            if (!data) return false;
-            
-            level = data.level || 1;
-            currentXp = data.currentXp || 0;
-            xpToNextLevel = data.xpToNextLevel || 100;
-            totalXp = data.totalXp || 0;
-            foodCount = data.foodCount || 0;
-            drinkCount = data.drinkCount || 0;
-            tickleCount = data.tickleCount || 0;
-            eyeClickCount = data.eyeClickCount || 0;
-            gamesWon = data.gamesWon || 0;
-            unlockedAchievements = data.unlockedAchievements || [];
-            tttPlayerScore = data.tttPlayerScore || 0;
-            tttBlobScore = data.tttBlobScore || 0;
-            tttDraws = data.tttDraws || 0;
-            autoSaveEnabled = data.autoSaveEnabled !== false;
-            
-            if (data.selectedFoodId) {
-                selectedFood = foodData.find(f => f.id === data.selectedFoodId) || foodData[0];
-            }
-            if (data.selectedDrinkId) {
-                selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
-            }
-            
-            return true;
-        }
-
-        function saveGame(showNotification = true) {
-            if (!isLocalStorageAvailable()) {
-                if (showNotification) {
-                    showSaveStatus('LocalStorage недоступен!', 'error');
-                }
-                return false;
-            }
-            
-            try {
-                const gameState = getGameState();
-                localStorage.setItem(getSaveKey(), JSON.stringify(gameState));
-                
-                if (showNotification) {
-                    showSaveStatus('Прогресс сохранён!', 'success');
-                    showAutoSaveIndicator('saved');
-                }
-                
-                return true;
-            } catch (e) {
-                console.error('Save error:', e);
-                if (showNotification) {
-                    showSaveStatus('Ошибка: ' + e.message, 'error');
-                }
-                return false;
-            }
-        }
-
-        function loadGame() {
-            if (!isLocalStorageAvailable()) {
-                showSaveStatus('LocalStorage недоступен!', 'error');
-                return false;
-            }
-            
-            try {
-                const savedData = localStorage.getItem(getSaveKey());
-                if (savedData) {
-                    const data = JSON.parse(savedData);
-                    const loaded = loadGameState(data);
-                    if (loaded) {
-                        showSaveStatus('Прогресс загружен!', 'success');
-                        return true;
-                    }
-                }
-                return false;
-            } catch (e) {
-                console.error('Load error:', e);
-                showSaveStatus('Ошибка: ' + e.message, 'error');
-                return false;
-            }
-        }
-
-        function resetGame() {
-            if (!isLocalStorageAvailable()) {
-                showSaveStatus('LocalStorage недоступен!', 'error');
-                return;
-            }
-            
-            if (confirm('Вы уверены? Весь прогресс будет удалён!')) {
-                level = 1;
-                currentXp = 0;
-                xpToNextLevel = 100;
-                totalXp = 0;
-                foodCount = 0;
-                drinkCount = 0;
-                tickleCount = 0;
-                eyeClickCount = 0;
-                gamesWon = 0;
-                unlockedAchievements = [];
-                tttPlayerScore = 0;
-                tttBlobScore = 0;
-                tttDraws = 0;
-                selectedFood = foodData[0];
-                selectedDrink = drinkData[0];
-                
-                localStorage.removeItem(getSaveKey());
-                showSaveStatus('Прогресс сброшен!', 'success');
-                updateDisplay();
-                renderFridgeItems();
-                resetTicTacToe();
-            }
-        }
-
-        function exportGame() {
-            const gameState = getGameState();
-            const exportData = btoa(JSON.stringify(gameState));
-            exportImportData.value = exportData;
-            showSaveStatus('Данные экспортированы! Скопируйте код выше.', 'success');
-        }
-
-        function importGame() {
-            try {
-                const importData = exportImportData.value.trim();
-                if (!importData) {
-                    showSaveStatus('Вставьте код сохранения!', 'error');
-                    return;
-                }
-                
-                const decoded = atob(importData);
-                const data = JSON.parse(decoded);
-                const loaded = loadGameState(data);
-                
-                if (loaded) {
-                    saveGame(false);
-                    updateDisplay();
-                    renderFridgeItems();
-                    renderAchievements();
-                    resetTicTacToe();
-                    showSaveStatus('Данные импортированы!', 'success');
-                } else {
-                    showSaveStatus('Неверный формат данных!', 'error');
-                }
-            } catch (e) {
-                console.error('Import error:', e);
-                showSaveStatus('Ошибка импорта! Проверьте код.', 'error');
-            }
-        }
-
-        function showSaveStatus(message, type) {
-            saveStatus.textContent = message;
-            saveStatus.className = 'save-status ' + type;
-            setTimeout(() => {
-                saveStatus.className = 'save-status';
-            }, 3000);
-        }
-
-        function showAutoSaveIndicator(state) {
-            autoSaveIndicator.className = 'auto-save-indicator ' + state;
-            setTimeout(() => {
-                if (autoSaveEnabled) {
-                    autoSaveIndicator.className = 'auto-save-indicator';
-                }
-            }, 2000);
-        }
-
-        function setupAutoSave() {
-            if (autoSaveInterval) clearInterval(autoSaveInterval);
-            
-            if (autoSaveEnabled && isLocalStorageAvailable()) {
-                autoSaveInterval = setInterval(() => {
-                    showAutoSaveIndicator('saving');
-                    saveGame(false);
-                }, 30000);
-            }
-        }
-
-        // Check if any modal is open
-        function isModalOpen() {
-            return fridgeModal.classList.contains('active') || 
-                   achievementsModal.classList.contains('active') || 
-                   minigamesModal.classList.contains('active') || 
-                   settingsModal.classList.contains('active') ||
-                   welcomeModal.classList.contains('active');
-        }
-
-        // Initialize
-        function init() {
-            playerId = getPlayerId();
-            playerIdEl.textContent = playerId;
-            
-            // Check localStorage availability
-            if (!isLocalStorageAvailable()) {
-                alert('Внимание: LocalStorage недоступен в вашем браузере. Прогресс не будет сохраняться автоматически.');
-            }
-            
-            // Check if first visit
-            const hasSave = isLocalStorageAvailable() ? localStorage.getItem(getSaveKey()) : null;
-            if (hasSave) {
-                loadGame();
-                isFirstVisit = false;
-            }
-            
-            renderFridgeItems();
-            renderAchievements();
-            updateDisplay();
-            setupInteractions();
-            checkAchievements();
-            initTicTacToe();
-            setupAutoSave();
-            
-            // Auto-save on page close
-            window.addEventListener('beforeunload', () => {
-                if (autoSaveEnabled && isLocalStorageAvailable()) {
-                    saveGame(false);
-                }
-            });
-            
-            if (isFirstVisit) {
-                setTimeout(() => {
-                    welcomeModal.classList.add('active');
-                }, 500);
-            } else {
-                setTimeout(() => {
-                    bubble.textContent = "С возвращением!";
-                    bubble.classList.add('show');
-                }, 500);
-
-                setTimeout(() => {
-                    bubble.textContent = "Я голоден и хочу пить...";
-                }, 3500);
-            }
-        }
-
-        // Setup Eye and Body Interactions - FIXED
-        function setupInteractions() {
-            // Eye click events - FIXED with proper event handling
-            eyes.forEach(eye => {
-                eye.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (isBusy || isAnnoyed || isModalOpen()) return;
-                    
-                    eyeClickCount++;
-                    annoyBlob();
-                });
-                
-                // Also add touchstart for mobile
-                eye.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (isBusy || isAnnoyed || isModalOpen()) return;
-                    
-                    eyeClickCount++;
-                    annoyBlob();
-                }, { passive: false });
-            });
-
-            // Body click event (tickle) - FIXED
-            blob.addEventListener('click', function(e) {
-                if (isBusy || isTickled || isModalOpen()) return;
-                
-                // Check if click was on eyes (already handled)
-                if (e.target.closest('.eye')) return;
-                
-                tickleBlob();
-            });
-            
-            // Also add touchstart for mobile
-            blob.addEventListener('touchstart', function(e) {
-                if (isBusy || isTickled || isModalOpen()) return;
-                
-                // Check if touch was on eyes (already handled)
-                if (e.target.closest('.eye')) return;
-                
-                tickleBlob();
-            }, { passive: false });
-        }
-
-        // Annoy Response - FIXED with proper animation
-        function annoyBlob() {
-            isAnnoyed = true;
-            isBusy = true;
-
-            // Force reflow and apply classes
-            eyes.forEach(eye => {
-                eye.style.height = '';
-                eye.offsetHeight; // Force reflow
-                eye.classList.add('squint');
-            });
-            
-            mouth.classList.add('annoyed');
-            blob.classList.add('annoyed');
-
-            bubble.textContent = annoyedResponses[Math.floor(Math.random() * annoyedResponses.length)];
-            bubble.classList.add('annoyed');
-            bubble.classList.add('show');
-
-            setTimeout(() => {
-                eyes.forEach(eye => {
-                    eye.classList.remove('squint');
-                    eye.style.height = '';
-                });
-                mouth.classList.remove('annoyed');
-                blob.classList.remove('annoyed');
-                bubble.classList.remove('annoyed');
-                isAnnoyed = false;
-                isBusy = false;
-
-                setTimeout(() => {
-                    bubble.textContent = "Ладно, прощаю...";
-                    setTimeout(() => {
-                        bubble.textContent = "Но больше не надо!";
-                        saveGame(false);
-                    }, 2000);
-                }, 500);
-            }, 1500);
-        }
-
-        // Tickle Response - FIXED with proper animation
-        function tickleBlob() {
-            isTickled = true;
-            isBusy = true;
-            tickleCount++;
-            updateDisplay();
-
-            // Force reflow and apply classes
-            blob.style.animation = '';
-            blob.offsetHeight; // Force reflow
-            blob.classList.add('tickled');
-            
-            mouth.classList.add('laughing');
-
-            bubble.textContent = tickleResponses[Math.floor(Math.random() * tickleResponses.length)];
-            bubble.classList.add('laughing');
-            bubble.classList.add('show');
-
-            const tickleXp = 5;
-            const rect = blob.getBoundingClientRect();
-            addXp(tickleXp, rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-            setTimeout(() => {
-                blob.classList.remove('tickled');
-                blob.style.animation = '';
-                mouth.classList.remove('laughing');
-                bubble.classList.remove('laughing');
-                isTickled = false;
-                isBusy = false;
-
-                setTimeout(() => {
-                    bubble.textContent = "Было весело! +5 XP";
-                    setTimeout(() => {
-                        bubble.textContent = "Пощекочи ещё!";
-                        saveGame(false);
-                    }, 2000);
-                }, 500);
-            }, 2000);
-        }
-
-        // Render Fridge Items
-        function renderFridgeItems() {
-            foodItemsContainer.innerHTML = foodData.map(item => `
-                <div class="fridge-item ${item.id === selectedFood.id ? 'selected' : ''}" data-id="${item.id}" data-type="food">
-                    <img src="${item.img}" alt="${item.name}">
-                    <div class="fridge-item-name">${item.name}</div>
-                    <div class="fridge-item-xp">+${item.xp} XP</div>
-                </div>
-            `).join('');
-
-            drinkItemsContainer.innerHTML = drinkData.map(item => `
-                <div class="fridge-item ${item.id === selectedDrink.id ? 'selected' : ''}" data-id="${item.id}" data-type="drink">
-                    <img src="${item.img}" alt="${item.name}">
-                    <div class="fridge-item-name">${item.name}</div>
-                    <div class="fridge-item-xp">+${item.xp} XP</div>
-                </div>
-            `).join('');
-
-            document.querySelectorAll('.fridge-item').forEach(item => {
-                item.addEventListener('click', () => selectItem(item));
-            });
-        }
-
-        // Select Item from Fridge
-        function selectItem(element) {
-            const id = element.dataset.id;
-            const type = element.dataset.type;
-
-            if (type === 'food') {
-                selectedFood = foodData.find(f => f.id === id);
-                foodImg.src = selectedFood.img;
-                foodName.textContent = selectedFood.name;
-                foodXp.textContent = `+${selectedFood.xp} XP`;
-            } else {
-                selectedDrink = drinkData.find(d => d.id === id);
-                drinkImg.src = selectedDrink.img;
-                drinkName.textContent = selectedDrink.name;
-                drinkXp.textContent = `+${selectedDrink.xp} XP`;
-            }
-
-            renderFridgeItems();
-            saveGame(false);
-        }
-
-        // Render Achievements
-        function renderAchievements() {
-            const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
-            
-            achievementsGrid.innerHTML = achievementsData.map(ach => {
-                const unlocked = unlockedAchievements.includes(ach.id);
-                return `
-                    <div class="achievement-card ${unlocked ? 'unlocked' : ''}">
-                        <div class="achievement-icon">${unlocked ? ach.icon : '🔒'}</div>
-                        <div class="achievement-info">
-                            <div class="achievement-name">${unlocked ? ach.name : '???'}</div>
-                            <div class="achievement-desc">${unlocked ? ach.desc : 'Продолжайте играть...'}</div>
-                            <div class="achievement-progress">${unlocked ? '✓ Получено!' : 'Заблокировано'}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            achievementCountEl.textContent = `${unlockedAchievements.length}/${achievementsData.length}`;
-        }
-
-        // Check Achievements
-        function checkAchievements() {
-            const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
-            let newUnlock = false;
-
-            achievementsData.forEach(ach => {
-                if (!unlockedAchievements.includes(ach.id) && ach.condition(state)) {
-                    unlockedAchievements.push(ach.id);
-                    showAchievementNotification(ach);
-                    newUnlock = true;
-                }
-            });
-
-            if (newUnlock) {
-                renderAchievements();
-                updateDisplay();
-                saveGame(false);
-            }
-        }
-
-        // Show Achievement Notification
-        function showAchievementNotification(ach) {
-            achievementNotificationName.textContent = ach.name;
-            achievementNotification.classList.add('show');
-
-            setTimeout(() => {
-                achievementNotification.classList.remove('show');
-            }, 4000);
-        }
-
-        // Update Display
-        function updateDisplay() {
-            const percentage = (currentXp / xpToNextLevel) * 100;
-            xpFill.style.width = percentage + '%';
-            xpText.textContent = `Уровень ${level} • ${currentXp}/${xpToNextLevel} XP`;
-            foodCountEl.textContent = foodCount;
-            drinkCountEl.textContent = drinkCount;
-            tickleCountEl.textContent = tickleCount;
-            gamesWonEl.textContent = gamesWon;
-            totalXpEl.textContent = totalXp;
-            achievementCountEl.textContent = `${unlockedAchievements.length}/${achievementsData.length}`;
-        }
-
-        // Eye Tracking
-        document.addEventListener('mousemove', (e) => {
-            if (isBusy || isAnnoyed || isTickled || isModalOpen()) return;
-
-            const rect = blobContainer.getBoundingClientRect();
-            const blobCenterX = rect.left + rect.width / 2;
-            const blobCenterY = rect.top + rect.height / 2;
-
-            const angle = Math.atan2(e.clientY - blobCenterY, e.clientX - blobCenterX);
-            const distance = Math.min(12, Math.hypot(e.clientX - blobCenterX, e.clientY - blobCenterY) / 15);
-
-            const x = Math.cos(angle) * distance;
-            const y = Math.sin(angle) * distance;
-
-            pupils.forEach(pupil => {
-                pupil.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-            });
-        });
-
-        // Blinking
-        setInterval(() => {
-            if (!isBusy && !isAnnoyed && !isTickled && !isModalOpen()) {
-                eyes.forEach(eye => {
-                    eye.style.animation = 'blink 0.2s linear';
-                    setTimeout(() => eye.style.animation = '', 200);
-                });
-            }
-        }, 4000);
-
-        // XP System
-        function addXp(amount, x, y) {
-            currentXp += amount;
-            totalXp += amount;
-            showXpGain(amount, x, y);
-            updateDisplay();
-            checkAchievements();
-
-            if (currentXp >= xpToNextLevel) {
-                levelUp();
-            }
-        }
-
-        function levelUp() {
-            level++;
-            currentXp = currentXp - xpToNextLevel;
-            xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
-            levelBadge.textContent = level;
-            levelBadge.style.animation = 'none';
-            levelBadge.offsetHeight;
-            levelBadge.style.animation = 'levelPulse 0.5s ease';
-            bubble.textContent = `Уровень ${level}! Ура!`;
-            showCelebration();
-            updateDisplay();
-            checkAchievements();
-            saveGame(false);
-        }
-
-        function showXpGain(amount, x, y) {
-            const xpGain = document.createElement('div');
-            xpGain.className = 'xp-gain';
-            xpGain.textContent = `+${amount} XP`;
-            xpGain.style.left = x + 'px';
-            xpGain.style.top = y + 'px';
-            document.body.appendChild(xpGain);
-            setTimeout(() => xpGain.remove(), 1000);
-        }
-
-        function showCelebration() {
-            celebration.classList.add('active');
-            celebration.innerHTML = '';
-            const colors = ['#ff5252', '#ff4081', '#e040fb', '#7c4dff', '#536dfe', '#448aff', '#40c4ff', '#18ffff', '#64ffda', '#69f0ae', '#b2ff59', '#eeff41', '#ffff00', '#ffd740', '#ffab40', '#ff6e40'];
-            
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                celebration.appendChild(confetti);
-            }
-            
-            setTimeout(() => {
-                celebration.classList.remove('active');
-                celebration.innerHTML = '';
-            }, 3000);
-        }
-
-        // Drag and Drop
-        function startDrag(e, type) {
-            if (isBusy || isAnnoyed || isTickled || isModalOpen()) return;
-            e.preventDefault();
-
-            dragType = type;
-            const itemData = type === 'food' ? selectedFood : selectedDrink;
-            const rect = (type === 'food' ? foodItem : drinkItem).getBoundingClientRect();
-
-            dragClone = document.createElement('div');
-            dragClone.className = 'drag-clone';
-            dragClone.innerHTML = `
-                <img src="${itemData.img}" alt="${itemData.name}">
-                <div class="item-label">${itemData.name}<br>+${itemData.xp} XP</div>
-            `;
-            document.body.appendChild(dragClone);
-
-            moveDragClone(e);
-            (type === 'food' ? foodItem : drinkItem).style.opacity = '0.3';
-        }
-
-        function moveDragClone(e) {
-            if (!dragClone) return;
-            e.preventDefault();
-
-            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-
-            dragClone.style.left = (clientX - 50) + 'px';
-            dragClone.style.top = (clientY - 50) + 'px';
-        }
-
-        function endDrag(e) {
-            if (!dragClone) return;
-
-            const cloneRect = dragClone.getBoundingClientRect();
-            const mouthRect = mouth.getBoundingClientRect();
-
-            const cloneCenterX = cloneRect.left + cloneRect.width / 2;
-            const cloneCenterY = cloneRect.top + cloneRect.height / 2;
-            const mouthCenterX = mouthRect.left + mouthRect.width / 2;
-            const mouthCenterY = mouthRect.top + mouthRect.height / 2;
-
-            const distance = Math.hypot(cloneCenterX - mouthCenterX, cloneCenterY - mouthCenterY);
-
-            if (distance < 100) {
-                interact(dragType, cloneCenterX, cloneCenterY);
-            }
-
-            dragClone.remove();
-            dragClone = null;
-            foodItem.style.opacity = '1';
-            drinkItem.style.opacity = '1';
-            dragType = null;
-        }
-
-        function interact(type, x, y) {
-            isBusy = true;
-            const itemData = type === 'food' ? selectedFood : selectedDrink;
-
-            if (type === 'food') {
-                blob.classList.add('eating');
-                mouth.classList.add('eating');
-                bubble.textContent = "Ням-ням-ням!";
-                foodCount++;
-            } else {
-                blob.classList.add('drinking');
-                mouth.classList.add('drinking');
-                bubble.textContent = "Ах, освежает!";
-                drinkCount++;
-            }
-
-            updateDisplay();
-            checkAchievements();
-
-            setTimeout(() => {
-                blob.classList.remove('eating', 'drinking');
-                mouth.classList.remove('eating', 'drinking');
-                bubble.textContent = `Спасибо! +${itemData.xp} XP`;
-                addXp(itemData.xp, x, y);
-
-                setTimeout(() => {
-                    isBusy = false;
-                    const messages = ["Ещё хочу...", "Было вкусно!", "Я счастлив!", "Давай ещё!", "Ты лучший!"];
-                    bubble.textContent = messages[Math.floor(Math.random() * messages.length)];
-                    saveGame(false);
-                }, 1500);
-            }, 1500);
-        }
-
-        // Tic Tac Toe Functions
-        function initTicTacToe() {
-            tttCells.forEach(cell => {
-                cell.addEventListener('click', () => handleTicTacToeClick(cell));
-            });
-            tttResetBtn.addEventListener('click', resetTicTacToe);
-        }
-
-        function handleTicTacToeClick(cell) {
-            const index = parseInt(cell.dataset.index);
-            
-            if (!tttGameActive || !tttPlayerTurn || tttBoard[index] !== '') return;
-            
-            tttBoard[index] = 'X';
-            cell.textContent = 'X';
-            cell.classList.add('taken', 'x');
-            
-            if (checkTicTacToeWin('X')) {
-                endTicTacToeGame('player');
-                return;
-            }
-            
-            if (tttBoard.every(cell => cell !== '')) {
-                endTicTacToeGame('draw');
-                return;
-            }
-            
-            tttPlayerTurn = false;
-            tttStatus.textContent = 'Блоб думает...';
-            
-            setTimeout(() => {
-                blobMakeMove();
-            }, 800);
-        }
-
-        function blobMakeMove() {
-            if (!tttGameActive) return;
-            
-            let move = findBestMove('O');
-            if (move === -1) move = findBestMove('X');
-            if (move === -1) {
-                const emptyCells = tttBoard.map((cell, i) => cell === '' ? i : null).filter(i => i !== null);
-                move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            }
-            
-            if (move !== -1) {
-                tttBoard[move] = 'O';
-                const cell = document.querySelector(`.tic-tac-toe-cell[data-index="${move}"]`);
-                cell.textContent = 'O';
-                cell.classList.add('taken', 'o');
-                
-                if (checkTicTacToeWin('O')) {
-                    endTicTacToeGame('blob');
-                    return;
-                }
-                
-                if (tttBoard.every(cell => cell !== '')) {
-                    endTicTacToeGame('draw');
-                    return;
-                }
-            }
-            
-            tttPlayerTurn = true;
-            tttStatus.textContent = 'Твой ход! (X)';
-        }
-
-        function findBestMove(player) {
-            const winPatterns = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-            
-            for (const pattern of winPatterns) {
-                const [a, b, c] = pattern;
-                const values = [tttBoard[a], tttBoard[b], tttBoard[c]];
-                const playerCount = values.filter(v => v === player).length;
-                const emptyCount = values.filter(v => v === '').length;
-                
-                if (playerCount === 2 && emptyCount === 1) {
-                    if (tttBoard[a] === '') return a;
-                    if (tttBoard[b] === '') return b;
-                    if (tttBoard[c] === '') return c;
-                }
-            }
-            
-            return -1;
-        }
-
-        function checkTicTacToeWin(player) {
-            const winPatterns = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-            
-            return winPatterns.some(pattern => {
-                return pattern.every(index => tttBoard[index] === player);
-            });
-        }
-
-        function endTicTacToeGame(result) {
-            tttGameActive = false;
-            
-            if (result === 'player') {
-                tttPlayerScore++;
-                tttStatus.textContent = 'Ты победил! +20 XP';
-                bubble.textContent = 'Хорошая игра...';
-                bubble.classList.add('loser');
-                bubble.classList.add('show');
-                mouth.classList.add('loser');
-                addXp(20, blobContainer.getBoundingClientRect().left + 150, blobContainer.getBoundingClientRect().top);
-            } else if (result === 'blob') {
-                tttBlobScore++;
-                gamesWon++;
-                tttStatus.textContent = 'Блоб победил! +10 XP';
-                bubble.textContent = 'Я победил! Ура!';
-                bubble.classList.add('winner');
-                bubble.classList.add('show');
-                mouth.classList.add('winner');
-                eyes.forEach(eye => eye.classList.add('winner'));
-                addXp(10, blobContainer.getBoundingClientRect().left + 150, blobContainer.getBoundingClientRect().top);
-            } else {
-                tttDraws++;
-                tttStatus.textContent = 'Ничья! +5 XP';
-                bubble.textContent = 'Ничья! Давай ещё!';
-                addXp(5, blobContainer.getBoundingClientRect().left + 150, blobContainer.getBoundingClientRect().top);
-            }
-            
-            updateDisplay();
-            checkAchievements();
-            
-            const winPatterns = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-            
-            if (result !== 'draw') {
-                const winner = result === 'player' ? 'X' : 'O';
-                winPatterns.forEach(pattern => {
-                    if (pattern.every(index => tttBoard[index] === winner)) {
-                        pattern.forEach(index => {
-                            document.querySelector(`.tic-tac-toe-cell[data-index="${index}"]`).classList.add('winner');
-                        });
-                    }
-                });
-            }
-            
-            tttPlayerScoreEl.textContent = tttPlayerScore;
-            tttBlobScoreEl.textContent = tttBlobScore;
-            tttDrawsEl.textContent = tttDraws;
-            saveGame(false);
-            
-            setTimeout(() => {
-                bubble.classList.remove('winner', 'loser');
-                mouth.classList.remove('winner', 'loser');
-                eyes.forEach(eye => eye.classList.remove('winner'));
-            }, 3000);
-        }
-
-        function resetTicTacToe() {
-            tttBoard = ['', '', '', '', '', '', '', '', ''];
-            tttPlayerTurn = true;
-            tttGameActive = true;
-            tttStatus.textContent = 'Твой ход! (X)';
-            
-            tttCells.forEach(cell => {
-                cell.textContent = '';
-                cell.classList.remove('taken', 'x', 'o', 'winner');
-            });
-        }
-
-        // Event Listeners
-        foodItem.addEventListener('mousedown', (e) => startDrag(e, 'food'));
-        foodItem.addEventListener('touchstart', (e) => startDrag(e, 'food'), { passive: false });
-
-        drinkItem.addEventListener('mousedown', (e) => startDrag(e, 'drink'));
-        drinkItem.addEventListener('touchstart', (e) => startDrag(e, 'drink'), { passive: false });
-
-        document.addEventListener('mousemove', moveDragClone);
-        document.addEventListener('touchmove', moveDragClone, { passive: false });
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('touchend', endDrag);
-
-        // Modals - track state
-        function openModal(modal) {
-            modalOpen = true;
-            modal.classList.add('active');
-        }
-
-        function closeModal(modal) {
-            modalOpen = false;
-            modal.classList.remove('active');
-        }
-
-        fridgeBtn.addEventListener('click', () => openModal(fridgeModal));
-        fridgeClose.addEventListener('click', () => closeModal(fridgeModal));
-        fridgeModal.addEventListener('click', (e) => { if (e.target === fridgeModal) closeModal(fridgeModal); });
-
-        achievementsBtn.addEventListener('click', () => { renderAchievements(); openModal(achievementsModal); });
-        achievementsClose.addEventListener('click', () => closeModal(achievementsModal));
-        achievementsModal.addEventListener('click', (e) => { if (e.target === achievementsModal) closeModal(achievementsModal); });
-
-        minigamesBtn.addEventListener('click', () => { openModal(minigamesModal); blob.classList.add('playing'); });
-        minigamesClose.addEventListener('click', () => { closeModal(minigamesModal); blob.classList.remove('playing'); });
-        minigamesModal.addEventListener('click', (e) => { if (e.target === minigamesModal) { closeModal(minigamesModal); blob.classList.remove('playing'); } });
-
-        settingsBtn.addEventListener('click', () => {
-            playerIdEl.textContent = playerId;
-            openModal(settingsModal);
-        });
-        settingsClose.addEventListener('click', () => closeModal(settingsModal));
-        settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeModal(settingsModal); });
-
-        // Save System Buttons
-        saveBtn.addEventListener('click', () => saveGame(true));
-        loadBtn.addEventListener('click', () => { loadGame(); updateDisplay(); renderFridgeItems(); renderAchievements(); resetTicTacToe(); });
-        resetBtn.addEventListener('click', resetGame);
-        exportBtn.addEventListener('click', exportGame);
-        importBtn.addEventListener('click', importGame);
-        toggleAutoSaveBtn.addEventListener('click', () => {
-            autoSaveEnabled = !autoSaveEnabled;
-            toggleAutoSaveBtn.textContent = autoSaveEnabled ? 'Отключить автосохранение' : 'Включить автосохранение';
-            setupAutoSave();
-            saveGame(false);
-        });
-
-        // Welcome Modal
-        welcomeStartBtn.addEventListener('click', () => {
-            closeModal(welcomeModal);
-            bubble.textContent = "Давай дружить!";
-            bubble.classList.add('show');
-        });
-
-        // Initialize game
-        init();
-
-    </script>
+<div class="scene">
+<!-- XP Bar -->
+<div class="xp-container">
+<div class="xp-bar-bg">
+<div class="xp-bar-fill" id="xpFill"></div>
+<div class="xp-text" id="xpText">Уровень 1 • 0/100 XP</div>
+</div>
+<div class="level-badge" id="levelBadge">1</div>
+</div>
+<!-- Online Indicator -->
+<div class="online-indicator">
+<span class="online-dot"></span>
+<span id="userNickname" class="user-nickname-display">Гость</span>
+<span style="color: #90a4ae;">|</span>
+<span id="onlineCount">🌐 0 онлайн</span>
+</div>
+<!-- Auto Save Indicator -->
+<div class="auto-save-indicator" id="autoSaveIndicator">Автосохранение</div>
+<!-- Stats Panel -->
+<div class="stats-panel">
+<div class="stat-item">
+<span class="stat-icon">🍗</span>
+<span class="stat-value" id="foodCount">0</span>
+</div>
+<div class="stat-item">
+<span class="stat-icon">💧</span>
+<span class="stat-value" id="drinkCount">0</span>
+</div>
+<div class="stat-item">
+<span class="stat-icon">👆</span>
+<span class="stat-value" id="tickleCount">0</span>
+</div>
+<div class="stat-item">
+<span class="stat-icon">🎮</span>
+<span class="stat-value" id="gamesWon">0</span>
+</div>
+<div class="stat-item">
+<span class="stat-icon">⭐</span>
+<span class="stat-value" id="totalXp">0</span>
+</div>
+</div>
+<!-- The Character -->
+<div class="blob-container" id="blobContainer">
+<div class="bubble" id="bubble">Привет!</div>
+<div class="blob" id="blob">
+<div class="face">
+<div class="eyes">
+<div class="eye" id="eyeLeft"><div class="pupil"></div></div>
+<div class="eye" id="eyeRight"><div class="pupil"></div></div>
+</div>
+<div class="mouth" id="mouth">
+<div class="teeth"></div>
+<div class="tongue"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Draggable Items -->
+<div class="items-container">
+<div class="draggable-item" id="foodItem" data-type="food">
+<img id="foodImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png" alt="Food">
+<div class="item-label">
+<span id="foodName">Курица</span>
+<div class="item-xp" id="foodXp">+25 XP</div>
+</div>
+</div>
+<div class="draggable-item" id="drinkItem" data-type="drink">
+<img id="drinkImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png" alt="Drink">
+<div class="item-label">
+<span id="drinkName">Вода</span>
+<div class="item-xp" id="drinkXp">+15 XP</div>
+</div>
+</div>
+</div>
+<!-- Menu Buttons -->
+<div class="menu-buttons">
+<div class="menu-btn fridge-btn" id="fridgeBtn">
+<span class="menu-btn-icon">🧊</span>
+<span class="menu-btn-label">Еда</span>
+<div class="fridge-handle"></div>
+</div>
+<div class="menu-btn" id="minigamesBtn">
+<span class="menu-btn-icon">🎮</span>
+<span class="menu-btn-label">Игры</span>
+</div>
+<div class="menu-btn" id="leaderboardBtn">
+<span class="menu-btn-icon">🏆</span>
+<span class="menu-btn-label">Топ-10</span>
+</div>
+<div class="menu-btn" id="achievementsBtn">
+<span class="menu-btn-icon">🏅</span>
+<span class="menu-btn-label">Ачивки</span>
+</div>
+<div class="menu-btn" id="settingsBtn">
+<span class="menu-btn-icon">⚙️</span>
+<span class="menu-btn-label">Настройки</span>
+</div>
+</div>
+<div class="hint">Перетащи еду или воду в рот!</div>
+<!-- Level Up Celebration -->
+<div class="levelup-celebration" id="celebration"></div>
+<!-- Achievement Notification -->
+<div class="achievement-notification" id="achievementNotification">
+<div class="achievement-notification-icon">🏆</div>
+<div class="achievement-notification-text">
+<div class="achievement-notification-title">Новая ачивка!</div>
+<div class="achievement-notification-name" id="achievementNotificationName">Название</div>
+</div>
+</div>
+<!-- Fridge Modal -->
+<div class="modal" id="fridgeModal">
+<div class="modal-content">
+<div class="modal-header">
+<span class="modal-title">🧊 Холодильник</span>
+<button class="modal-close" id="fridgeClose">×</button>
+</div>
+<div class="fridge-section">
+<div class="fridge-section-title">🍗 Еда</div>
+<div class="fridge-items" id="foodItems"></div>
+</div>
+<div class="fridge-section">
+<div class="fridge-section-title">💧 Напитки</div>
+<div class="fridge-items" id="drinkItems"></div>
+</div>
+</div>
+</div>
+<!-- Achievements Modal -->
+<div class="modal" id="achievementsModal">
+<div class="modal-content">
+<div class="modal-header">
+<span class="modal-title">🏅 Достижения</span>
+<button class="modal-close" id="achievementsClose">×</button>
+</div>
+<div class="achievements-grid" id="achievementsGrid"></div>
+</div>
+</div>
+<!-- Leaderboard Modal -->
+<div class="modal" id="leaderboardModal">
+<div class="modal-content">
+<div class="modal-header">
+<span class="modal-title">🏆 Топ-10 Игроков</span>
+<button class="modal-close" id="leaderboardClose">×</button>
+</div>
+<div class="settings-section">
+<ul class="leaderboard-list" id="leaderboardList"></ul>
+</div>
+<div class="settings-buttons">
+<button class="btn-secondary" id="refreshLeaderboardBtn">🔄 Обновить</button>
+<button class="btn-primary" id="submitToLeaderboardBtn">📤 Отправить</button>
+</div>
+</div>
+</div>
+<!-- Mini Games Modal -->
+<div class="modal" id="minigamesModal">
+<div class="modal-content">
+<div class="modal-header">
+<span class="modal-title">🎮 Мини-игры</span>
+<button class="modal-close" id="minigamesClose">×</button>
+</div>
+<div class="minigame-tabs">
+<button class="minigame-tab active" data-game="tictactoe">Крестики-Нолики</button>
+<button class="minigame-tab" data-game="obstacle">Уклоняйся</button>
+</div>
+<!-- Tic Tac Toe Game -->
+<div id="tictactoeGame" class="game-content active">
+<div class="tic-tac-toe-info">
+<div class="tic-tac-toe-status" id="tttStatus">Твой ход! (X)</div>
+<div class="tic-tac-toe-score">
+<div>Ты: <span id="tttPlayerScore">0</span></div>
+<div>Блоб: <span id="tttBlobScore">0</span></div>
+<div>Ничьи: <span id="tttDraws">0</span></div>
+</div>
+</div>
+<div class="tic-tac-toe-board" id="tttBoard"></div>
+<div class="settings-buttons">
+<button class="btn-primary" id="tttResetBtn">Новая игра</button>
+</div>
+</div>
+<!-- Obstacle Game -->
+<div id="obstacleGame" class="game-content">
+<div class="obstacle-game-info">
+<div class="obstacle-game-status" id="obstacleStatus">Перетаскивай блоба! Избегай красных блоков!</div>
+<div class="obstacle-game-score">
+<div>Счёт: <span id="obstacleScore">0</span></div>
+<div>Рекорд: <span id="obstacleBest">0</span></div>
+</div>
+</div>
+<div class="obstacle-game-container" id="obstacleContainer">
+<div class="obstacle-player" id="obstaclePlayer">
+<div class="obstacle-player-face">
+<div class="obstacle-player-eyes">
+<div class="obstacle-player-eye"></div>
+<div class="obstacle-player-eye"></div>
+</div>
+<div class="obstacle-player-mouth"></div>
+</div>
+</div>
+</div>
+<div class="settings-buttons">
+<button class="btn-primary" id="obstacleStartBtn">▶️ Старт</button>
+<button class="btn-secondary" id="obstacleResetBtn">🔄 Сброс</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Settings Modal -->
+<div class="modal" id="settingsModal">
+<div class="modal-content">
+<div class="modal-header">
+<span class="modal-title">⚙️ Настройки</span>
+<button class="modal-close" id="settingsClose">×</button>
+</div>
+<div class="settings-section">
+<div class="settings-title">👤 Профиль</div>
+<input type="text" class="input-field" id="nicknameInput" placeholder="Ваш ник" maxlength="20">
+<div class="settings-buttons">
+<button class="btn-primary" id="saveNicknameBtn">Сохранить ник</button>
+</div>
+</div>
+<div class="settings-section">
+<div class="settings-title">💾 Сохранение</div>
+<div class="player-id-display">
+<div class="player-id-label">ID:</div>
+<div class="player-id-value" id="playerId">Загрузка...</div>
+</div>
+<div class="settings-buttons">
+<button class="btn-primary" id="saveBtn">Сохранить</button>
+<button class="btn-secondary" id="loadBtn">Загрузить</button>
+<button class="btn-danger" id="resetBtn">Сброс</button>
+</div>
+<div class="save-status" id="saveStatus"></div>
+</div>
+<div class="settings-section">
+<div class="settings-title">📤 Экспорт / Импорт</div>
+<div class="export-import-area">
+<textarea id="exportImportData" placeholder="Код сохранения..."></textarea>
+<div class="settings-buttons">
+<button class="btn-secondary" id="exportBtn">Экспорт</button>
+<button class="btn-primary" id="importBtn">Импорт</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Welcome Modal -->
+<div class="modal" id="welcomeModal">
+<div class="modal-content">
+<div class="welcome-content">
+<h2>👋 Добро пожаловать!</h2>
+<p>Кормите, поите, щекочите блоба!</p>
+<p><strong>👆 Живот</strong> = щекотка | <strong>👁️ Глаз</strong> = ой!</p>
+<div class="welcome-buttons">
+<button class="btn-primary" id="welcomeStartBtn">Начать!</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+// ============================================
+// FIREBASE CONFIG
+// ============================================
+const firebaseConfig = {
+apiKey: "AIzaSyD-py6cHpsfZCOOHl1ouY4cXJGepPl0OT4",
+authDomain: "bloblob-82656.firebaseapp.com",
+projectId: "bloblob-82656",
+storageBucket: "bloblob-82656.firebasestorage.app",
+messagingSenderId: "196103290442",
+appId: "1:196103290442:web:a8a1a8dee3880416dfb0b3",
+measurementId: "G-TX10GYXF4Z"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+// ============================================
+
+// Data
+const foodData = [
+{ id: 'chicken', name: 'Курица', xp: 25, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png' },
+{ id: 'burger', name: 'Бургер', xp: 35, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/134fe074b-69dc-4957-a33a-4f0751c46d5e.png' },
+{ id: 'pizza', name: 'Пицца', xp: 30, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1e0797689-ad14-4043-8359-49d8981c4f2c.png' },
+{ id: 'apple', name: 'Яблоко', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1571d8010-90fa-4d26-8844-cd052898cfd6.png' }
+];
+const drinkData = [
+{ id: 'water', name: 'Вода', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png' },
+{ id: 'juice', name: 'Сок', xp: 20, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/122a8fae9-253e-4b9e-a8b1-38a8fd5a541c.png' },
+{ id: 'soda', name: 'Газировка', xp: 18, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/184eb8fcd-63bc-4bd0-bbc2-55382b073aa6.png' },
+{ id: 'milk', name: 'Молоко', xp: 22, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1c3d69fed-7c01-47f8-acbd-b8dc39f72196.png' }
+];
+const achievementsData = [
+{ id: 'first_feed', name: 'Первый обед', desc: 'Покормите впервые', icon: '🍗', condition: s => s.foodCount >= 1 },
+{ id: 'first_drink', name: 'Первый глоток', desc: 'Напоите впервые', icon: '💧', condition: s => s.drinkCount >= 1 },
+{ id: 'first_tickle', name: 'Щекотка!', desc: 'Пощекочите впервые', icon: '😂', condition: s => s.tickleCount >= 1 },
+{ id: 'first_eye', name: 'Не трогай!', desc: 'Нажмите на глаз', icon: '👁️', condition: s => s.eyeClickCount >= 1 },
+{ id: 'feed_5', name: 'Обжора', desc: 'Покормите 5 раз', icon: '🍽️', condition: s => s.foodCount >= 5 },
+{ id: 'feed_10', name: 'Гурман', desc: 'Покормите 10 раз', icon: '👨‍🍳', condition: s => s.foodCount >= 10 },
+{ id: 'tickle_5', name: 'Щекотун', desc: 'Пощекочите 5 раз', icon: '🤣', condition: s => s.tickleCount >= 5 },
+{ id: 'level_5', name: 'Новичок', desc: '5 уровень', icon: '⭐', condition: s => s.level >= 5 },
+{ id: 'xp_500', name: 'Коллекционер', desc: '500 XP', icon: '💎', condition: s => s.totalXp >= 500 },
+{ id: 'xp_1000', name: 'Магнат', desc: '1000 XP', icon: '💰', condition: s => s.totalXp >= 1000 }
+];
+const annoyedResponses = ["Эй! Не надо!", "Бля, ты чего?!", "Отстань!", "Мне неприятно!", "Ай!"];
+const tickleResponses = ["Ха-ха-ха!", "Ой! Прекрати!", "Щекотно!", "Ахаха!", "Хи-хи!"];
+
+// State
+let level = 1, currentXp = 0, xpToNextLevel = 100, totalXp = 0;
+let foodCount = 0, drinkCount = 0, tickleCount = 0, eyeClickCount = 0, gamesWon = 0;
+let isBusy = false, isAnnoyed = false, isTickled = false;
+let selectedFood = foodData[0], selectedDrink = drinkData[0];
+let unlockedAchievements = [];
+let playerId = '', userNickname = 'Гость';
+let autoSaveEnabled = true, autoSaveInterval = null;
+let dragClone = null, dragType = null;
+let tttBoard = [], tttPlayerTurn = true, tttGameActive = true;
+let tttPlayerScore = 0, tttBlobScore = 0, tttDraws = 0;
+let modalOpen = false;
+
+// Obstacle Game State
+let obstacleGameActive = false;
+let obstacleScore = 0;
+let obstacleBest = 0;
+let obstaclePlayerX = 170;
+let obstaclePlayerY = 170;
+let obstacles = [];
+let obstacleInterval = null;
+let obstacleSpeed = 2;
+let obstacleSpeedIncrease = 0.3;
+
+const elements = {};
+
+function cacheElements() {
+elements.blob = document.getElementById('blob');
+elements.blobContainer = document.getElementById('blobContainer');
+elements.bubble = document.getElementById('bubble');
+elements.mouth = document.getElementById('mouth');
+elements.xpFill = document.getElementById('xpFill');
+elements.xpText = document.getElementById('xpText');
+elements.levelBadge = document.getElementById('levelBadge');
+elements.foodCountEl = document.getElementById('foodCount');
+elements.drinkCountEl = document.getElementById('drinkCount');
+elements.tickleCountEl = document.getElementById('tickleCount');
+elements.gamesWonEl = document.getElementById('gamesWon');
+elements.totalXpEl = document.getElementById('totalXp');
+elements.celebration = document.getElementById('celebration');
+elements.achievementNotification = document.getElementById('achievementNotification');
+elements.achievementNotificationName = document.getElementById('achievementNotificationName');
+elements.autoSaveIndicator = document.getElementById('autoSaveIndicator');
+elements.userNicknameEl = document.getElementById('userNickname');
+elements.onlineCountEl = document.getElementById('onlineCount');
+elements.playerIdEl = document.getElementById('playerId');
+elements.saveStatus = document.getElementById('saveStatus');
+elements.nicknameInput = document.getElementById('nicknameInput');
+elements.exportImportData = document.getElementById('exportImportData');
+elements.leaderboardList = document.getElementById('leaderboardList');
+elements.leaderboardModal = document.getElementById('leaderboardModal');
+elements.leaderboardBtn = document.getElementById('leaderboardBtn');
+elements.leaderboardClose = document.getElementById('leaderboardClose');
+elements.refreshLeaderboardBtn = document.getElementById('refreshLeaderboardBtn');
+elements.submitToLeaderboardBtn = document.getElementById('submitToLeaderboardBtn');
+elements.foodImg = document.getElementById('foodImg');
+elements.foodName = document.getElementById('foodName');
+elements.foodXp = document.getElementById('foodXp');
+elements.drinkImg = document.getElementById('drinkImg');
+elements.drinkName = document.getElementById('drinkName');
+elements.drinkXp = document.getElementById('drinkXp');
+elements.foodItems = document.getElementById('foodItems');
+elements.drinkItems = document.getElementById('drinkItems');
+elements.achievementsGrid = document.getElementById('achievementsGrid');
+elements.achievementsModal = document.getElementById('achievementsModal');
+elements.achievementsBtn = document.getElementById('achievementsBtn');
+elements.achievementsClose = document.getElementById('achievementsClose');
+elements.fridgeModal = document.getElementById('fridgeModal');
+elements.fridgeClose = document.getElementById('fridgeClose');
+elements.fridgeBtn = document.getElementById('fridgeBtn');
+elements.minigamesModal = document.getElementById('minigamesModal');
+elements.minigamesClose = document.getElementById('minigamesClose');
+elements.minigamesBtn = document.getElementById('minigamesBtn');
+elements.settingsModal = document.getElementById('settingsModal');
+elements.settingsClose = document.getElementById('settingsClose');
+elements.settingsBtn = document.getElementById('settingsBtn');
+elements.welcomeModal = document.getElementById('welcomeModal');
+elements.welcomeStartBtn = document.getElementById('welcomeStartBtn');
+elements.saveBtn = document.getElementById('saveBtn');
+elements.loadBtn = document.getElementById('loadBtn');
+elements.resetBtn = document.getElementById('resetBtn');
+elements.exportBtn = document.getElementById('exportBtn');
+elements.importBtn = document.getElementById('importBtn');
+elements.saveNicknameBtn = document.getElementById('saveNicknameBtn');
+elements.tttResetBtn = document.getElementById('tttResetBtn');
+elements.tttBoard = document.getElementById('tttBoard');
+elements.tttStatus = document.getElementById('tttStatus');
+elements.tttPlayerScore = document.getElementById('tttPlayerScore');
+elements.tttBlobScore = document.getElementById('tttBlobScore');
+elements.tttDraws = document.getElementById('tttDraws');
+elements.foodItem = document.getElementById('foodItem');
+elements.drinkItem = document.getElementById('drinkItem');
+elements.eyes = document.querySelectorAll('.eye');
+elements.pupils = document.querySelectorAll('.pupil');
+elements.obstacleContainer = document.getElementById('obstacleContainer');
+elements.obstaclePlayer = document.getElementById('obstaclePlayer');
+elements.obstacleStatus = document.getElementById('obstacleStatus');
+elements.obstacleScore = document.getElementById('obstacleScore');
+elements.obstacleBest = document.getElementById('obstacleBest');
+elements.obstacleStartBtn = document.getElementById('obstacleStartBtn');
+elements.obstacleResetBtn = document.getElementById('obstacleResetBtn');
+}
+
+function lsAvailable() {
+try { localStorage.setItem('test', 'test'); localStorage.removeItem('test'); return true; }
+catch { return false; }
+}
+
+function getPlayerId() {
+if (!lsAvailable()) return 'no_storage';
+let ids = JSON.parse(localStorage.getItem('livingBlob_playerIds') || '[]');
+if (ids.length === 0) {
+playerId = 'player_' + Math.random().toString(36).substring(2, 15);
+ids.push(playerId);
+localStorage.setItem('livingBlob_playerIds', JSON.stringify(ids));
+} else {
+playerId = ids[ids.length - 1];
+}
+return playerId;
+}
+
+function getGameState() {
+return { level, currentXp, xpToNextLevel, totalXp, foodCount, drinkCount, tickleCount, eyeClickCount, gamesWon, nickname: userNickname, selectedFoodId: selectedFood.id, selectedDrinkId: selectedDrink.id, unlockedAchievements, tttPlayerScore, tttBlobScore, tttDraws, obstacleBest };
+}
+
+function loadGameState(data) {
+if (!data) return false;
+level = data.level || 1; currentXp = data.currentXp || 0; xpToNextLevel = data.xpToNextLevel || 100;
+totalXp = data.totalXp || 0; foodCount = data.foodCount || 0; drinkCount = data.drinkCount || 0;
+tickleCount = data.tickleCount || 0; eyeClickCount = data.eyeClickCount || 0; gamesWon = data.gamesWon || 0;
+userNickname = data.nickname || 'Гость'; unlockedAchievements = data.unlockedAchievements || [];
+tttPlayerScore = data.tttPlayerScore || 0; tttBlobScore = data.tttBlobScore || 0; tttDraws = data.tttDraws || 0;
+obstacleBest = data.obstacleBest || 0;
+if (data.selectedFoodId) selectedFood = foodData.find(f => f.id === data.selectedFoodId) || foodData[0];
+if (data.selectedDrinkId) selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
+return true;
+}
+
+// === FIREBASE SAVE FUNCTION ===
+function saveGame(showNotif = true) {
+const playerId = getPlayerId();
+const gameState = getGameState();
+
+// Сохраняем локально
+if (lsAvailable()) {
+localStorage.setItem('livingBlob_' + playerId, JSON.stringify(gameState));
+localStorage.setItem('livingBlob_nickname', userNickname);
+}
+
+// Отправляем в Firebase
+db.ref('users/' + playerId).set({
+nickname: userNickname,
+totalXp: totalXp,
+level: level,
+foodCount: foodCount,
+drinkCount: drinkCount,
+tickleCount: tickleCount,
+gamesWon: gamesWon,
+lastSeen: Date.now(),
+gameState: gameState
+}).then(() => {
+if (showNotif) {
+showSaveStatus('Сохранено в облако!', 'success');
+showAutoSaveIndicator('saved');
+}
+updateOnlineStatus();
+}).catch((error) => {
+console.error(error);
+if (showNotif) showSaveStatus('Ошибка сети!', 'error');
+});
+
+return true;
+}
+
+function loadGame() {
+if (!lsAvailable()) { showSaveStatus('LocalStorage недоступен!', 'error'); return false; }
+try {
+const saved = localStorage.getItem('livingBlob_' + playerId);
+if (saved) { loadGameState(JSON.parse(saved)); showSaveStatus('Загружено!', 'success'); return true; }
+return false;
+} catch { showSaveStatus('Ошибка загрузки!', 'error'); return false; }
+}
+
+function showSaveStatus(msg, type) {
+elements.saveStatus.textContent = msg;
+elements.saveStatus.className = 'save-status ' + type;
+setTimeout(() => { elements.saveStatus.className = 'save-status'; }, 3000);
+}
+
+function showAutoSaveIndicator(state) {
+elements.autoSaveIndicator.className = 'auto-save-indicator ' + state;
+setTimeout(() => { if (autoSaveEnabled) elements.autoSaveIndicator.className = 'auto-save-indicator'; }, 2000);
+}
+
+function setupAutoSave() {
+if (autoSaveInterval) clearInterval(autoSaveInterval);
+if (autoSaveEnabled && lsAvailable()) {
+autoSaveInterval = setInterval(() => { showAutoSaveIndicator('saving'); saveGame(false); }, 30000);
+}
+}
+
+// === FIREBASE ONLINE STATUS ===
+function updateOnlineStatus() {
+const playerId = getPlayerId();
+db.ref('users/' + playerId + '/lastSeen').set(Date.now());
+}
+
+// === FIREBASE LEADERBOARD ===
+function getLeaderboard() {
+db.ref('users').orderByChild('totalXp').limitToLast(10).once('value', (snapshot) => {
+const lb = [];
+snapshot.forEach((childSnapshot) => {
+const user = childSnapshot.val();
+const isOnline = (Date.now() - user.lastSeen) < 30000;
+lb.push({
+nickname: user.nickname,
+totalXp: user.totalXp,
+level: user.level,
+foodCount: user.foodCount,
+isOnline: isOnline
+});
+});
+renderLeaderboardUI(lb.reverse());
+});
+}
+
+function renderLeaderboardUI(users) {
+let html = '';
+users.forEach((u, i) => {
+const rank = i + 1;
+const rankClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : 'normal';
+const isCurrent = u.nickname === userNickname;
+const onlineDot = u.isOnline ? '<span style="color:#4caf50; margin-left:5px;">●</span>' : '';
+html += '<li class="leaderboard-item ' + (isCurrent ? 'current-user' : '') + '">' +
+'<div class="leaderboard-rank ' + rankClass + '">' + rank + '</div>' +
+'<div class="leaderboard-info">' +
+'<div class="leaderboard-name">' + u.nickname + (isCurrent ? ' (Вы)' : '') + onlineDot + '</div>' +
+'<div class="leaderboard-stats">Ур.' + u.level + ' 🍗' + u.foodCount + '</div>' +
+'</div>' +
+'<div class="leaderboard-xp">' + u.totalXp + ' XP</div>' +
+'</li>';
+});
+elements.leaderboardList.innerHTML = html;
+const onlineCount = users.filter(u => u.isOnline).length;
+elements.onlineCountEl.textContent = '🌐 ' + onlineCount + ' онлайн';
+}
+
+function openLeaderboardModal() {
+renderLeaderboard();
+modalOpen = true;
+elements.leaderboardModal.classList.add('active');
+}
+
+function closeLeaderboardModal() {
+modalOpen = false;
+elements.leaderboardModal.classList.remove('active');
+}
+
+function updateDisplay() {
+elements.xpFill.style.width = (currentXp / xpToNextLevel * 100) + '%';
+elements.xpText.textContent = 'Уровень ' + level + ' • ' + currentXp + '/' + xpToNextLevel + ' XP';
+elements.foodCountEl.textContent = foodCount;
+elements.drinkCountEl.textContent = drinkCount;
+elements.tickleCountEl.textContent = tickleCount;
+elements.gamesWonEl.textContent = gamesWon;
+elements.totalXpEl.textContent = totalXp;
+}
+
+function renderFridgeItems() {
+elements.foodItems.innerHTML = foodData.map(item =>
+'<div class="fridge-item ' + (item.id === selectedFood.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="food">' +
+'<img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div>' +
+'</div>'
+).join('');
+elements.drinkItems.innerHTML = drinkData.map(item =>
+'<div class="fridge-item ' + (item.id === selectedDrink.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="drink">' +
+'<img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div>' +
+'</div>'
+).join('');
+document.querySelectorAll('.fridge-item').forEach(el => el.addEventListener('click', function() {
+const id = this.dataset.id, type = this.dataset.type;
+if (type === 'food') { selectedFood = foodData.find(f => f.id === id); elements.foodImg.src = selectedFood.img; elements.foodName.textContent = selectedFood.name; elements.foodXp.textContent = '+' + selectedFood.xp + ' XP'; }
+else { selectedDrink = drinkData.find(d => d.id === id); elements.drinkImg.src = selectedDrink.img; elements.drinkName.textContent = selectedDrink.name; elements.drinkXp.textContent = '+' + selectedDrink.xp + ' XP'; }
+renderFridgeItems();
+saveGame(false);
+}));
+}
+
+function renderAchievements() {
+const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
+elements.achievementsGrid.innerHTML = achievementsData.map(ach => {
+const unlocked = unlockedAchievements.includes(ach.id);
+return '<div class="achievement-card ' + (unlocked ? 'unlocked' : '') + '">' +
+'<div class="achievement-icon">' + (unlocked ? ach.icon : '🔒') + '</div>' +
+'<div class="achievement-info">' +
+'<div class="achievement-name">' + (unlocked ? ach.name : '???') + '</div>' +
+'<div class="achievement-desc">' + (unlocked ? ach.desc : 'Играйте...') + '</div>' +
+'<div class="achievement-progress">' + (unlocked ? '✓' : '🔒') + '</div>' +
+'</div></div>';
+}).join('');
+}
+
+function checkAchievements() {
+const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
+let newUnlock = false;
+achievementsData.forEach(ach => {
+if (!unlockedAchievements.includes(ach.id) && ach.condition(state)) {
+unlockedAchievements.push(ach.id);
+elements.achievementNotificationName.textContent = ach.name;
+elements.achievementNotification.classList.add('show');
+setTimeout(() => elements.achievementNotification.classList.remove('show'), 4000);
+newUnlock = true;
+}
+});
+if (newUnlock) { renderAchievements(); updateDisplay(); saveGame(false); }
+}
+
+function annoyBlob() {
+if (isBusy || isAnnoyed || modalOpen) return;
+isAnnoyed = true; isBusy = true; eyeClickCount++;
+elements.eyes.forEach(function(e) {
+e.style.height = '';
+void e.offsetHeight;
+e.classList.add('squint');
+});
+elements.mouth.classList.add('annoyed');
+elements.blob.classList.add('annoyed');
+elements.bubble.textContent = annoyedResponses[Math.floor(Math.random() * annoyedResponses.length)];
+elements.bubble.classList.add('annoyed', 'show');
+setTimeout(function() {
+elements.eyes.forEach(function(e) {
+e.classList.remove('squint');
+e.style.height = '';
+});
+elements.mouth.classList.remove('annoyed');
+elements.blob.classList.remove('annoyed');
+elements.bubble.classList.remove('annoyed');
+isAnnoyed = false; isBusy = false;
+setTimeout(function() {
+elements.bubble.textContent = 'Ладно...';
+setTimeout(function() {
+elements.bubble.textContent = 'Больше не надо!';
+saveGame(false);
+}, 2000);
+}, 500);
+}, 1500);
+}
+
+function tickleBlob() {
+if (isBusy || isTickled || modalOpen) return;
+isTickled = true; isBusy = true; tickleCount++; updateDisplay();
+elements.blob.style.animation = '';
+void elements.blob.offsetHeight;
+elements.blob.classList.add('tickled');
+elements.mouth.classList.add('laughing');
+elements.bubble.textContent = tickleResponses[Math.floor(Math.random() * tickleResponses.length)];
+elements.bubble.classList.add('laughing', 'show');
+const rect = elements.blob.getBoundingClientRect();
+addXp(5, rect.left + rect.width/2, rect.top + rect.height/2);
+setTimeout(function() {
+elements.blob.classList.remove('tickled');
+elements.blob.style.animation = '';
+elements.mouth.classList.remove('laughing');
+elements.bubble.classList.remove('laughing');
+isTickled = false; isBusy = false;
+setTimeout(function() {
+elements.bubble.textContent = 'Весело! +5 XP';
+setTimeout(function() {
+elements.bubble.textContent = 'Ещё!';
+saveGame(false);
+}, 2000);
+}, 500);
+}, 2000);
+}
+
+function addXp(amount, x, y) {
+currentXp += amount; totalXp += amount;
+const xpGain = document.createElement('div');
+xpGain.className = 'xp-gain';
+xpGain.textContent = '+' + amount + ' XP';
+xpGain.style.left = x + 'px'; xpGain.style.top = y + 'px';
+document.body.appendChild(xpGain);
+setTimeout(function() { xpGain.remove(); }, 1000);
+updateDisplay();
+checkAchievements();
+if (currentXp >= xpToNextLevel) levelUp();
+}
+
+function levelUp() {
+level++; currentXp -= xpToNextLevel; xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
+elements.levelBadge.textContent = level;
+elements.levelBadge.style.animation = 'none'; void elements.levelBadge.offsetHeight; elements.levelBadge.style.animation = 'levelPulse 0.5s ease';
+elements.bubble.textContent = 'Уровень ' + level + '!';
+showCelebration();
+updateDisplay();
+checkAchievements();
+saveGame(false);
+}
+
+function showCelebration() {
+elements.celebration.classList.add('active');
+elements.celebration.innerHTML = '';
+const colors = ['#ff5252','#ff4081','#e040fb','#7c4dff','#536dfe','#448aff','#40c4ff','#18ffff','#64ffda','#69f0ae','#b2ff59','#eeff41','#ffff00','#ffd740','#ffab40','#ff6e40'];
+for (let i = 0; i < 50; i++) {
+const c = document.createElement('div');
+c.className = 'confetti';
+c.style.left = Math.random() * 100 + 'vw';
+c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+c.style.animationDelay = Math.random() * 0.5 + 's';
+elements.celebration.appendChild(c);
+}
+setTimeout(function() { elements.celebration.classList.remove('active'); elements.celebration.innerHTML = ''; }, 3000);
+}
+
+document.addEventListener('mousemove', function(e) {
+if (isBusy || isAnnoyed || isTickled || modalOpen) return;
+const rect = elements.blobContainer.getBoundingClientRect();
+const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+const dist = Math.min(12, Math.hypot(e.clientX - cx, e.clientY - cy) / 15);
+const x = Math.cos(angle) * dist, y = Math.sin(angle) * dist;
+elements.pupils.forEach(function(p) {
+p.style.transform = 'translate(-50%, -50%) translate(' + x + 'px, ' + y + 'px)';
+});
+});
+
+setInterval(function() {
+if (!isBusy && !isAnnoyed && !isTickled && !modalOpen) {
+elements.eyes.forEach(function(e) {
+e.style.animation = 'blink 0.2s linear';
+setTimeout(function() { e.style.animation = ''; }, 200);
+});
+}
+}, 4000);
+
+function startDrag(e, type) {
+if (isBusy || isAnnoyed || isTickled || modalOpen) return;
+e.preventDefault();
+dragType = type;
+const itemData = type === 'food' ? selectedFood : selectedDrink;
+const itemEl = type === 'food' ? elements.foodItem : elements.drinkItem;
+dragClone = document.createElement('div');
+dragClone.className = 'drag-clone';
+dragClone.innerHTML = '<img src="' + itemData.img + '"><div class="item-label">' + itemData.name + '<br>+' + itemData.xp + ' XP</div>';
+document.body.appendChild(dragClone);
+moveDragClone(e);
+itemEl.style.opacity = '0.3';
+}
+
+function moveDragClone(e) {
+if (!dragClone) return;
+e.preventDefault();
+const cx = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+const cy = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+dragClone.style.left = (cx - 50) + 'px';
+dragClone.style.top = (cy - 50) + 'px';
+}
+
+function endDrag(e) {
+if (!dragClone) return;
+const cloneRect = dragClone.getBoundingClientRect();
+const mouthRect = elements.mouth.getBoundingClientRect();
+const dist = Math.hypot(cloneRect.left + cloneRect.width/2 - mouthRect.left - mouthRect.width/2, cloneRect.top + cloneRect.height/2 - mouthRect.top - mouthRect.height/2);
+if (dist < 100) interact(dragType, cloneRect.left + cloneRect.width/2, cloneRect.top + cloneRect.height/2);
+dragClone.remove(); dragClone = null;
+elements.foodItem.style.opacity = '1';
+elements.drinkItem.style.opacity = '1';
+dragType = null;
+}
+
+function interact(type, x, y) {
+isBusy = true;
+const itemData = type === 'food' ? selectedFood : selectedDrink;
+if (type === 'food') { elements.blob.classList.add('eating'); elements.mouth.classList.add('eating'); elements.bubble.textContent = 'Ням-ням!'; foodCount++; }
+else { elements.blob.classList.add('drinking'); elements.mouth.classList.add('drinking'); elements.bubble.textContent = 'Ах!'; drinkCount++; }
+updateDisplay(); checkAchievements();
+setTimeout(function() {
+elements.blob.classList.remove('eating', 'drinking');
+elements.mouth.classList.remove('eating', 'drinking');
+elements.bubble.textContent = 'Спасибо! +' + itemData.xp + ' XP';
+addXp(itemData.xp, x, y);
+setTimeout(function() { isBusy = false; elements.bubble.textContent = 'Ещё!'; saveGame(false); }, 1500);
+}, 1500);
+}
+
+// Tic Tac Toe - FIXED SYMMETRICAL
+function initTicTacToe() {
+elements.tttBoard.innerHTML = '';
+tttBoard = ['', '', '', '', '', '', '', '', ''];
+for (let i = 0; i < 9; i++) {
+const cell = document.createElement('div');
+cell.className = 'tic-tac-toe-cell';
+cell.dataset.index = i;
+cell.addEventListener('click', function() { handleTicTacToeClick(this); });
+elements.tttBoard.appendChild(cell);
+}
+tttPlayerTurn = true; tttGameActive = true;
+elements.tttStatus.textContent = 'Твой ход! (X)';
+}
+
+function createBlobFace() {
+const face = document.createElement('div');
+face.className = 'tic-tac-toe-blob-face';
+face.innerHTML = `
+<div class="tic-tac-toe-blob-eyes">
+<div class="tic-tac-toe-blob-eye"></div>
+<div class="tic-tac-toe-blob-eye"></div>
+</div>
+<div class="tic-tac-toe-blob-mouth"></div>
+`;
+return face;
+}
+
+function handleTicTacToeClick(cell) {
+const idx = parseInt(cell.dataset.index);
+if (!tttGameActive || !tttPlayerTurn || tttBoard[idx]) return;
+tttBoard[idx] = 'X';
+cell.innerHTML = '<span class="tic-tac-toe-cell x">X</span>';
+cell.classList.add('taken', 'x');
+if (checkTicTacToeWin('X')) { endTicTacToeGame('player'); return; }
+if (tttBoard.every(function(c) { return c; })) { endTicTacToeGame('draw'); return; }
+tttPlayerTurn = false;
+elements.tttStatus.textContent = 'Блоб думает...';
+setTimeout(blobMakeMove, 800);
+}
+
+function blobMakeMove() {
+if (!tttGameActive) return;
+let move = findBestMove('O');
+if (move === -1) move = findBestMove('X');
+if (move === -1) {
+const empty = tttBoard.map(function(c, i) { return c === '' ? i : null; }).filter(function(i) { return i !== null; });
+move = empty[Math.floor(Math.random() * empty.length)];
+}
+if (move !== -1) {
+tttBoard[move] = 'O';
+const cell = document.querySelector('.tic-tac-toe-cell[data-index="' + move + '"]');
+cell.innerHTML = '';
+cell.appendChild(createBlobFace());
+cell.classList.add('taken', 'o');
+if (checkTicTacToeWin('O')) { endTicTacToeGame('blob'); return; }
+if (tttBoard.every(function(c) { return c; })) { endTicTacToeGame('draw'); return; }
+}
+tttPlayerTurn = true;
+elements.tttStatus.textContent = 'Твой ход! (X)';
+}
+
+function findBestMove(player) {
+const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+for (let i = 0; i < wins.length; i++) {
+const [a,b,c] = wins[i];
+const vals = [tttBoard[a], tttBoard[b], tttBoard[c]];
+if (vals.filter(function(v) { return v === player; }).length === 2 && vals.filter(function(v) { return v === ''; }).length === 1) {
+if (tttBoard[a] === '') return a;
+if (tttBoard[b] === '') return b;
+if (tttBoard[c] === '') return c;
+}
+}
+return -1;
+}
+
+function checkTicTacToeWin(player) {
+const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+return wins.some(function(w) { return tttBoard[w[0]] === player && tttBoard[w[1]] === player && tttBoard[w[2]] === player; });
+}
+
+function endTicTacToeGame(result) {
+tttGameActive = false;
+if (result === 'player') {
+tttPlayerScore++; elements.tttStatus.textContent = 'Победа! +20 XP';
+elements.bubble.textContent = 'Хорошо...'; elements.bubble.classList.add('loser', 'show'); elements.mouth.classList.add('loser');
+addXp(20, elements.blobContainer.getBoundingClientRect().left + 150, elements.blobContainer.getBoundingClientRect().top);
+} else if (result === 'blob') {
+tttBlobScore++; gamesWon++; elements.tttStatus.textContent = 'Я победил! +10 XP';
+elements.bubble.textContent = 'Ура!'; elements.bubble.classList.add('winner', 'show'); elements.mouth.classList.add('winner');
+elements.eyes.forEach(function(e) { e.classList.add('winner'); });
+addXp(10, elements.blobContainer.getBoundingClientRect().left + 150, elements.blobContainer.getBoundingClientRect().top);
+} else {
+tttDraws++; elements.tttStatus.textContent = 'Ничья! +5 XP';
+elements.bubble.textContent = 'Ничья!'; addXp(5, elements.blobContainer.getBoundingClientRect().left + 150, elements.blobContainer.getBoundingClientRect().top);
+}
+updateDisplay(); checkAchievements(); saveGame(false);
+elements.tttPlayerScore.textContent = tttPlayerScore;
+elements.tttBlobScore.textContent = tttBlobScore;
+elements.tttDraws.textContent = tttDraws;
+setTimeout(function() {
+elements.bubble.classList.remove('winner', 'loser');
+elements.mouth.classList.remove('winner', 'loser');
+elements.eyes.forEach(function(e) { e.classList.remove('winner'); });
+}, 3000);
+}
+
+// Obstacle Game - FIXED COLLISION DETECTION
+function initObstacleGame() {
+obstacleScore = 0;
+obstacleSpeed = 2;
+obstacleSpeedIncrease = 0.3;
+obstacles = [];
+elements.obstacleScore.textContent = '0';
+elements.obstacleBest.textContent = obstacleBest;
+elements.obstaclePlayer.style.left = '170px';
+elements.obstaclePlayer.style.top = '170px';
+obstaclePlayerX = 170;
+obstaclePlayerY = 170;
+elements.obstacleContainer.querySelectorAll('.obstacle').forEach(o => o.remove());
+}
+
+function startObstacleGame() {
+if (obstacleGameActive) return;
+obstacleGameActive = true;
+elements.obstacleStartBtn.textContent = '⏸️ Пауза';
+elements.obstacleStatus.textContent = 'Перетаскивай блоба! Избегай красных блоков!';
+initObstacleGame();
+obstacleInterval = setInterval(spawnObstacle, 1000);
+requestAnimationFrame(updateObstacleGame);
+}
+
+function pauseObstacleGame() {
+obstacleGameActive = false;
+elements.obstacleStartBtn.textContent = '▶️ Старт';
+elements.obstacleStatus.textContent = 'Пауза';
+if (obstacleInterval) clearInterval(obstacleInterval);
+}
+
+function stopObstacleGame() {
+obstacleGameActive = false;
+elements.obstacleStartBtn.textContent = '▶️ Старт';
+if (obstacleInterval) clearInterval(obstacleInterval);
+}
+
+function spawnObstacle() {
+if (!obstacleGameActive) return;
+const obstacle = document.createElement('div');
+obstacle.className = 'obstacle';
+const size = Math.random() * 40 + 30;
+obstacle.style.width = size + 'px';
+obstacle.style.height = size + 'px';
+obstacle.style.left = Math.random() * (400 - size) + 'px';
+obstacle.style.top = '-50px';
+obstacle.dataset.y = -50;
+obstacle.dataset.w = size;
+obstacle.dataset.h = size;
+elements.obstacleContainer.appendChild(obstacle);
+obstacles.push(obstacle);
+}
+
+function updateObstacleGame() {
+if (!obstacleGameActive) return;
+
+const playerRect = {
+x: obstaclePlayerX + 10,
+y: obstaclePlayerY + 10,
+w: 40,
+h: 40
+};
+
+obstacles.forEach((obstacle, index) => {
+let y = parseFloat(obstacle.dataset.y);
+y += obstacleSpeed;
+obstacle.dataset.y = y;
+obstacle.style.top = y + 'px';
+
+if (y > 400) {
+obstacle.remove();
+obstacles.splice(index, 1);
+obstacleScore++;
+elements.obstacleScore.textContent = obstacleScore;
+if (obstacleScore % 5 === 0) {
+obstacleSpeed += obstacleSpeedIncrease;
+}
+}
+
+// FIXED: Accurate collision detection
+const obsX = parseFloat(obstacle.style.left);
+const obsY = y;
+const obsW = parseFloat(obstacle.dataset.w);
+const obsH = parseFloat(obstacle.dataset.h);
+
+if (playerRect.x < obsX + obsW &&
+playerRect.x + playerRect.w > obsX &&
+playerRect.y < obsY + obsH &&
+playerRect.y + playerRect.h > obsY) {
+stopObstacleGame();
+elements.obstacleStatus.textContent = 'Игра окончена! Счёт: ' + obstacleScore;
+if (obstacleScore > obstacleBest) {
+obstacleBest = obstacleScore;
+elements.obstacleBest.textContent = obstacleBest;
+}
+addXp(obstacleScore * 2, elements.obstacleContainer.getBoundingClientRect().left + 200, elements.obstacleContainer.getBoundingClientRect().top + 200);
+}
+});
+
+requestAnimationFrame(updateObstacleGame);
+}
+
+let obstacleDragging = false;
+function startObstacleDrag(e) {
+if (!obstacleGameActive) return;
+e.preventDefault();
+obstacleDragging = true;
+}
+function moveObstacleDrag(e) {
+if (!obstacleDragging || !obstacleGameActive) return;
+e.preventDefault();
+const containerRect = elements.obstacleContainer.getBoundingClientRect();
+const cx = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+const cy = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+obstaclePlayerX = cx - containerRect.left - 30;
+obstaclePlayerY = cy - containerRect.top - 30;
+obstaclePlayerX = Math.max(0, Math.min(340, obstaclePlayerX));
+obstaclePlayerY = Math.max(0, Math.min(340, obstaclePlayerY));
+elements.obstaclePlayer.style.left = obstaclePlayerX + 'px';
+elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
+}
+function endObstacleDrag() {
+obstacleDragging = false;
+}
+
+function openModal(modal) { modalOpen = true; modal.classList.add('active'); }
+function closeModal(modal) { modalOpen = false; modal.classList.remove('active'); }
+
+function init() {
+cacheElements();
+playerId = getPlayerId();
+elements.playerIdEl.textContent = playerId;
+if (lsAvailable()) {
+const savedNick = localStorage.getItem('livingBlob_nickname');
+if (savedNick) { userNickname = savedNick; }
+}
+elements.userNicknameEl.textContent = userNickname;
+elements.nicknameInput.value = userNickname;
+const hasSave = lsAvailable() ? localStorage.getItem('livingBlob_' + playerId) : null;
+if (hasSave) { loadGame(); }
+renderFridgeItems();
+renderAchievements();
+getLeaderboard();
+updateDisplay();
+initTicTacToe();
+initObstacleGame();
+setupAutoSave();
+updateOnlineStatus();
+
+setInterval(function() {
+getLeaderboard();
+updateOnlineStatus();
+}, 5000);
+
+window.addEventListener('beforeunload', function() { if (autoSaveEnabled && lsAvailable()) saveGame(false); });
+
+elements.eyes.forEach(function(eye) {
+eye.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); });
+eye.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); }, { passive: false });
+});
+
+elements.blob.addEventListener('click', function(e) { if (e.target.closest('.eye')) return; tickleBlob(); });
+elements.blob.addEventListener('touchstart', function(e) { if (e.target.closest('.eye')) return; tickleBlob(); }, { passive: false });
+
+elements.foodItem.addEventListener('mousedown', function(e) { startDrag(e, 'food'); });
+elements.foodItem.addEventListener('touchstart', function(e) { startDrag(e, 'food'); }, { passive: false });
+elements.drinkItem.addEventListener('mousedown', function(e) { startDrag(e, 'drink'); });
+elements.drinkItem.addEventListener('touchstart', function(e) { startDrag(e, 'drink'); }, { passive: false });
+document.addEventListener('mousemove', moveDragClone);
+document.addEventListener('touchmove', moveDragClone, { passive: false });
+document.addEventListener('mouseup', endDrag);
+document.addEventListener('touchend', endDrag);
+
+elements.fridgeBtn.addEventListener('click', function() { openModal(elements.fridgeModal); });
+elements.fridgeClose.addEventListener('click', function() { closeModal(elements.fridgeModal); });
+elements.fridgeModal.addEventListener('click', function(e) { if (e.target.id === 'fridgeModal') closeModal(elements.fridgeModal); });
+
+elements.achievementsBtn.addEventListener('click', function() { renderAchievements(); openModal(elements.achievementsModal); });
+elements.achievementsClose.addEventListener('click', function() { closeModal(elements.achievementsModal); });
+elements.achievementsModal.addEventListener('click', function(e) { if (e.target.id === 'achievementsModal') closeModal(elements.achievementsModal); });
+
+elements.leaderboardBtn.addEventListener('click', openLeaderboardModal);
+elements.leaderboardClose.addEventListener('click', closeLeaderboardModal);
+elements.leaderboardModal.addEventListener('click', function(e) { if (e.target.id === 'leaderboardModal') closeLeaderboardModal(); });
+elements.refreshLeaderboardBtn.addEventListener('click', function() { getLeaderboard(); showSaveStatus('Обновлено!', 'success'); });
+elements.submitToLeaderboardBtn.addEventListener('click', function() {
+saveGame(false);
+getLeaderboard();
+showSaveStatus('Отправлено в рейтинг!', 'success');
+});
+
+document.querySelectorAll('.minigame-tab').forEach(tab => {
+tab.addEventListener('click', function() {
+document.querySelectorAll('.minigame-tab').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('.game-content').forEach(g => g.classList.remove('active'));
+this.classList.add('active');
+const game = this.dataset.game;
+if (game === 'tictactoe') {
+document.getElementById('tictactoeGame').classList.add('active');
+} else if (game === 'obstacle') {
+document.getElementById('obstacleGame').classList.add('active');
+initObstacleGame();
+}
+});
+});
+
+elements.minigamesBtn.addEventListener('click', function() { openModal(elements.minigamesModal); elements.blob.classList.add('playing'); });
+elements.minigamesClose.addEventListener('click', function() { closeModal(elements.minigamesModal); elements.blob.classList.remove('playing'); stopObstacleGame(); });
+elements.minigamesModal.addEventListener('click', function(e) { if (e.target.id === 'minigamesModal') { closeModal(elements.minigamesModal); elements.blob.classList.remove('playing'); stopObstacleGame(); } });
+
+elements.settingsBtn.addEventListener('click', function() { elements.playerIdEl.textContent = playerId; openModal(elements.settingsModal); });
+elements.settingsClose.addEventListener('click', function() { closeModal(elements.settingsModal); });
+elements.settingsModal.addEventListener('click', function(e) { if (e.target.id === 'settingsModal') closeModal(elements.settingsModal); });
+
+elements.saveBtn.addEventListener('click', function() { saveGame(true); });
+elements.loadBtn.addEventListener('click', function() { loadGame(); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); });
+elements.resetBtn.addEventListener('click', function() {
+if (confirm('Сбросить весь прогресс?')) {
+level = 1; currentXp = 0; xpToNextLevel = 100; totalXp = 0;
+foodCount = 0; drinkCount = 0; tickleCount = 0; eyeClickCount = 0; gamesWon = 0;
+unlockedAchievements = []; tttPlayerScore = 0; tttBlobScore = 0; tttDraws = 0; obstacleBest = 0;
+selectedFood = foodData[0]; selectedDrink = drinkData[0];
+if (lsAvailable()) localStorage.removeItem('livingBlob_' + playerId);
+showSaveStatus('Сброшено!', 'success'); updateDisplay(); renderFridgeItems(); initTicTacToe(); initObstacleGame();
+}
+});
+elements.exportBtn.addEventListener('click', function() { elements.exportImportData.value = btoa(JSON.stringify(getGameState())); showSaveStatus('Скопируйте код!', 'success'); });
+elements.importBtn.addEventListener('click', function() {
+try {
+const data = JSON.parse(atob(elements.exportImportData.value.trim()));
+loadGameState(data); saveGame(false); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); initObstacleGame();
+showSaveStatus('Импортировано!', 'success');
+} catch { showSaveStatus('Ошибка!', 'error'); }
+});
+elements.saveNicknameBtn.addEventListener('click', function() {
+userNickname = elements.nicknameInput.value.trim().substring(0, 20) || 'Гость';
+elements.userNicknameEl.textContent = userNickname;
+saveGame(true); getLeaderboard();
+});
+elements.tttResetBtn.addEventListener('click', initTicTacToe);
+
+elements.obstacleStartBtn.addEventListener('click', function() {
+if (obstacleGameActive) {
+pauseObstacleGame();
+} else {
+startObstacleGame();
+}
+});
+elements.obstacleResetBtn.addEventListener('click', initObstacleGame);
+
+elements.obstaclePlayer.addEventListener('mousedown', startObstacleDrag);
+elements.obstaclePlayer.addEventListener('touchstart', startObstacleDrag, { passive: false });
+document.addEventListener('mousemove', moveObstacleDrag);
+document.addEventListener('touchmove', moveObstacleDrag, { passive: false });
+document.addEventListener('mouseup', endObstacleDrag);
+document.addEventListener('touchend', endObstacleDrag);
+
+elements.welcomeStartBtn.addEventListener('click', function() {
+closeModal(elements.welcomeModal);
+elements.bubble.textContent = 'Давай дружить!'; elements.bubble.classList.add('show');
+});
+if (!hasSave) {
+setTimeout(function() { openModal(elements.welcomeModal); }, 500);
+} else {
+setTimeout(function() { elements.bubble.textContent = 'С возвращением!'; elements.bubble.classList.add('show'); }, 500);
+}
+}
+
+init();
+</script>
 </body>
 </html>
 
