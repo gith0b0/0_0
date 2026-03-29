@@ -1881,7 +1881,7 @@ if (lsAvailable()) { const savedNick = localStorage.getItem('livingBlob_nickname
 elements.userNicknameEl.textContent = userNickname; elements.nicknameInput.value = userNickname;
 const hasSave = lsAvailable() ? localStorage.getItem('livingBlob_' + playerId) : null;
 if (hasSave) { loadGame(); }
-renderFridgeItems(); renderAchievements(); getLeaderboard(); updateDisplay();
+renderFridgeItems(); renderAchievements(); updateDisplay();
 initTicTacToe(); initObstacleGame(); setupAutoSave(); updateOnlineStatus();
 setInterval(function() { getLeaderboard(); updateOnlineStatus(); }, 60000);
 window.addEventListener('beforeunload', function() { if (autoSaveEnabled && lsAvailable()) saveGame(false); });
