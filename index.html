@@ -16,6 +16,8 @@
             --fridge-bg: #eceff1;
             --achievement-locked: #cfd8dc;
             --achievement-unlocked: #ffca28;
+            --save-success: #4caf50;
+            --save-error: #f44336;
         }
 
         * {
@@ -33,6 +35,7 @@
             font-family: 'Nunito', sans-serif;
             overflow: hidden;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         .scene {
@@ -142,7 +145,6 @@
                         0 20px 40px rgba(2, 136, 209, 0.3);
             position: relative;
             transition: border-radius 0.5s ease, background 0.5s ease, transform 0.3s ease;
-            cursor: pointer;
         }
 
         .blob:hover {
@@ -154,15 +156,15 @@
         }
 
         .blob.tickled {
-            animation: tickle 0.3s infinite;
+            animation: tickle 0.3s infinite !important;
         }
 
         .blob.annoyed {
-            background: radial-gradient(circle at 30% 30%, #ffccbc, #ff8a65);
+            background: radial-gradient(circle at 30% 30%, #ffccbc, #ff8a65) !important;
         }
 
         .blob.eating {
-            animation: eatBounce 0.2s infinite;
+            animation: eatBounce 0.2s infinite !important;
         }
 
         .blob.playing {
@@ -198,8 +200,8 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: height 0.1s;
             cursor: pointer;
-            pointer-events: auto;
-            z-index: 30;
+            pointer-events: auto !important;
+            z-index: 100 !important;
         }
 
         .eye:hover {
@@ -207,7 +209,7 @@
         }
 
         .eye.squint {
-            height: 8px;
+            height: 8px !important;
             border-radius: 5px;
         }
 
@@ -257,11 +259,11 @@
         }
 
         .mouth.eating {
-            animation: chew 0.15s infinite;
+            animation: chew 0.15s infinite !important;
         }
 
         .mouth.drinking {
-            animation: drink 0.25s infinite;
+            animation: drink 0.25s infinite !important;
         }
 
         .mouth.winner {
@@ -799,6 +801,7 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 15px rgba(38, 166, 154, 0.4);
+            margin: 5px;
         }
 
         .btn-primary:hover {
@@ -816,16 +819,168 @@
             box-shadow: none;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+            box-shadow: 0 4px 15px rgba(239, 83, 80, 0.4);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 20px rgba(239, 83, 80, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(66, 165, 245, 0.6);
+        }
+
+        /* Settings Modal */
+        .settings-section {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #cfd8dc;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-title {
+            font-size: 1.2rem;
+            color: #546e7a;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .settings-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .save-status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .save-status.success {
+            background: #c8e6c9;
+            color: #2e7d32;
+            opacity: 1;
+        }
+
+        .save-status.error {
+            background: #ffcdd2;
+            color: #c62828;
+            opacity: 1;
+        }
+
+        .auto-save-indicator {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #546e7a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .auto-save-indicator.saving {
+            color: #26a69a;
+        }
+
+        .auto-save-indicator.saving::before {
+            content: '💾';
+            animation: savePulse 0.5s infinite;
+        }
+
+        .auto-save-indicator.saved::before {
+            content: '✓';
+            color: #4caf50;
+        }
+
+        .auto-save-indicator::before {
+            content: '🕐';
+        }
+
+        @keyframes savePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .player-id-display {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .player-id-label {
+            font-size: 0.85rem;
+            color: #78909c;
+            margin-bottom: 5px;
+        }
+
+        .player-id-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #26a69a;
+            word-break: break-all;
+        }
+
+        .export-import-area {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .export-import-area textarea {
+            width: 100%;
+            height: 100px;
+            border: 2px solid #cfd8dc;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .export-import-area textarea:focus {
+            outline: none;
+            border-color: #26a69a;
+        }
+
         /* Stats Panel */
         .stats-panel {
             position: absolute;
             left: 30px;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.9);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 60;
         }
 
         .stat-item {
@@ -1022,6 +1177,54 @@
             50% { opacity: 1; }
         }
 
+        /* Welcome Modal */
+        .welcome-content {
+            text-align: center;
+        }
+
+        .welcome-content h2 {
+            color: #37474f;
+            margin-bottom: 15px;
+        }
+
+        .welcome-content p {
+            color: #546e7a;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .welcome-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Save Instructions */
+        .save-instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #1565c0;
+            border-left: 4px solid #2196f3;
+        }
+
+        .save-instructions h4 {
+            margin: 0 0 10px 0;
+            color: #0d47a1;
+        }
+
+        .save-instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .save-instructions li {
+            margin-bottom: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -1035,6 +1238,9 @@
             </div>
             <div class="level-badge" id="levelBadge">1</div>
         </div>
+
+        <!-- Auto Save Indicator -->
+        <div class="auto-save-indicator" id="autoSaveIndicator">Автосохранение</div>
 
         <!-- Stats Panel -->
         <div class="stats-panel">
@@ -1114,6 +1320,10 @@
                 <span class="menu-btn-icon">🏆</span>
                 <span class="menu-btn-label">Ачивки</span>
             </div>
+            <div class="menu-btn" id="settingsBtn">
+                <span class="menu-btn-icon">⚙️</span>
+                <span class="menu-btn-label">Настройки</span>
+            </div>
         </div>
 
         <div class="hint">Перетащи еду или воду в рот!</div>
@@ -1174,7 +1384,6 @@
                         <button class="minigame-tab active" data-game="tictactoe">Крестики-Нолики</button>
                     </div>
                     
-                    <!-- Tic Tac Toe Game -->
                     <div id="tictactoeGame">
                         <div class="tic-tac-toe-info">
                             <div class="tic-tac-toe-status" id="tttStatus">Твой ход! (X)</div>
@@ -1202,6 +1411,85 @@
                 </div>
             </div>
         </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">⚙️ Настройки</span>
+                    <button class="modal-close" id="settingsClose">×</button>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">💾 Сохранение прогресса</div>
+                    <div class="player-id-display">
+                        <div class="player-id-label">Ваш ID сохранения:</div>
+                        <div class="player-id-value" id="playerId">Загрузка...</div>
+                    </div>
+                    <div class="settings-buttons">
+                        <button class="btn-primary" id="saveBtn">Сохранить</button>
+                        <button class="btn-secondary" id="loadBtn">Загрузить</button>
+                        <button class="btn-danger" id="resetBtn">Сбросить прогресс</button>
+                    </div>
+                    <div class="save-status" id="saveStatus"></div>
+                    
+                    <div class="save-instructions">
+                        <h4>📋 Как проверить сохранение:</h4>
+                        <ol>
+                            <li>Покормите блоба или пощекочите его</li>
+                            <li>Нажмите "Сохранить" или подождите 30 сек (автосохранение)</li>
+                            <li>Обновите страницу (F5)</li>
+                            <li>Прогресс восстановится автоматически!</li>
+                        </ol>
+                        <p style="margin-top: 10px; font-style: italic;">
+                            💡 Для переноса на другое устройство используйте "Экспортировать" и "Импортировать"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">📤 Экспорт / Импорт</div>
+                    <div class="export-import-area">
+                        <textarea id="exportImportData" placeholder="Вставьте код сохранения здесь..."></textarea>
+                        <div class="settings-buttons">
+                            <button class="btn-secondary" id="exportBtn">Экспортировать</button>
+                            <button class="btn-primary" id="importBtn">Импортировать</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">🔄 Автосохранение</div>
+                    <p style="color: #78909c; font-size: 0.85rem; margin-bottom: 10px;">
+                        Прогресс автоматически сохраняется каждые 30 секунд и при закрытии страницы.
+                    </p>
+                    <div class="settings-buttons">
+                        <button class="btn-secondary" id="toggleAutoSave">Отключить автосохранение</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Modal -->
+        <div class="modal" id="welcomeModal">
+            <div class="modal-content">
+                <div class="welcome-content">
+                    <h2>👋 Добро пожаловать!</h2>
+                    <p>
+                        Это живой сайт-питомец! Кормите его, поите, щекочите и играйте в игры, чтобы получать опыт и открывать достижения.
+                    </p>
+                    <p>
+                        <strong>👆 Пощекочите живот</strong> или <strong>👁️ нажмите на глаз</strong> для взаимодействия!
+                    </p>
+                    <p>
+                        Ваш прогресс автоматически сохраняется в браузере.
+                    </p>
+                    <div class="welcome-buttons">
+                        <button class="btn-primary" id="welcomeStartBtn">Начать игру!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1225,6 +1513,7 @@
             { id: 'first_feed', name: 'Первый обед', desc: 'Покормите персонажа впервые', icon: '🍗', condition: (state) => state.foodCount >= 1 },
             { id: 'first_drink', name: 'Первый глоток', desc: 'Напоите персонажа впервые', icon: '💧', condition: (state) => state.drinkCount >= 1 },
             { id: 'first_tickle', name: 'Щекотка!', desc: 'Пощекочите персонажа впервые', icon: '😂', condition: (state) => state.tickleCount >= 1 },
+            { id: 'first_eye_click', name: 'Не трогай!', desc: 'Нажмите на глаз', icon: '👁️', condition: (state) => state.eyeClickCount >= 1 },
             { id: 'first_win', name: 'Первая победа', desc: 'Выиграйте в крестики-нолики', icon: '🎮', condition: (state) => state.gamesWon >= 1 },
             { id: 'feed_5', name: 'Обжора', desc: 'Покормите 5 раз', icon: '🍽️', condition: (state) => state.foodCount >= 5 },
             { id: 'feed_10', name: 'Гурман', desc: 'Покормите 10 раз', icon: '👨‍🍳', condition: (state) => state.foodCount >= 10 },
@@ -1288,12 +1577,16 @@
         const fridgeBtn = document.getElementById('fridgeBtn');
         const minigamesBtn = document.getElementById('minigamesBtn');
         const achievementsBtn = document.getElementById('achievementsBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
         const fridgeModal = document.getElementById('fridgeModal');
         const achievementsModal = document.getElementById('achievementsModal');
         const minigamesModal = document.getElementById('minigamesModal');
+        const settingsModal = document.getElementById('settingsModal');
+        const welcomeModal = document.getElementById('welcomeModal');
         const fridgeClose = document.getElementById('fridgeClose');
         const achievementsClose = document.getElementById('achievementsClose');
         const minigamesClose = document.getElementById('minigamesClose');
+        const settingsClose = document.getElementById('settingsClose');
         const foodItemsContainer = document.getElementById('foodItems');
         const drinkItemsContainer = document.getElementById('drinkItems');
         const achievementsGrid = document.getElementById('achievementsGrid');
@@ -1313,6 +1606,17 @@
         const tttBlobScoreEl = document.getElementById('tttBlobScore');
         const tttDrawsEl = document.getElementById('tttDraws');
         const tttResetBtn = document.getElementById('tttResetBtn');
+        const autoSaveIndicator = document.getElementById('autoSaveIndicator');
+        const saveBtn = document.getElementById('saveBtn');
+        const loadBtn = document.getElementById('loadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const toggleAutoSaveBtn = document.getElementById('toggleAutoSave');
+        const saveStatus = document.getElementById('saveStatus');
+        const exportImportData = document.getElementById('exportImportData');
+        const playerIdEl = document.getElementById('playerId');
+        const welcomeStartBtn = document.getElementById('welcomeStartBtn');
 
         // Game State
         let level = 1;
@@ -1322,6 +1626,7 @@
         let foodCount = 0;
         let drinkCount = 0;
         let tickleCount = 0;
+        let eyeClickCount = 0;
         let gamesWon = 0;
         let isBusy = false;
         let selectedFood = foodData[0];
@@ -1331,49 +1636,365 @@
         let isAnnoyed = false;
         let isTickled = false;
         let unlockedAchievements = [];
+        let playerId = '';
+        let autoSaveEnabled = true;
+        let autoSaveInterval = null;
+        let isFirstVisit = true;
+        let modalOpen = false;
+
+        // Check localStorage availability
+        function isLocalStorageAvailable() {
+            try {
+                const test = '__storage_test__';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // Save System
+        const SAVE_KEY_PREFIX = 'livingBlob_';
+        const PLAYER_IDS_KEY = 'livingBlob_playerIds';
+
+        function generatePlayerId() {
+            return 'player_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+        }
+
+        function getPlayerId() {
+            if (!isLocalStorageAvailable()) {
+                return 'no_storage';
+            }
+            
+            let storedIds = JSON.parse(localStorage.getItem(PLAYER_IDS_KEY) || '[]');
+            
+            if (storedIds.length === 0) {
+                playerId = generatePlayerId();
+                storedIds.push(playerId);
+                localStorage.setItem(PLAYER_IDS_KEY, JSON.stringify(storedIds));
+            } else {
+                playerId = storedIds[storedIds.length - 1];
+            }
+            
+            return playerId;
+        }
+
+        function getSaveKey() {
+            return SAVE_KEY_PREFIX + playerId;
+        }
+
+        function getGameState() {
+            return {
+                level,
+                currentXp,
+                xpToNextLevel,
+                totalXp,
+                foodCount,
+                drinkCount,
+                tickleCount,
+                eyeClickCount,
+                gamesWon,
+                selectedFoodId: selectedFood.id,
+                selectedDrinkId: selectedDrink.id,
+                unlockedAchievements,
+                tttPlayerScore,
+                tttBlobScore,
+                tttDraws,
+                autoSaveEnabled,
+                lastSaved: new Date().toISOString()
+            };
+        }
+
+        function loadGameState(data) {
+            if (!data) return false;
+            
+            level = data.level || 1;
+            currentXp = data.currentXp || 0;
+            xpToNextLevel = data.xpToNextLevel || 100;
+            totalXp = data.totalXp || 0;
+            foodCount = data.foodCount || 0;
+            drinkCount = data.drinkCount || 0;
+            tickleCount = data.tickleCount || 0;
+            eyeClickCount = data.eyeClickCount || 0;
+            gamesWon = data.gamesWon || 0;
+            unlockedAchievements = data.unlockedAchievements || [];
+            tttPlayerScore = data.tttPlayerScore || 0;
+            tttBlobScore = data.tttBlobScore || 0;
+            tttDraws = data.tttDraws || 0;
+            autoSaveEnabled = data.autoSaveEnabled !== false;
+            
+            if (data.selectedFoodId) {
+                selectedFood = foodData.find(f => f.id === data.selectedFoodId) || foodData[0];
+            }
+            if (data.selectedDrinkId) {
+                selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
+            }
+            
+            return true;
+        }
+
+        function saveGame(showNotification = true) {
+            if (!isLocalStorageAvailable()) {
+                if (showNotification) {
+                    showSaveStatus('LocalStorage недоступен!', 'error');
+                }
+                return false;
+            }
+            
+            try {
+                const gameState = getGameState();
+                localStorage.setItem(getSaveKey(), JSON.stringify(gameState));
+                
+                if (showNotification) {
+                    showSaveStatus('Прогресс сохранён!', 'success');
+                    showAutoSaveIndicator('saved');
+                }
+                
+                return true;
+            } catch (e) {
+                console.error('Save error:', e);
+                if (showNotification) {
+                    showSaveStatus('Ошибка: ' + e.message, 'error');
+                }
+                return false;
+            }
+        }
+
+        function loadGame() {
+            if (!isLocalStorageAvailable()) {
+                showSaveStatus('LocalStorage недоступен!', 'error');
+                return false;
+            }
+            
+            try {
+                const savedData = localStorage.getItem(getSaveKey());
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    const loaded = loadGameState(data);
+                    if (loaded) {
+                        showSaveStatus('Прогресс загружен!', 'success');
+                        return true;
+                    }
+                }
+                return false;
+            } catch (e) {
+                console.error('Load error:', e);
+                showSaveStatus('Ошибка: ' + e.message, 'error');
+                return false;
+            }
+        }
+
+        function resetGame() {
+            if (!isLocalStorageAvailable()) {
+                showSaveStatus('LocalStorage недоступен!', 'error');
+                return;
+            }
+            
+            if (confirm('Вы уверены? Весь прогресс будет удалён!')) {
+                level = 1;
+                currentXp = 0;
+                xpToNextLevel = 100;
+                totalXp = 0;
+                foodCount = 0;
+                drinkCount = 0;
+                tickleCount = 0;
+                eyeClickCount = 0;
+                gamesWon = 0;
+                unlockedAchievements = [];
+                tttPlayerScore = 0;
+                tttBlobScore = 0;
+                tttDraws = 0;
+                selectedFood = foodData[0];
+                selectedDrink = drinkData[0];
+                
+                localStorage.removeItem(getSaveKey());
+                showSaveStatus('Прогресс сброшен!', 'success');
+                updateDisplay();
+                renderFridgeItems();
+                resetTicTacToe();
+            }
+        }
+
+        function exportGame() {
+            const gameState = getGameState();
+            const exportData = btoa(JSON.stringify(gameState));
+            exportImportData.value = exportData;
+            showSaveStatus('Данные экспортированы! Скопируйте код выше.', 'success');
+        }
+
+        function importGame() {
+            try {
+                const importData = exportImportData.value.trim();
+                if (!importData) {
+                    showSaveStatus('Вставьте код сохранения!', 'error');
+                    return;
+                }
+                
+                const decoded = atob(importData);
+                const data = JSON.parse(decoded);
+                const loaded = loadGameState(data);
+                
+                if (loaded) {
+                    saveGame(false);
+                    updateDisplay();
+                    renderFridgeItems();
+                    renderAchievements();
+                    resetTicTacToe();
+                    showSaveStatus('Данные импортированы!', 'success');
+                } else {
+                    showSaveStatus('Неверный формат данных!', 'error');
+                }
+            } catch (e) {
+                console.error('Import error:', e);
+                showSaveStatus('Ошибка импорта! Проверьте код.', 'error');
+            }
+        }
+
+        function showSaveStatus(message, type) {
+            saveStatus.textContent = message;
+            saveStatus.className = 'save-status ' + type;
+            setTimeout(() => {
+                saveStatus.className = 'save-status';
+            }, 3000);
+        }
+
+        function showAutoSaveIndicator(state) {
+            autoSaveIndicator.className = 'auto-save-indicator ' + state;
+            setTimeout(() => {
+                if (autoSaveEnabled) {
+                    autoSaveIndicator.className = 'auto-save-indicator';
+                }
+            }, 2000);
+        }
+
+        function setupAutoSave() {
+            if (autoSaveInterval) clearInterval(autoSaveInterval);
+            
+            if (autoSaveEnabled && isLocalStorageAvailable()) {
+                autoSaveInterval = setInterval(() => {
+                    showAutoSaveIndicator('saving');
+                    saveGame(false);
+                }, 30000);
+            }
+        }
+
+        // Check if any modal is open
+        function isModalOpen() {
+            return fridgeModal.classList.contains('active') || 
+                   achievementsModal.classList.contains('active') || 
+                   minigamesModal.classList.contains('active') || 
+                   settingsModal.classList.contains('active') ||
+                   welcomeModal.classList.contains('active');
+        }
 
         // Initialize
         function init() {
+            playerId = getPlayerId();
+            playerIdEl.textContent = playerId;
+            
+            // Check localStorage availability
+            if (!isLocalStorageAvailable()) {
+                alert('Внимание: LocalStorage недоступен в вашем браузере. Прогресс не будет сохраняться автоматически.');
+            }
+            
+            // Check if first visit
+            const hasSave = isLocalStorageAvailable() ? localStorage.getItem(getSaveKey()) : null;
+            if (hasSave) {
+                loadGame();
+                isFirstVisit = false;
+            }
+            
             renderFridgeItems();
             renderAchievements();
             updateDisplay();
             setupInteractions();
             checkAchievements();
             initTicTacToe();
+            setupAutoSave();
             
-            setTimeout(() => {
-                bubble.textContent = "Привет! Я живой сайт.";
-                bubble.classList.add('show');
-            }, 500);
+            // Auto-save on page close
+            window.addEventListener('beforeunload', () => {
+                if (autoSaveEnabled && isLocalStorageAvailable()) {
+                    saveGame(false);
+                }
+            });
+            
+            if (isFirstVisit) {
+                setTimeout(() => {
+                    welcomeModal.classList.add('active');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    bubble.textContent = "С возвращением!";
+                    bubble.classList.add('show');
+                }, 500);
 
-            setTimeout(() => {
-                bubble.textContent = "Я голоден и хочу пить...";
-            }, 3500);
+                setTimeout(() => {
+                    bubble.textContent = "Я голоден и хочу пить...";
+                }, 3500);
+            }
         }
 
-        // Setup Eye and Body Interactions
+        // Setup Eye and Body Interactions - FIXED
         function setupInteractions() {
+            // Eye click events - FIXED with proper event handling
             eyes.forEach(eye => {
-                eye.addEventListener('click', (e) => {
+                eye.addEventListener('click', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    if (isBusy || isAnnoyed || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+                    
+                    if (isBusy || isAnnoyed || isModalOpen()) return;
+                    
+                    eyeClickCount++;
                     annoyBlob();
                 });
+                
+                // Also add touchstart for mobile
+                eye.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (isBusy || isAnnoyed || isModalOpen()) return;
+                    
+                    eyeClickCount++;
+                    annoyBlob();
+                }, { passive: false });
             });
 
-            blob.addEventListener('click', (e) => {
-                if (isBusy || isTickled || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+            // Body click event (tickle) - FIXED
+            blob.addEventListener('click', function(e) {
+                if (isBusy || isTickled || isModalOpen()) return;
+                
+                // Check if click was on eyes (already handled)
                 if (e.target.closest('.eye')) return;
+                
                 tickleBlob();
             });
+            
+            // Also add touchstart for mobile
+            blob.addEventListener('touchstart', function(e) {
+                if (isBusy || isTickled || isModalOpen()) return;
+                
+                // Check if touch was on eyes (already handled)
+                if (e.target.closest('.eye')) return;
+                
+                tickleBlob();
+            }, { passive: false });
         }
 
-        // Annoy Response
+        // Annoy Response - FIXED with proper animation
         function annoyBlob() {
             isAnnoyed = true;
             isBusy = true;
 
-            eyes.forEach(eye => eye.classList.add('squint'));
+            // Force reflow and apply classes
+            eyes.forEach(eye => {
+                eye.style.height = '';
+                eye.offsetHeight; // Force reflow
+                eye.classList.add('squint');
+            });
+            
             mouth.classList.add('annoyed');
             blob.classList.add('annoyed');
 
@@ -1382,7 +2003,10 @@
             bubble.classList.add('show');
 
             setTimeout(() => {
-                eyes.forEach(eye => eye.classList.remove('squint'));
+                eyes.forEach(eye => {
+                    eye.classList.remove('squint');
+                    eye.style.height = '';
+                });
                 mouth.classList.remove('annoyed');
                 blob.classList.remove('annoyed');
                 bubble.classList.remove('annoyed');
@@ -1393,19 +2017,24 @@
                     bubble.textContent = "Ладно, прощаю...";
                     setTimeout(() => {
                         bubble.textContent = "Но больше не надо!";
+                        saveGame(false);
                     }, 2000);
                 }, 500);
             }, 1500);
         }
 
-        // Tickle Response
+        // Tickle Response - FIXED with proper animation
         function tickleBlob() {
             isTickled = true;
             isBusy = true;
             tickleCount++;
             updateDisplay();
 
+            // Force reflow and apply classes
+            blob.style.animation = '';
+            blob.offsetHeight; // Force reflow
             blob.classList.add('tickled');
+            
             mouth.classList.add('laughing');
 
             bubble.textContent = tickleResponses[Math.floor(Math.random() * tickleResponses.length)];
@@ -1418,6 +2047,7 @@
 
             setTimeout(() => {
                 blob.classList.remove('tickled');
+                blob.style.animation = '';
                 mouth.classList.remove('laughing');
                 bubble.classList.remove('laughing');
                 isTickled = false;
@@ -1427,6 +2057,7 @@
                     bubble.textContent = "Было весело! +5 XP";
                     setTimeout(() => {
                         bubble.textContent = "Пощекочи ещё!";
+                        saveGame(false);
                     }, 2000);
                 }, 500);
             }, 2000);
@@ -1473,11 +2104,12 @@
             }
 
             renderFridgeItems();
+            saveGame(false);
         }
 
         // Render Achievements
         function renderAchievements() {
-            const state = { level, foodCount, drinkCount, tickleCount, totalXp, gamesWon };
+            const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
             
             achievementsGrid.innerHTML = achievementsData.map(ach => {
                 const unlocked = unlockedAchievements.includes(ach.id);
@@ -1498,7 +2130,7 @@
 
         // Check Achievements
         function checkAchievements() {
-            const state = { level, foodCount, drinkCount, tickleCount, totalXp, gamesWon };
+            const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
             let newUnlock = false;
 
             achievementsData.forEach(ach => {
@@ -1512,6 +2144,7 @@
             if (newUnlock) {
                 renderAchievements();
                 updateDisplay();
+                saveGame(false);
             }
         }
 
@@ -1540,7 +2173,7 @@
 
         // Eye Tracking
         document.addEventListener('mousemove', (e) => {
-            if (isBusy || isAnnoyed || isTickled || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+            if (isBusy || isAnnoyed || isTickled || isModalOpen()) return;
 
             const rect = blobContainer.getBoundingClientRect();
             const blobCenterX = rect.left + rect.width / 2;
@@ -1559,7 +2192,7 @@
 
         // Blinking
         setInterval(() => {
-            if (!isBusy && !isAnnoyed && !isTickled && !fridgeModal.classList.contains('active') && !achievementsModal.classList.contains('active') && !minigamesModal.classList.contains('active')) {
+            if (!isBusy && !isAnnoyed && !isTickled && !isModalOpen()) {
                 eyes.forEach(eye => {
                     eye.style.animation = 'blink 0.2s linear';
                     setTimeout(() => eye.style.animation = '', 200);
@@ -1592,6 +2225,7 @@
             showCelebration();
             updateDisplay();
             checkAchievements();
+            saveGame(false);
         }
 
         function showXpGain(amount, x, y) {
@@ -1627,7 +2261,7 @@
 
         // Drag and Drop
         function startDrag(e, type) {
-            if (isBusy || isAnnoyed || isTickled || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+            if (isBusy || isAnnoyed || isTickled || isModalOpen()) return;
             e.preventDefault();
 
             dragType = type;
@@ -1710,6 +2344,7 @@
                     isBusy = false;
                     const messages = ["Ещё хочу...", "Было вкусно!", "Я счастлив!", "Давай ещё!", "Ты лучший!"];
                     bubble.textContent = messages[Math.floor(Math.random() * messages.length)];
+                    saveGame(false);
                 }, 1500);
             }, 1500);
         }
@@ -1727,7 +2362,6 @@
             
             if (!tttGameActive || !tttPlayerTurn || tttBoard[index] !== '') return;
             
-            // Player move
             tttBoard[index] = 'X';
             cell.textContent = 'X';
             cell.classList.add('taken', 'x');
@@ -1745,7 +2379,6 @@
             tttPlayerTurn = false;
             tttStatus.textContent = 'Блоб думает...';
             
-            // Blob move after delay
             setTimeout(() => {
                 blobMakeMove();
             }, 800);
@@ -1754,7 +2387,6 @@
         function blobMakeMove() {
             if (!tttGameActive) return;
             
-            // Simple AI: try to win, block player, or random
             let move = findBestMove('O');
             if (move === -1) move = findBestMove('X');
             if (move === -1) {
@@ -1849,7 +2481,6 @@
             updateDisplay();
             checkAchievements();
             
-            // Highlight winning cells
             const winPatterns = [
                 [0, 1, 2], [3, 4, 5], [6, 7, 8],
                 [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -1870,6 +2501,7 @@
             tttPlayerScoreEl.textContent = tttPlayerScore;
             tttBlobScoreEl.textContent = tttBlobScore;
             tttDrawsEl.textContent = tttDraws;
+            saveGame(false);
             
             setTimeout(() => {
                 bubble.classList.remove('winner', 'loser');
@@ -1902,53 +2534,54 @@
         document.addEventListener('mouseup', endDrag);
         document.addEventListener('touchend', endDrag);
 
-        // Fridge Modal
-        fridgeBtn.addEventListener('click', () => {
-            fridgeModal.classList.add('active');
+        // Modals - track state
+        function openModal(modal) {
+            modalOpen = true;
+            modal.classList.add('active');
+        }
+
+        function closeModal(modal) {
+            modalOpen = false;
+            modal.classList.remove('active');
+        }
+
+        fridgeBtn.addEventListener('click', () => openModal(fridgeModal));
+        fridgeClose.addEventListener('click', () => closeModal(fridgeModal));
+        fridgeModal.addEventListener('click', (e) => { if (e.target === fridgeModal) closeModal(fridgeModal); });
+
+        achievementsBtn.addEventListener('click', () => { renderAchievements(); openModal(achievementsModal); });
+        achievementsClose.addEventListener('click', () => closeModal(achievementsModal));
+        achievementsModal.addEventListener('click', (e) => { if (e.target === achievementsModal) closeModal(achievementsModal); });
+
+        minigamesBtn.addEventListener('click', () => { openModal(minigamesModal); blob.classList.add('playing'); });
+        minigamesClose.addEventListener('click', () => { closeModal(minigamesModal); blob.classList.remove('playing'); });
+        minigamesModal.addEventListener('click', (e) => { if (e.target === minigamesModal) { closeModal(minigamesModal); blob.classList.remove('playing'); } });
+
+        settingsBtn.addEventListener('click', () => {
+            playerIdEl.textContent = playerId;
+            openModal(settingsModal);
+        });
+        settingsClose.addEventListener('click', () => closeModal(settingsModal));
+        settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeModal(settingsModal); });
+
+        // Save System Buttons
+        saveBtn.addEventListener('click', () => saveGame(true));
+        loadBtn.addEventListener('click', () => { loadGame(); updateDisplay(); renderFridgeItems(); renderAchievements(); resetTicTacToe(); });
+        resetBtn.addEventListener('click', resetGame);
+        exportBtn.addEventListener('click', exportGame);
+        importBtn.addEventListener('click', importGame);
+        toggleAutoSaveBtn.addEventListener('click', () => {
+            autoSaveEnabled = !autoSaveEnabled;
+            toggleAutoSaveBtn.textContent = autoSaveEnabled ? 'Отключить автосохранение' : 'Включить автосохранение';
+            setupAutoSave();
+            saveGame(false);
         });
 
-        fridgeClose.addEventListener('click', () => {
-            fridgeModal.classList.remove('active');
-        });
-
-        fridgeModal.addEventListener('click', (e) => {
-            if (e.target === fridgeModal) {
-                fridgeModal.classList.remove('active');
-            }
-        });
-
-        // Achievements Modal
-        achievementsBtn.addEventListener('click', () => {
-            renderAchievements();
-            achievementsModal.classList.add('active');
-        });
-
-        achievementsClose.addEventListener('click', () => {
-            achievementsModal.classList.remove('active');
-        });
-
-        achievementsModal.addEventListener('click', (e) => {
-            if (e.target === achievementsModal) {
-                achievementsModal.classList.remove('active');
-            }
-        });
-
-        // Mini Games Modal
-        minigamesBtn.addEventListener('click', () => {
-            minigamesModal.classList.add('active');
-            blob.classList.add('playing');
-        });
-
-        minigamesClose.addEventListener('click', () => {
-            minigamesModal.classList.remove('active');
-            blob.classList.remove('playing');
-        });
-
-        minigamesModal.addEventListener('click', (e) => {
-            if (e.target === minigamesModal) {
-                minigamesModal.classList.remove('active');
-                blob.classList.remove('playing');
-            }
+        // Welcome Modal
+        welcomeStartBtn.addEventListener('click', () => {
+            closeModal(welcomeModal);
+            bubble.textContent = "Давай дружить!";
+            bubble.classList.add('show');
         });
 
         // Initialize game
