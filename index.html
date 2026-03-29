@@ -1883,7 +1883,7 @@ const hasSave = lsAvailable() ? localStorage.getItem('livingBlob_' + playerId) :
 if (hasSave) { loadGame(); }
 renderFridgeItems(); renderAchievements(); getLeaderboard(); updateDisplay();
 initTicTacToe(); initObstacleGame(); setupAutoSave(); updateOnlineStatus();
-setInterval(function() { getLeaderboard(); updateOnlineStatus(); }, 5000);
+setInterval(function() { getLeaderboard(); updateOnlineStatus(); }, 60000);
 window.addEventListener('beforeunload', function() { if (autoSaveEnabled && lsAvailable()) saveGame(false); });
 elements.eyes.forEach(function(eye) {
 eye.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); });
