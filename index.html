@@ -48,16 +48,16 @@ align-items: center;
 }
 .xp-container {
 position: absolute;
-top: 30px;
+top: 20px;
 left: 50%;
 transform: translateX(-50%);
-width: 400px;
-max-width: 90%;
+width: 350px;
+max-width: 85%;
 z-index: 50;
 }
 .xp-bar-bg {
 width: 100%;
-height: 25px;
+height: 22px;
 background: var(--xp-bar-bg);
 border-radius: 15px;
 overflow: hidden;
@@ -92,29 +92,29 @@ left: 50%;
 transform: translate(-50%, -50%);
 font-weight: bold;
 color: var(--text-color);
-font-size: 0.9rem;
+font-size: 0.8rem;
 white-space: nowrap;
 }
 .level-badge {
 position: absolute;
-top: -10px;
-right: -10px;
+top: -8px;
+right: -8px;
 background: #ffca28;
 color: #5d4037;
-width: 35px;
-height: 35px;
+width: 30px;
+height: 30px;
 border-radius: 50%;
 display: flex;
 justify-content: center;
 align-items: center;
 font-weight: bold;
-font-size: 1rem;
+font-size: 0.9rem;
 box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
 .blob-container {
 position: relative;
-width: 300px;
-height: 300px;
+width: 280px;
+height: 280px;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -166,8 +166,8 @@ position: absolute;
 top: 35%;
 left: 50%;
 transform: translate(-50%, -50%);
-width: 160px;
-height: 100px;
+width: 150px;
+height: 90px;
 pointer-events: none;
 z-index: 20;
 }
@@ -179,8 +179,8 @@ margin-bottom: 10px;
 pointer-events: none;
 }
 .eye {
-width: 40px;
-height: 50px;
+width: 38px;
+height: 45px;
 background: white;
 border-radius: 50%;
 position: relative;
@@ -207,8 +207,8 @@ animation: eyeWinner 0.5s infinite;
 50% { transform: scale(1.2); }
 }
 .pupil {
-width: 16px;
-height: 20px;
+width: 15px;
+height: 18px;
 background: #333;
 border-radius: 50%;
 position: absolute;
@@ -219,8 +219,8 @@ transition: all 0.1s;
 pointer-events: none;
 }
 .mouth {
-width: 60px;
-height: 30px;
+width: 55px;
+height: 28px;
 background: #d84315;
 border-radius: 0 0 60px 60px;
 margin: 0 auto;
@@ -231,47 +231,47 @@ box-shadow: inset 0 5px 10px rgba(0,0,0,0.2);
 pointer-events: none;
 }
 .mouth.annoyed {
-height: 15px;
+height: 14px;
 border-radius: 60px 60px 0 0;
 background: #5d4037;
 }
 .mouth.laughing {
-height: 50px;
-width: 70px;
+height: 45px;
+width: 65px;
 border-radius: 0 0 70px 70px;
 }
 .mouth.eating {
 animation: chew 0.15s infinite;
 }
 @keyframes chew {
-0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
-50% { height: 20px; border-radius: 0 0 30px 30px; }
+0%, 100% { height: 32px; border-radius: 0 0 60px 60px; }
+50% { height: 18px; border-radius: 0 0 30px 30px; }
 }
 .mouth.drinking {
 animation: drink 0.25s infinite;
 }
 @keyframes drink {
-0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
-50% { height: 45px; border-radius: 50%; }
+0%, 100% { height: 32px; border-radius: 0 0 60px 60px; }
+50% { height: 42px; border-radius: 50%; }
 }
 .mouth.winner {
-height: 50px;
-width: 70px;
+height: 45px;
+width: 65px;
 border-radius: 0 0 70px 70px;
 background: #4caf50;
 }
 .mouth.loser {
-height: 20px;
+height: 18px;
 border-radius: 60px 60px 0 0;
 background: #f44336;
 }
 .tongue {
 position: absolute;
-bottom: -10px;
+bottom: -8px;
 left: 50%;
 transform: translateX(-50%);
-width: 40px;
-height: 20px;
+width: 38px;
+height: 18px;
 background: #ff8a80;
 border-radius: 50%;
 pointer-events: none;
@@ -281,20 +281,20 @@ position: absolute;
 top: 0;
 left: 0;
 right: 0;
-height: 10px;
+height: 9px;
 background: white;
 border-radius: 0 0 5px 5px;
 pointer-events: none;
 }
 .bubble {
 position: absolute;
-top: -80px;
+top: -70px;
 background: white;
-padding: 15px 25px;
-border-radius: 20px;
+padding: 12px 20px;
+border-radius: 18px;
 color: var(--text-color);
 font-weight: bold;
-font-size: 1.2rem;
+font-size: 1.1rem;
 box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 opacity: 0;
 transform: translateY(20px);
@@ -306,10 +306,10 @@ pointer-events: none;
 .bubble::after {
 content: '';
 position: absolute;
-bottom: -10px;
+bottom: -8px;
 left: 50%;
 transform: translateX(-50%);
-border-width: 10px 10px 0;
+border-width: 8px 8px 0;
 border-style: solid;
 border-color: white transparent;
 }
@@ -335,100 +335,103 @@ color: #c62828;
 }
 .items-container {
 position: absolute;
-bottom: 50px;
+bottom: 60px;
 left: 50%;
 transform: translateX(-50%);
 display: flex;
-gap: 30px;
+gap: 20px;
 z-index: 100;
 }
 .draggable-item {
-width: 100px;
-height: 100px;
+width: 85px;
+height: 85px;
 cursor: grab;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 position: relative;
-background: rgba(255,255,255,0.5);
-border-radius: 15px;
-padding: 10px;
+background: rgba(255,255,255,0.6);
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px);
+border-radius: 12px;
+padding: 8px;
 transition: transform 0.1s;
 -webkit-tap-highlight-color: transparent;
+border: 2px solid rgba(255,255,255,0.5);
 }
 .draggable-item:active {
 cursor: grabbing;
-transform: scale(1.15);
+transform: scale(1.12);
 }
 .draggable-item img {
-width: 70px;
-height: 70px;
+width: 55px;
+height: 55px;
 object-fit: contain;
-filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
 pointer-events: none;
 }
 .item-label {
-font-size: 0.75rem;
+font-size: 0.65rem;
 color: var(--text-color);
 font-weight: 600;
 text-align: center;
-margin-top: 5px;
+margin-top: 3px;
 white-space: nowrap;
 pointer-events: none;
 }
 .item-xp {
-font-size: 0.7rem;
+font-size: 0.6rem;
 color: #26a69a;
 font-weight: bold;
 pointer-events: none;
 }
 .menu-buttons {
 position: absolute;
-right: 30px;
-bottom: 50px;
+right: 15px;
+bottom: 60px;
 display: flex;
 flex-direction: column;
-gap: 15px;
+gap: 10px;
 z-index: 100;
 }
 .menu-btn {
-width: 80px;
-height: 80px;
+width: 65px;
+height: 65px;
 background: linear-gradient(135deg, #cfd8dc 0%, #b0bec5 100%);
-border-radius: 15px;
-border: 3px solid #90a4ae;
+border-radius: 12px;
+border: 2px solid #90a4ae;
 cursor: pointer;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 transition: transform 0.2s, box-shadow 0.2s;
-box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 -webkit-tap-highlight-color: transparent;
 }
 .menu-btn:hover {
 transform: scale(1.05);
-box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+box-shadow: 0 6px 16px rgba(0,0,0,0.3);
 }
 .menu-btn:active {
-transform: scale(0.98);
+transform: scale(0.96);
 }
 .menu-btn-icon {
-font-size: 2rem;
+font-size: 1.6rem;
 }
 .menu-btn-label {
-font-size: 0.7rem;
+font-size: 0.6rem;
 color: #37474f;
 font-weight: bold;
-margin-top: 3px;
+margin-top: 2px;
 }
 .fridge-btn .fridge-handle {
-width: 8px;
-height: 25px;
+width: 6px;
+height: 20px;
 background: #546e7a;
-border-radius: 4px;
-margin-top: 5px;
+border-radius: 3px;
+margin-top: 4px;
 }
 .modal {
 position: fixed;
@@ -436,13 +439,14 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background: rgba(0,0,0,0.5);
+background: rgba(0,0,0,0.6);
 display: none;
 justify-content: center;
 align-items: center;
 z-index: 1000;
 opacity: 0;
 transition: opacity 0.3s;
+padding: 10px;
 }
 .modal.active {
 display: flex;
@@ -450,14 +454,14 @@ opacity: 1;
 }
 .modal-content {
 background: var(--fridge-bg);
-border-radius: 20px;
-padding: 30px;
-max-width: 600px;
-width: 90%;
-max-height: 80vh;
+border-radius: 18px;
+padding: 20px;
+max-width: 500px;
+width: 95%;
+max-height: 85vh;
 overflow-y: auto;
 position: relative;
-border: 5px solid #90a4ae;
+border: 4px solid #90a4ae;
 transform: scale(0.9);
 transition: transform 0.3s;
 }
@@ -468,21 +472,21 @@ transform: scale(1);
 display: flex;
 justify-content: space-between;
 align-items: center;
-margin-bottom: 20px;
+margin-bottom: 15px;
 }
 .modal-title {
-font-size: 1.5rem;
+font-size: 1.3rem;
 color: #37474f;
 font-weight: bold;
 }
 .modal-close {
-width: 40px;
-height: 40px;
+width: 36px;
+height: 36px;
 background: #ef5350;
 border: none;
 border-radius: 50%;
 color: white;
-font-size: 1.5rem;
+font-size: 1.3rem;
 cursor: pointer;
 display: flex;
 justify-content: center;
@@ -494,24 +498,24 @@ transform: scale(1.1);
 }
 .stats-panel {
 position: absolute;
-left: 10px;
+left: 8px;
 top: 50%;
 transform: translateY(-50%);
-background: rgba(255,255,255,0.6);
+background: rgba(255,255,255,0.7);
 backdrop-filter: blur(10px);
 -webkit-backdrop-filter: blur(10px);
-padding: 12px 15px;
-border-radius: 12px;
-box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+padding: 10px 12px;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 z-index: 60;
-border: 1px solid rgba(255,255,255,0.3);
+border: 1px solid rgba(255,255,255,0.4);
 }
 .stat-item {
 display: flex;
 align-items: center;
-gap: 8px;
-margin-bottom: 8px;
-font-size: 0.8rem;
+gap: 6px;
+margin-bottom: 6px;
+font-size: 0.7rem;
 color: var(--text-color);
 white-space: nowrap;
 }
@@ -519,46 +523,30 @@ white-space: nowrap;
 margin-bottom: 0;
 }
 .stat-icon {
-font-size: 1.2rem;
+font-size: 1rem;
 }
 .stat-value {
 font-weight: bold;
-font-size: 0.85rem;
-}
-@media (max-width: 480px) {
-.stats-panel {
-padding: 6px 8px;
-left: 3px;
-}
-.stat-item {
-font-size: 0.65rem;
-gap: 3px;
-}
-.stat-icon {
-font-size: 0.9rem;
-}
-.stat-label {
-display: none;
-}
+font-size: 0.75rem;
 }
 .online-indicator {
 position: absolute;
-top: 30px;
-left: 30px;
+top: 15px;
+left: 10px;
 background: rgba(255,255,255,0.9);
-padding: 8px 15px;
-border-radius: 20px;
-font-size: 0.85rem;
+padding: 6px 12px;
+border-radius: 16px;
+font-size: 0.75rem;
 color: #546e7a;
 display: flex;
 align-items: center;
-gap: 8px;
+gap: 6px;
 box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 z-index: 100;
 }
 .online-dot {
-width: 10px;
-height: 10px;
+width: 8px;
+height: 8px;
 background: #4caf50;
 border-radius: 50%;
 animation: onlinePulse 2s infinite;
@@ -569,16 +557,16 @@ animation: onlinePulse 2s infinite;
 }
 .auto-save-indicator {
 position: absolute;
-top: 30px;
-right: 30px;
+top: 15px;
+right: 10px;
 background: rgba(255,255,255,0.9);
-padding: 8px 15px;
-border-radius: 20px;
-font-size: 0.85rem;
+padding: 6px 12px;
+border-radius: 16px;
+font-size: 0.75rem;
 color: #546e7a;
 display: flex;
 align-items: center;
-gap: 8px;
+gap: 6px;
 box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 z-index: 100;
 }
@@ -601,7 +589,7 @@ content: '🕐';
 position: absolute;
 color: #26a69a;
 font-weight: bold;
-font-size: 1.5rem;
+font-size: 1.3rem;
 pointer-events: none;
 animation: xpFloat 1s ease-out forwards;
 z-index: 200;
@@ -613,41 +601,41 @@ text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .achievement-notification {
 position: fixed;
-top: 100px;
+top: 80px;
 right: -400px;
 background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-padding: 15px 25px;
-border-radius: 15px;
-border: 3px solid #ffca28;
+padding: 12px 20px;
+border-radius: 12px;
+border: 2px solid #ffca28;
 box-shadow: 0 5px 20px rgba(255, 202, 40, 0.5);
 display: flex;
 align-items: center;
-gap: 15px;
+gap: 12px;
 z-index: 3000;
 transition: right 0.5s;
 }
 .achievement-notification.show {
-right: 30px;
+right: 15px;
 }
 .achievement-notification-icon {
-width: 50px;
-height: 50px;
+width: 45px;
+height: 45px;
 background: #ffca28;
 border-radius: 50%;
 display: flex;
 justify-content: center;
 align-items: center;
-font-size: 1.5rem;
+font-size: 1.3rem;
 }
 .achievement-notification-text {
 color: #5d4037;
 }
 .achievement-notification-title {
 font-weight: bold;
-font-size: 1rem;
+font-size: 0.9rem;
 }
 .achievement-notification-name {
-font-size: 0.85rem;
+font-size: 0.75rem;
 color: #78909c;
 }
 .levelup-celebration {
@@ -665,8 +653,8 @@ display: block;
 }
 .confetti {
 position: absolute;
-width: 10px;
-height: 10px;
+width: 8px;
+height: 8px;
 animation: confettiFall 3s ease-out forwards;
 }
 @keyframes confettiFall {
@@ -675,88 +663,91 @@ animation: confettiFall 3s ease-out forwards;
 }
 .drag-clone {
 position: fixed;
-width: 100px;
-height: 100px;
+width: 85px;
+height: 85px;
 pointer-events: none;
 z-index: 1001;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-background: rgba(255,255,255,0.9);
-border-radius: 15px;
-box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+background: rgba(255,255,255,0.95);
+border-radius: 12px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+border: 2px solid rgba(255,255,255,0.8);
 }
 .drag-clone img {
-width: 70px;
-height: 70px;
+width: 55px;
+height: 55px;
 object-fit: contain;
 }
 .drag-clone .item-label {
-font-size: 0.75rem;
+font-size: 0.65rem;
 color: var(--text-color);
 font-weight: 600;
-margin-top: 5px;
+margin-top: 3px;
 }
 .hint {
 position: absolute;
-bottom: 10px;
+bottom: 8px;
 color: rgba(1, 87, 155, 0.5);
-font-size: 0.85rem;
+font-size: 0.75rem;
 animation: pulse 2s infinite;
+text-align: center;
+width: 100%;
 }
 @keyframes pulse {
 0%, 100% { opacity: 0.5; }
 50% { opacity: 1; }
 }
 .btn-primary {
-padding: 12px 30px;
+padding: 10px 24px;
 background: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
 color: white;
 border: none;
-border-radius: 10px;
-font-size: 1rem;
+border-radius: 8px;
+font-size: 0.9rem;
 font-weight: bold;
 cursor: pointer;
-margin: 5px;
+margin: 4px;
 -webkit-tap-highlight-color: transparent;
 }
 .btn-primary:hover {
 transform: translateY(-2px);
-box-shadow: 0 6px 20px rgba(38, 166, 154, 0.6);
+box-shadow: 0 5px 15px rgba(38, 166, 154, 0.6);
 }
 .btn-secondary {
-padding: 12px 30px;
+padding: 10px 24px;
 background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
 color: white;
 border: none;
-border-radius: 10px;
-font-size: 1rem;
+border-radius: 8px;
+font-size: 0.9rem;
 font-weight: bold;
 cursor: pointer;
-margin: 5px;
+margin: 4px;
 -webkit-tap-highlight-color: transparent;
 }
 .btn-danger {
-padding: 12px 30px;
+padding: 10px 24px;
 background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
 color: white;
 border: none;
-border-radius: 10px;
-font-size: 1rem;
+border-radius: 8px;
+font-size: 0.9rem;
 font-weight: bold;
 cursor: pointer;
-margin: 5px;
+margin: 4px;
 -webkit-tap-highlight-color: transparent;
 }
 .input-field {
 width: 100%;
-padding: 12px 15px;
+padding: 10px 12px;
 border: 2px solid #cfd8dc;
-border-radius: 10px;
-font-size: 1rem;
+border-radius: 8px;
+font-size: 0.9rem;
 font-family: 'Nunito', sans-serif;
-margin-bottom: 15px;
+margin-bottom: 12px;
 }
 .input-field:focus {
 outline: none;
@@ -764,12 +755,13 @@ border-color: #26a69a;
 }
 .save-status {
 text-align: center;
-padding: 10px;
-border-radius: 10px;
-margin-top: 15px;
+padding: 8px;
+border-radius: 8px;
+margin-top: 12px;
 font-weight: bold;
 opacity: 0;
 transition: opacity 0.3s;
+font-size: 0.85rem;
 }
 .save-status.success {
 background: #c8e6c9;
@@ -785,50 +777,70 @@ opacity: 1;
 list-style: none;
 padding: 0;
 margin: 0;
+max-height: 350px;
+overflow-y: auto;
 }
 .leaderboard-item {
 display: flex;
 align-items: center;
-padding: 15px;
+padding: 12px;
 background: white;
-border-radius: 10px;
-margin-bottom: 10px;
+border-radius: 8px;
+margin-bottom: 8px;
+transition: transform 0.2s;
+}
+.leaderboard-item:hover {
+transform: scale(1.01);
 }
 .leaderboard-item.current-user {
 background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
 border: 2px solid #26a69a;
 }
 .leaderboard-rank {
-width: 40px;
-height: 40px;
+width: 35px;
+height: 35px;
 border-radius: 50%;
 display: flex;
 justify-content: center;
 align-items: center;
 font-weight: bold;
-margin-right: 15px;
+margin-right: 12px;
+flex-shrink: 0;
+font-size: 0.85rem;
 }
 .leaderboard-rank.gold { background: linear-gradient(135deg, #ffd700, #ffecb3); color: #5d4037; }
 .leaderboard-rank.silver { background: linear-gradient(135deg, #c0c0c0, #e0e0e0); color: #37474f; }
 .leaderboard-rank.bronze { background: linear-gradient(135deg, #cd7f32, #ffe0b2); color: #5d4037; }
 .leaderboard-rank.normal { background: #cfd8dc; color: #546e7a; }
-.leaderboard-info { flex: 1; }
-.leaderboard-name { font-weight: bold; color: #37474f; }
-.leaderboard-stats { font-size: 0.8rem; color: #78909c; margin-top: 3px; }
-.leaderboard-xp { font-weight: bold; color: #26a69a; margin-left: 15px; }
+.leaderboard-info { flex: 1; min-width: 0; }
+.leaderboard-name { font-weight: bold; color: #37474f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.85rem; }
+.leaderboard-stats { font-size: 0.7rem; color: #78909c; margin-top: 2px; }
+.leaderboard-xp { font-weight: bold; color: #26a69a; margin-left: 10px; flex-shrink: 0; font-size: 0.8rem; }
+.leaderboard-loading {
+text-align: center;
+padding: 30px;
+color: #78909c;
+font-size: 1rem;
+}
+.leaderboard-empty {
+text-align: center;
+padding: 30px;
+color: #78909c;
+font-size: 0.9rem;
+}
 .achievements-grid {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-gap: 15px;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 12px;
 }
 .achievement-card {
 background: white;
-border-radius: 15px;
-padding: 20px;
+border-radius: 12px;
+padding: 15px;
 display: flex;
 align-items: center;
-gap: 15px;
-border: 3px solid var(--achievement-locked);
+gap: 12px;
+border: 2px solid var(--achievement-locked);
 opacity: 0.6;
 }
 .achievement-card.unlocked {
@@ -837,36 +849,37 @@ opacity: 1;
 background: linear-gradient(135deg, #fff8e1, #ffecb3);
 }
 .achievement-icon {
-width: 50px;
-height: 50px;
+width: 45px;
+height: 45px;
 background: var(--achievement-locked);
 border-radius: 50%;
 display: flex;
 justify-content: center;
 align-items: center;
-font-size: 1.5rem;
+font-size: 1.3rem;
+flex-shrink: 0;
 }
 .achievement-card.unlocked .achievement-icon {
 background: var(--achievement-unlocked);
 }
-.achievement-info { flex: 1; }
-.achievement-name { font-size: 0.95rem; color: #37474f; font-weight: bold; }
-.achievement-desc { font-size: 0.75rem; color: #78909c; }
-.achievement-progress { font-size: 0.7rem; color: #90a4ae; margin-top: 5px; }
+.achievement-info { flex: 1; min-width: 0; }
+.achievement-name { font-size: 0.85rem; color: #37474f; font-weight: bold; }
+.achievement-desc { font-size: 0.65rem; color: #78909c; }
+.achievement-progress { font-size: 0.6rem; color: #90a4ae; margin-top: 4px; }
 .fridge-items {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-gap: 15px;
+grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+gap: 12px;
 }
 .fridge-item {
 background: white;
-border-radius: 15px;
-padding: 15px;
+border-radius: 12px;
+padding: 12px;
 display: flex;
 flex-direction: column;
 align-items: center;
 cursor: pointer;
-border: 3px solid transparent;
+border: 2px solid transparent;
 -webkit-tap-highlight-color: transparent;
 }
 .fridge-item.selected {
@@ -874,61 +887,59 @@ border-color: #26a69a;
 background: #e8f5e9;
 }
 .fridge-item img {
-width: 60px;
-height: 60px;
+width: 50px;
+height: 50px;
 object-fit: contain;
 }
 .fridge-item-name {
-font-size: 0.85rem;
+font-size: 0.75rem;
 color: #37474f;
 font-weight: 600;
-margin-top: 8px;
+margin-top: 6px;
 text-align: center;
 }
 .fridge-item-xp {
-font-size: 0.75rem;
+font-size: 0.65rem;
 color: #26a69a;
 font-weight: bold;
 }
-/* FIXED Tic Tac Toe - Symmetrical & Beautiful */
 .tic-tac-toe-board {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
-gap: 8px;
+gap: 6px;
 background: #90a4ae;
-padding: 8px;
-border-radius: 15px;
-margin: 20px auto;
-width: 266px;
-height: 266px;
+padding: 6px;
+border-radius: 12px;
+margin: 15px auto;
+width: 240px;
+height: 240px;
 }
 .tic-tac-toe-cell {
-width: 80px;
-height: 80px;
+width: 72px;
+height: 72px;
 background: white;
-border-radius: 10px;
+border-radius: 8px;
 display: flex;
 justify-content: center;
 align-items: center;
-font-size: 2.5rem;
+font-size: 2.2rem;
 font-weight: bold;
 cursor: pointer;
 -webkit-tap-highlight-color: transparent;
 position: relative;
 }
 .tic-tac-toe-cell.taken { cursor: not-allowed; }
-.tic-tac-toe-cell.x { 
+.tic-tac-toe-cell.x {
 color: #e53935;
-font-size: 3rem;
+font-size: 2.6rem;
 }
-.tic-tac-toe-cell.o { 
+.tic-tac-toe-cell.o {
 background: radial-gradient(circle at 30% 30%, #81d4fa, #4fc3f7);
 border-radius: 50%;
-width: 70px;
-height: 70px;
+width: 64px;
+height: 64px;
 }
 .tic-tac-toe-cell.winner { background: #c8e6c9; }
-/* Mini blob face for tic-tac-toe */
 .tic-tac-toe-blob-face {
 width: 100%;
 height: 100%;
@@ -939,12 +950,12 @@ align-items: center;
 }
 .tic-tac-toe-blob-eyes {
 display: flex;
-gap: 10px;
-margin-bottom: 5px;
+gap: 8px;
+margin-bottom: 4px;
 }
 .tic-tac-toe-blob-eye {
-width: 14px;
-height: 18px;
+width: 12px;
+height: 16px;
 background: white;
 border-radius: 50%;
 position: relative;
@@ -952,8 +963,8 @@ position: relative;
 .tic-tac-toe-blob-eye::after {
 content: '';
 position: absolute;
-width: 6px;
-height: 8px;
+width: 5px;
+height: 7px;
 background: #333;
 border-radius: 50%;
 top: 50%;
@@ -961,34 +972,33 @@ left: 50%;
 transform: translate(-50%, -50%);
 }
 .tic-tac-toe-blob-mouth {
-width: 24px;
-height: 12px;
+width: 20px;
+height: 10px;
 background: #d84315;
-border-radius: 0 0 24px 24px;
+border-radius: 0 0 20px 20px;
 }
-.tic-tac-toe-info { text-align: center; margin-bottom: 15px; }
-.tic-tac-toe-status { font-size: 1.2rem; font-weight: bold; color: #37474f; margin-bottom: 10px; }
-.tic-tac-toe-score { display: flex; justify-content: center; gap: 30px; font-size: 0.95rem; color: #546e7a; }
+.tic-tac-toe-info { text-align: center; margin-bottom: 12px; }
+.tic-tac-toe-status { font-size: 1.1rem; font-weight: bold; color: #37474f; margin-bottom: 8px; }
+.tic-tac-toe-score { display: flex; justify-content: center; gap: 20px; font-size: 0.85rem; color: #546e7a; }
 .tic-tac-toe-score span { font-weight: bold; }
-/* Obstacle Game - FIXED Collision */
 .obstacle-game-container {
 position: relative;
-width: 400px;
-height: 400px;
+width: 320px;
+height: 320px;
 background: #263238;
-border-radius: 15px;
-margin: 20px auto;
+border-radius: 12px;
+margin: 15px auto;
 overflow: hidden;
 }
 .obstacle-player {
 position: absolute;
-width: 60px;
-height: 60px;
+width: 50px;
+height: 50px;
 background: radial-gradient(circle at 30% 30%, #81d4fa, #4fc3f7);
 border-radius: 50%;
 cursor: grab;
 z-index: 10;
-box-shadow: 0 4px 15px rgba(79, 195, 247, 0.5);
+box-shadow: 0 4px 12px rgba(79, 195, 247, 0.5);
 }
 .obstacle-player:active {
 cursor: grabbing;
@@ -1005,15 +1015,15 @@ pointer-events: none;
 .obstacle-player-eyes {
 display: flex;
 justify-content: center;
-gap: 8px;
+gap: 6px;
 position: absolute;
-top: 15px;
+top: 12px;
 left: 50%;
 transform: translateX(-50%);
 }
 .obstacle-player-eye {
-width: 14px;
-height: 18px;
+width: 12px;
+height: 15px;
 background: white;
 border-radius: 50%;
 position: relative;
@@ -1021,8 +1031,8 @@ position: relative;
 .obstacle-player-eye::after {
 content: '';
 position: absolute;
-width: 6px;
-height: 8px;
+width: 5px;
+height: 7px;
 background: #333;
 border-radius: 50%;
 top: 50%;
@@ -1031,68 +1041,72 @@ transform: translate(-50%, -50%);
 }
 .obstacle-player-mouth {
 position: absolute;
-bottom: 12px;
+bottom: 10px;
 left: 50%;
 transform: translateX(-50%);
-width: 24px;
-height: 12px;
+width: 20px;
+height: 10px;
 background: #d84315;
-border-radius: 0 0 24px 24px;
+border-radius: 0 0 20px 20px;
 }
 .obstacle {
 position: absolute;
 background: #ef5350;
-border-radius: 5px;
+border-radius: 4px;
 }
 .obstacle-game-info {
 text-align: center;
-margin-bottom: 15px;
+margin-bottom: 12px;
 }
 .obstacle-game-status {
-font-size: 1.2rem;
+font-size: 1rem;
 font-weight: bold;
 color: #37474f;
-margin-bottom: 10px;
+margin-bottom: 8px;
 }
 .obstacle-game-score {
 display: flex;
 justify-content: center;
-gap: 30px;
-font-size: 0.95rem;
+gap: 25px;
+font-size: 0.85rem;
 color: #546e7a;
 }
 .obstacle-game-score span {
 font-weight: bold;
 }
-.settings-section { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 2px solid #cfd8dc; }
+.settings-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #cfd8dc; }
 .settings-section:last-child { border-bottom: none; }
-.settings-title { font-size: 1.2rem; color: #546e7a; font-weight: bold; margin-bottom: 15px; }
-.settings-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.player-id-display { background: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px; }
-.player-id-label { font-size: 0.85rem; color: #78909c; margin-bottom: 5px; }
-.player-id-value { font-size: 1.1rem; font-weight: bold; color: #26a69a; word-break: break-all; }
-.export-import-area { background: white; padding: 15px; border-radius: 10px; margin-top: 15px; }
-.export-import-area textarea { width: 100%; height: 100px; border: 2px solid #cfd8dc; border-radius: 10px; padding: 10px; font-family: monospace; font-size: 0.8rem; resize: vertical; margin-bottom: 10px; }
+.settings-title { font-size: 1.1rem; color: #546e7a; font-weight: bold; margin-bottom: 12px; }
+.settings-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.player-id-display { background: white; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 12px; }
+.player-id-label { font-size: 0.75rem; color: #78909c; margin-bottom: 4px; }
+.player-id-value { font-size: 0.95rem; font-weight: bold; color: #26a69a; word-break: break-all; }
+.export-import-area { background: white; padding: 12px; border-radius: 8px; margin-top: 12px; }
+.export-import-area textarea { width: 100%; height: 80px; border: 2px solid #cfd8dc; border-radius: 8px; padding: 8px; font-family: monospace; font-size: 0.7rem; resize: vertical; margin-bottom: 8px; }
 .welcome-content { text-align: center; }
-.welcome-content h2 { color: #37474f; margin-bottom: 15px; }
-.welcome-content p { color: #546e7a; margin-bottom: 20px; line-height: 1.6; }
-.welcome-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+.welcome-content h2 { color: #37474f; margin-bottom: 12px; font-size: 1.3rem; }
+.welcome-content p { color: #546e7a; margin-bottom: 15px; line-height: 1.5; font-size: 0.9rem; }
+.welcome-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
 .user-nickname-display { font-weight: bold; color: #26a69a; }
 .minigame-tabs {
 display: flex;
-gap: 10px;
-margin-bottom: 20px;
+gap: 8px;
+margin-bottom: 15px;
+flex-wrap: wrap;
 }
 .minigame-tab {
-padding: 10px 20px;
+padding: 8px 16px;
 background: #cfd8dc;
 border: none;
-border-radius: 10px;
+border-radius: 8px;
 cursor: pointer;
 font-weight: bold;
 color: #546e7a;
 transition: all 0.2s;
 -webkit-tap-highlight-color: transparent;
+font-size: 0.8rem;
+flex: 1;
+min-width: 120px;
 }
 .minigame-tab.active {
 background: #26a69a;
@@ -1106,6 +1120,279 @@ display: none;
 }
 .game-content.active {
 display: block;
+}
+.leaderboard-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 12px;
+padding: 8px;
+background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+border-radius: 8px;
+}
+.leaderboard-header-title {
+font-weight: bold;
+color: #2e7d32;
+font-size: 0.9rem;
+}
+.leaderboard-header-count {
+font-size: 0.75rem;
+color: #546e7a;
+}
+.fridge-section { margin-bottom: 20px; }
+.fridge-section-title { font-size: 1rem; color: #546e7a; font-weight: bold; margin-bottom: 10px; }
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 480px) {
+.blob-container {
+width: 240px;
+height: 240px;
+}
+.face {
+width: 130px;
+height: 80px;
+}
+.eye {
+width: 34px;
+height: 40px;
+}
+.pupil {
+width: 13px;
+height: 16px;
+}
+.mouth {
+width: 50px;
+height: 25px;
+}
+.items-container {
+bottom: 50px;
+gap: 15px;
+}
+.draggable-item {
+width: 75px;
+height: 75px;
+}
+.draggable-item img {
+width: 48px;
+height: 48px;
+}
+.menu-buttons {
+right: 10px;
+bottom: 50px;
+gap: 8px;
+}
+.menu-btn {
+width: 58px;
+height: 58px;
+}
+.menu-btn-icon {
+font-size: 1.4rem;
+}
+.menu-btn-label {
+font-size: 0.55rem;
+}
+.stats-panel {
+left: 5px;
+padding: 8px 10px;
+}
+.stat-item {
+font-size: 0.65rem;
+gap: 4px;
+margin-bottom: 4px;
+}
+.stat-icon {
+font-size: 0.9rem;
+}
+.xp-container {
+top: 15px;
+width: 280px;
+}
+.xp-bar-bg {
+height: 20px;
+}
+.xp-text {
+font-size: 0.7rem;
+}
+.level-badge {
+width: 26px;
+height: 26px;
+font-size: 0.8rem;
+}
+.online-indicator {
+top: 12px;
+left: 5px;
+padding: 5px 10px;
+font-size: 0.7rem;
+}
+.auto-save-indicator {
+top: 12px;
+right: 5px;
+padding: 5px 10px;
+font-size: 0.7rem;
+}
+.modal-content {
+padding: 15px;
+width: 98%;
+max-height: 90vh;
+}
+.modal-title {
+font-size: 1.15rem;
+}
+.modal-close {
+width: 32px;
+height: 32px;
+font-size: 1.2rem;
+}
+.achievements-grid {
+grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+gap: 10px;
+}
+.achievement-card {
+padding: 12px;
+gap: 10px;
+}
+.achievement-icon {
+width: 40px;
+height: 40px;
+font-size: 1.1rem;
+}
+.achievement-name {
+font-size: 0.75rem;
+}
+.achievement-desc {
+font-size: 0.6rem;
+}
+.fridge-items {
+grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+gap: 10px;
+}
+.fridge-item {
+padding: 10px;
+}
+.fridge-item img {
+width: 45px;
+height: 45px;
+}
+.tic-tac-toe-board {
+width: 210px;
+height: 210px;
+gap: 5px;
+padding: 5px;
+}
+.tic-tac-toe-cell {
+width: 63px;
+height: 63px;
+font-size: 2rem;
+}
+.tic-tac-toe-cell.x {
+font-size: 2.3rem;
+}
+.tic-tac-toe-cell.o {
+width: 56px;
+height: 56px;
+}
+.obstacle-game-container {
+width: 280px;
+height: 280px;
+}
+.obstacle-player {
+width: 45px;
+height: 45px;
+}
+.btn-primary, .btn-secondary, .btn-danger {
+padding: 8px 18px;
+font-size: 0.8rem;
+margin: 3px;
+}
+.input-field {
+padding: 8px 10px;
+font-size: 0.85rem;
+}
+.leaderboard-list {
+max-height: 280px;
+}
+.leaderboard-item {
+padding: 10px;
+}
+.leaderboard-rank {
+width: 30px;
+height: 30px;
+font-size: 0.75rem;
+}
+.leaderboard-name {
+font-size: 0.75rem;
+}
+.leaderboard-stats {
+font-size: 0.65rem;
+}
+.leaderboard-xp {
+font-size: 0.7rem;
+}
+.hint {
+font-size: 0.7rem;
+bottom: 5px;
+}
+.bubble {
+top: -60px;
+padding: 10px 18px;
+font-size: 1rem;
+}
+}
+
+@media (max-width: 360px) {
+.blob-container {
+width: 200px;
+height: 200px;
+}
+.face {
+width: 110px;
+height: 70px;
+}
+.eye {
+width: 30px;
+height: 36px;
+}
+.mouth {
+width: 45px;
+height: 22px;
+}
+.items-container {
+bottom: 45px;
+gap: 12px;
+}
+.draggable-item {
+width: 68px;
+height: 68px;
+}
+.draggable-item img {
+width: 42px;
+height: 42px;
+}
+.menu-btn {
+width: 52px;
+height: 52px;
+}
+.menu-btn-icon {
+font-size: 1.3rem;
+}
+.stats-panel {
+display: none;
+}
+.xp-container {
+width: 240px;
+}
+.tic-tac-toe-board {
+width: 180px;
+height: 180px;
+}
+.tic-tac-toe-cell {
+width: 54px;
+height: 54px;
+}
+.obstacle-game-container {
+width: 260px;
+height: 260px;
+}
 }
 </style>
 </head>
@@ -1124,7 +1411,7 @@ display: block;
 <span class="online-dot"></span>
 <span id="userNickname" class="user-nickname-display">Гость</span>
 <span style="color: #90a4ae;">|</span>
-<span id="onlineCount">🌐 0 онлайн</span>
+<span id="onlineCount">🌐 0</span>
 </div>
 <!-- Auto Save Indicator -->
 <div class="auto-save-indicator" id="autoSaveIndicator">Автосохранение</div>
@@ -1197,7 +1484,7 @@ display: block;
 </div>
 <div class="menu-btn" id="leaderboardBtn">
 <span class="menu-btn-icon">🏆</span>
-<span class="menu-btn-label">Топ-10</span>
+<span class="menu-btn-label">Топ-20</span>
 </div>
 <div class="menu-btn" id="achievementsBtn">
 <span class="menu-btn-icon">🏅</span>
@@ -1205,7 +1492,7 @@ display: block;
 </div>
 <div class="menu-btn" id="settingsBtn">
 <span class="menu-btn-icon">⚙️</span>
-<span class="menu-btn-label">Настройки</span>
+<span class="menu-btn-label">Настр.</span>
 </div>
 </div>
 <div class="hint">Перетащи еду или воду в рот!</div>
@@ -1250,11 +1537,17 @@ display: block;
 <div class="modal" id="leaderboardModal">
 <div class="modal-content">
 <div class="modal-header">
-<span class="modal-title">🏆 Топ-10 Игроков</span>
+<span class="modal-title">🏆 Топ-20 Игроков</span>
 <button class="modal-close" id="leaderboardClose">×</button>
 </div>
+<div class="leaderboard-header">
+<span class="leaderboard-header-title">Рейтинг по XP</span>
+<span class="leaderboard-header-count" id="leaderboardCount">0 игроков</span>
+</div>
 <div class="settings-section">
-<ul class="leaderboard-list" id="leaderboardList"></ul>
+<ul class="leaderboard-list" id="leaderboardList">
+<li class="leaderboard-loading">Загрузка рейтинга...</li>
+</ul>
 </div>
 <div class="settings-buttons">
 <button class="btn-secondary" id="refreshLeaderboardBtn">🔄 Обновить</button>
@@ -1381,12 +1674,10 @@ messagingSenderId: "196103290442",
 appId: "1:196103290442:web:a8a1a8dee3880416dfb0b3",
 measurementId: "G-TX10GYXF4Z"
 };
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 // ============================================
-
 // Data
 const foodData = [
 { id: 'chicken', name: 'Курица', xp: 25, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png' },
@@ -1414,7 +1705,6 @@ const achievementsData = [
 ];
 const annoyedResponses = ["Эй! Не надо!", "Бля, ты чего?!", "Отстань!", "Мне неприятно!", "Ай!"];
 const tickleResponses = ["Ха-ха-ха!", "Ой! Прекрати!", "Щекотно!", "Ахаха!", "Хи-хи!"];
-
 // State
 let level = 1, currentXp = 0, xpToNextLevel = 100, totalXp = 0;
 let foodCount = 0, drinkCount = 0, tickleCount = 0, eyeClickCount = 0, gamesWon = 0;
@@ -1427,20 +1717,17 @@ let dragClone = null, dragType = null;
 let tttBoard = [], tttPlayerTurn = true, tttGameActive = true;
 let tttPlayerScore = 0, tttBlobScore = 0, tttDraws = 0;
 let modalOpen = false;
-
 // Obstacle Game State
 let obstacleGameActive = false;
 let obstacleScore = 0;
 let obstacleBest = 0;
-let obstaclePlayerX = 170;
-let obstaclePlayerY = 170;
+let obstaclePlayerX = 135;
+let obstaclePlayerY = 135;
 let obstacles = [];
 let obstacleInterval = null;
 let obstacleSpeed = 2;
 let obstacleSpeedIncrease = 0.3;
-
 const elements = {};
-
 function cacheElements() {
 elements.blob = document.getElementById('blob');
 elements.blobContainer = document.getElementById('blobContainer');
@@ -1470,6 +1757,7 @@ elements.leaderboardBtn = document.getElementById('leaderboardBtn');
 elements.leaderboardClose = document.getElementById('leaderboardClose');
 elements.refreshLeaderboardBtn = document.getElementById('refreshLeaderboardBtn');
 elements.submitToLeaderboardBtn = document.getElementById('submitToLeaderboardBtn');
+elements.leaderboardCount = document.getElementById('leaderboardCount');
 elements.foodImg = document.getElementById('foodImg');
 elements.foodName = document.getElementById('foodName');
 elements.foodXp = document.getElementById('foodXp');
@@ -1517,12 +1805,10 @@ elements.obstacleBest = document.getElementById('obstacleBest');
 elements.obstacleStartBtn = document.getElementById('obstacleStartBtn');
 elements.obstacleResetBtn = document.getElementById('obstacleResetBtn');
 }
-
 function lsAvailable() {
 try { localStorage.setItem('test', 'test'); localStorage.removeItem('test'); return true; }
 catch { return false; }
 }
-
 function getPlayerId() {
 if (!lsAvailable()) return 'no_storage';
 let ids = JSON.parse(localStorage.getItem('livingBlob_playerIds') || '[]');
@@ -1535,11 +1821,9 @@ playerId = ids[ids.length - 1];
 }
 return playerId;
 }
-
 function getGameState() {
 return { level, currentXp, xpToNextLevel, totalXp, foodCount, drinkCount, tickleCount, eyeClickCount, gamesWon, nickname: userNickname, selectedFoodId: selectedFood.id, selectedDrinkId: selectedDrink.id, unlockedAchievements, tttPlayerScore, tttBlobScore, tttDraws, obstacleBest };
 }
-
 function loadGameState(data) {
 if (!data) return false;
 level = data.level || 1; currentXp = data.currentXp || 0; xpToNextLevel = data.xpToNextLevel || 100;
@@ -1552,18 +1836,15 @@ if (data.selectedFoodId) selectedFood = foodData.find(f => f.id === data.selecte
 if (data.selectedDrinkId) selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
 return true;
 }
-
 // === FIREBASE SAVE FUNCTION ===
 function saveGame(showNotif = true) {
 const playerId = getPlayerId();
 const gameState = getGameState();
-
 // Сохраняем локально
 if (lsAvailable()) {
 localStorage.setItem('livingBlob_' + playerId, JSON.stringify(gameState));
 localStorage.setItem('livingBlob_nickname', userNickname);
 }
-
 // Отправляем в Firebase
 db.ref('users/' + playerId).set({
 nickname: userNickname,
@@ -1585,10 +1866,8 @@ updateOnlineStatus();
 console.error(error);
 if (showNotif) showSaveStatus('Ошибка сети!', 'error');
 });
-
 return true;
 }
-
 function loadGame() {
 if (!lsAvailable()) { showSaveStatus('LocalStorage недоступен!', 'error'); return false; }
 try {
@@ -1597,34 +1876,30 @@ if (saved) { loadGameState(JSON.parse(saved)); showSaveStatus('Загружен�
 return false;
 } catch { showSaveStatus('Ошибка загрузки!', 'error'); return false; }
 }
-
 function showSaveStatus(msg, type) {
 elements.saveStatus.textContent = msg;
 elements.saveStatus.className = 'save-status ' + type;
 setTimeout(() => { elements.saveStatus.className = 'save-status'; }, 3000);
 }
-
 function showAutoSaveIndicator(state) {
 elements.autoSaveIndicator.className = 'auto-save-indicator ' + state;
 setTimeout(() => { if (autoSaveEnabled) elements.autoSaveIndicator.className = 'auto-save-indicator'; }, 2000);
 }
-
 function setupAutoSave() {
 if (autoSaveInterval) clearInterval(autoSaveInterval);
 if (autoSaveEnabled && lsAvailable()) {
 autoSaveInterval = setInterval(() => { showAutoSaveIndicator('saving'); saveGame(false); }, 30000);
 }
 }
-
 // === FIREBASE ONLINE STATUS ===
 function updateOnlineStatus() {
 const playerId = getPlayerId();
 db.ref('users/' + playerId + '/lastSeen').set(Date.now());
 }
-
-// === FIREBASE LEADERBOARD ===
+// === FIREBASE LEADERBOARD - FIXED FOR 20 PLAYERS ===
 function getLeaderboard() {
-db.ref('users').orderByChild('totalXp').limitToLast(10).once('value', (snapshot) => {
+elements.leaderboardList.innerHTML = '<li class="leaderboard-loading">Загрузка рейтинга...</li>';
+db.ref('users').orderByChild('totalXp').limitToLast(20).once('value', (snapshot) => {
 const lb = [];
 snapshot.forEach((childSnapshot) => {
 const user = childSnapshot.val();
@@ -1638,41 +1913,51 @@ isOnline: isOnline
 });
 });
 renderLeaderboardUI(lb.reverse());
+}).catch((error) => {
+console.error('Leaderboard error:', error);
+elements.leaderboardList.innerHTML = '<li class="leaderboard-empty">Ошибка загрузки рейтинга</li>';
 });
 }
-
 function renderLeaderboardUI(users) {
+if (users.length === 0) {
+elements.leaderboardList.innerHTML = '<li class="leaderboard-empty">Пока нет игроков в рейтинге. Будьте первыми!</li>';
+elements.leaderboardCount.textContent = '0 игроков';
+return;
+}
 let html = '';
 users.forEach((u, i) => {
 const rank = i + 1;
 const rankClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : 'normal';
 const isCurrent = u.nickname === userNickname;
-const onlineDot = u.isOnline ? '<span style="color:#4caf50; margin-left:5px;">●</span>' : '';
+const onlineDot = u.isOnline ? '<span style="color:#4caf50; margin-left:5px;" title="Онлайн">●</span>' : '';
 html += '<li class="leaderboard-item ' + (isCurrent ? 'current-user' : '') + '">' +
 '<div class="leaderboard-rank ' + rankClass + '">' + rank + '</div>' +
 '<div class="leaderboard-info">' +
-'<div class="leaderboard-name">' + u.nickname + (isCurrent ? ' (Вы)' : '') + onlineDot + '</div>' +
+'<div class="leaderboard-name">' + escapeHtml(u.nickname) + (isCurrent ? ' (Вы)' : '') + onlineDot + '</div>' +
 '<div class="leaderboard-stats">Ур.' + u.level + ' 🍗' + u.foodCount + '</div>' +
 '</div>' +
 '<div class="leaderboard-xp">' + u.totalXp + ' XP</div>' +
 '</li>';
 });
 elements.leaderboardList.innerHTML = html;
+elements.leaderboardCount.textContent = users.length + ' игроков';
 const onlineCount = users.filter(u => u.isOnline).length;
-elements.onlineCountEl.textContent = '🌐 ' + onlineCount + ' онлайн';
+elements.onlineCountEl.textContent = '🌐 ' + onlineCount;
 }
-
+function escapeHtml(text) {
+const div = document.createElement('div');
+div.textContent = text;
+return div.innerHTML;
+}
 function openLeaderboardModal() {
-renderLeaderboard();
+getLeaderboard();
 modalOpen = true;
 elements.leaderboardModal.classList.add('active');
 }
-
 function closeLeaderboardModal() {
 modalOpen = false;
 elements.leaderboardModal.classList.remove('active');
 }
-
 function updateDisplay() {
 elements.xpFill.style.width = (currentXp / xpToNextLevel * 100) + '%';
 elements.xpText.textContent = 'Уровень ' + level + ' • ' + currentXp + '/' + xpToNextLevel + ' XP';
@@ -1682,7 +1967,6 @@ elements.tickleCountEl.textContent = tickleCount;
 elements.gamesWonEl.textContent = gamesWon;
 elements.totalXpEl.textContent = totalXp;
 }
-
 function renderFridgeItems() {
 elements.foodItems.innerHTML = foodData.map(item =>
 '<div class="fridge-item ' + (item.id === selectedFood.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="food">' +
@@ -1702,7 +1986,6 @@ renderFridgeItems();
 saveGame(false);
 }));
 }
-
 function renderAchievements() {
 const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
 elements.achievementsGrid.innerHTML = achievementsData.map(ach => {
@@ -1716,7 +1999,6 @@ return '<div class="achievement-card ' + (unlocked ? 'unlocked' : '') + '">' +
 '</div></div>';
 }).join('');
 }
-
 function checkAchievements() {
 const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
 let newUnlock = false;
@@ -1731,7 +2013,6 @@ newUnlock = true;
 });
 if (newUnlock) { renderAchievements(); updateDisplay(); saveGame(false); }
 }
-
 function annoyBlob() {
 if (isBusy || isAnnoyed || modalOpen) return;
 isAnnoyed = true; isBusy = true; eyeClickCount++;
@@ -1762,7 +2043,6 @@ saveGame(false);
 }, 500);
 }, 1500);
 }
-
 function tickleBlob() {
 if (isBusy || isTickled || modalOpen) return;
 isTickled = true; isBusy = true; tickleCount++; updateDisplay();
@@ -1789,7 +2069,6 @@ saveGame(false);
 }, 500);
 }, 2000);
 }
-
 function addXp(amount, x, y) {
 currentXp += amount; totalXp += amount;
 const xpGain = document.createElement('div');
@@ -1802,7 +2081,6 @@ updateDisplay();
 checkAchievements();
 if (currentXp >= xpToNextLevel) levelUp();
 }
-
 function levelUp() {
 level++; currentXp -= xpToNextLevel; xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
 elements.levelBadge.textContent = level;
@@ -1813,7 +2091,6 @@ updateDisplay();
 checkAchievements();
 saveGame(false);
 }
-
 function showCelebration() {
 elements.celebration.classList.add('active');
 elements.celebration.innerHTML = '';
@@ -1828,7 +2105,6 @@ elements.celebration.appendChild(c);
 }
 setTimeout(function() { elements.celebration.classList.remove('active'); elements.celebration.innerHTML = ''; }, 3000);
 }
-
 document.addEventListener('mousemove', function(e) {
 if (isBusy || isAnnoyed || isTickled || modalOpen) return;
 const rect = elements.blobContainer.getBoundingClientRect();
@@ -1840,7 +2116,6 @@ elements.pupils.forEach(function(p) {
 p.style.transform = 'translate(-50%, -50%) translate(' + x + 'px, ' + y + 'px)';
 });
 });
-
 setInterval(function() {
 if (!isBusy && !isAnnoyed && !isTickled && !modalOpen) {
 elements.eyes.forEach(function(e) {
@@ -1849,7 +2124,6 @@ setTimeout(function() { e.style.animation = ''; }, 200);
 });
 }
 }, 4000);
-
 function startDrag(e, type) {
 if (isBusy || isAnnoyed || isTickled || modalOpen) return;
 e.preventDefault();
@@ -1863,16 +2137,14 @@ document.body.appendChild(dragClone);
 moveDragClone(e);
 itemEl.style.opacity = '0.3';
 }
-
 function moveDragClone(e) {
 if (!dragClone) return;
 e.preventDefault();
 const cx = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
 const cy = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-dragClone.style.left = (cx - 50) + 'px';
-dragClone.style.top = (cy - 50) + 'px';
+dragClone.style.left = (cx - 42) + 'px';
+dragClone.style.top = (cy - 42) + 'px';
 }
-
 function endDrag(e) {
 if (!dragClone) return;
 const cloneRect = dragClone.getBoundingClientRect();
@@ -1884,7 +2156,6 @@ elements.foodItem.style.opacity = '1';
 elements.drinkItem.style.opacity = '1';
 dragType = null;
 }
-
 function interact(type, x, y) {
 isBusy = true;
 const itemData = type === 'food' ? selectedFood : selectedDrink;
@@ -1899,7 +2170,6 @@ addXp(itemData.xp, x, y);
 setTimeout(function() { isBusy = false; elements.bubble.textContent = 'Ещё!'; saveGame(false); }, 1500);
 }, 1500);
 }
-
 // Tic Tac Toe - FIXED SYMMETRICAL
 function initTicTacToe() {
 elements.tttBoard.innerHTML = '';
@@ -1914,7 +2184,6 @@ elements.tttBoard.appendChild(cell);
 tttPlayerTurn = true; tttGameActive = true;
 elements.tttStatus.textContent = 'Твой ход! (X)';
 }
-
 function createBlobFace() {
 const face = document.createElement('div');
 face.className = 'tic-tac-toe-blob-face';
@@ -1927,7 +2196,6 @@ face.innerHTML = `
 `;
 return face;
 }
-
 function handleTicTacToeClick(cell) {
 const idx = parseInt(cell.dataset.index);
 if (!tttGameActive || !tttPlayerTurn || tttBoard[idx]) return;
@@ -1940,7 +2208,6 @@ tttPlayerTurn = false;
 elements.tttStatus.textContent = 'Блоб думает...';
 setTimeout(blobMakeMove, 800);
 }
-
 function blobMakeMove() {
 if (!tttGameActive) return;
 let move = findBestMove('O');
@@ -1961,7 +2228,6 @@ if (tttBoard.every(function(c) { return c; })) { endTicTacToeGame('draw'); retur
 tttPlayerTurn = true;
 elements.tttStatus.textContent = 'Твой ход! (X)';
 }
-
 function findBestMove(player) {
 const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 for (let i = 0; i < wins.length; i++) {
@@ -1975,26 +2241,24 @@ if (tttBoard[c] === '') return c;
 }
 return -1;
 }
-
 function checkTicTacToeWin(player) {
 const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 return wins.some(function(w) { return tttBoard[w[0]] === player && tttBoard[w[1]] === player && tttBoard[w[2]] === player; });
 }
-
 function endTicTacToeGame(result) {
 tttGameActive = false;
 if (result === 'player') {
 tttPlayerScore++; elements.tttStatus.textContent = 'Победа! +20 XP';
 elements.bubble.textContent = 'Хорошо...'; elements.bubble.classList.add('loser', 'show'); elements.mouth.classList.add('loser');
-addXp(20, elements.blobContainer.getBoundingClientRect().left + 150, elements.blobContainer.getBoundingClientRect().top);
+addXp(20, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
 } else if (result === 'blob') {
 tttBlobScore++; gamesWon++; elements.tttStatus.textContent = 'Я победил! +10 XP';
 elements.bubble.textContent = 'Ура!'; elements.bubble.classList.add('winner', 'show'); elements.mouth.classList.add('winner');
 elements.eyes.forEach(function(e) { e.classList.add('winner'); });
-addXp(10, elements.blobContainer.getBoundingClientRect().left + 150, elements.blobContainer.getBoundingClientRect().top);
+addXp(10, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
 } else {
 tttDraws++; elements.tttStatus.textContent = 'Ничья! +5 XP';
-elements.bubble.textContent = 'Ничья!'; addXp(5, elements.blobContainer.getBoundingClientRect().left + 150, elements.blobContainer.getBoundingClientRect().top);
+elements.bubble.textContent = 'Ничья!'; addXp(5, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
 }
 updateDisplay(); checkAchievements(); saveGame(false);
 elements.tttPlayerScore.textContent = tttPlayerScore;
@@ -2006,7 +2270,6 @@ elements.mouth.classList.remove('winner', 'loser');
 elements.eyes.forEach(function(e) { e.classList.remove('winner'); });
 }, 3000);
 }
-
 // Obstacle Game - FIXED COLLISION DETECTION
 function initObstacleGame() {
 obstacleScore = 0;
@@ -2015,13 +2278,13 @@ obstacleSpeedIncrease = 0.3;
 obstacles = [];
 elements.obstacleScore.textContent = '0';
 elements.obstacleBest.textContent = obstacleBest;
-elements.obstaclePlayer.style.left = '170px';
-elements.obstaclePlayer.style.top = '170px';
-obstaclePlayerX = 170;
-obstaclePlayerY = 170;
+const containerWidth = elements.obstacleContainer.offsetWidth;
+obstaclePlayerX = containerWidth / 2 - 25;
+obstaclePlayerY = containerWidth / 2 - 25;
+elements.obstaclePlayer.style.left = obstaclePlayerX + 'px';
+elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
 elements.obstacleContainer.querySelectorAll('.obstacle').forEach(o => o.remove());
 }
-
 function startObstacleGame() {
 if (obstacleGameActive) return;
 obstacleGameActive = true;
@@ -2031,28 +2294,26 @@ initObstacleGame();
 obstacleInterval = setInterval(spawnObstacle, 1000);
 requestAnimationFrame(updateObstacleGame);
 }
-
 function pauseObstacleGame() {
 obstacleGameActive = false;
 elements.obstacleStartBtn.textContent = '▶️ Старт';
 elements.obstacleStatus.textContent = 'Пауза';
 if (obstacleInterval) clearInterval(obstacleInterval);
 }
-
 function stopObstacleGame() {
 obstacleGameActive = false;
 elements.obstacleStartBtn.textContent = '▶️ Старт';
 if (obstacleInterval) clearInterval(obstacleInterval);
 }
-
 function spawnObstacle() {
 if (!obstacleGameActive) return;
 const obstacle = document.createElement('div');
 obstacle.className = 'obstacle';
-const size = Math.random() * 40 + 30;
+const size = Math.random() * 35 + 25;
 obstacle.style.width = size + 'px';
 obstacle.style.height = size + 'px';
-obstacle.style.left = Math.random() * (400 - size) + 'px';
+const containerWidth = elements.obstacleContainer.offsetWidth;
+obstacle.style.left = Math.random() * (containerWidth - size) + 'px';
 obstacle.style.top = '-50px';
 obstacle.dataset.y = -50;
 obstacle.dataset.w = size;
@@ -2060,24 +2321,21 @@ obstacle.dataset.h = size;
 elements.obstacleContainer.appendChild(obstacle);
 obstacles.push(obstacle);
 }
-
 function updateObstacleGame() {
 if (!obstacleGameActive) return;
-
 const playerRect = {
-x: obstaclePlayerX + 10,
-y: obstaclePlayerY + 10,
-w: 40,
-h: 40
+x: obstaclePlayerX + 8,
+y: obstaclePlayerY + 8,
+w: 34,
+h: 34
 };
-
 obstacles.forEach((obstacle, index) => {
 let y = parseFloat(obstacle.dataset.y);
 y += obstacleSpeed;
 obstacle.dataset.y = y;
 obstacle.style.top = y + 'px';
-
-if (y > 400) {
+const containerHeight = elements.obstacleContainer.offsetHeight;
+if (y > containerHeight) {
 obstacle.remove();
 obstacles.splice(index, 1);
 obstacleScore++;
@@ -2086,13 +2344,11 @@ if (obstacleScore % 5 === 0) {
 obstacleSpeed += obstacleSpeedIncrease;
 }
 }
-
 // FIXED: Accurate collision detection
 const obsX = parseFloat(obstacle.style.left);
 const obsY = y;
 const obsW = parseFloat(obstacle.dataset.w);
 const obsH = parseFloat(obstacle.dataset.h);
-
 if (playerRect.x < obsX + obsW &&
 playerRect.x + playerRect.w > obsX &&
 playerRect.y < obsY + obsH &&
@@ -2103,13 +2359,11 @@ if (obstacleScore > obstacleBest) {
 obstacleBest = obstacleScore;
 elements.obstacleBest.textContent = obstacleBest;
 }
-addXp(obstacleScore * 2, elements.obstacleContainer.getBoundingClientRect().left + 200, elements.obstacleContainer.getBoundingClientRect().top + 200);
+addXp(obstacleScore * 2, elements.obstacleContainer.getBoundingClientRect().left + 140, elements.obstacleContainer.getBoundingClientRect().top + 140);
 }
 });
-
 requestAnimationFrame(updateObstacleGame);
 }
-
 let obstacleDragging = false;
 function startObstacleDrag(e) {
 if (!obstacleGameActive) return;
@@ -2122,20 +2376,19 @@ e.preventDefault();
 const containerRect = elements.obstacleContainer.getBoundingClientRect();
 const cx = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
 const cy = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-obstaclePlayerX = cx - containerRect.left - 30;
-obstaclePlayerY = cy - containerRect.top - 30;
-obstaclePlayerX = Math.max(0, Math.min(340, obstaclePlayerX));
-obstaclePlayerY = Math.max(0, Math.min(340, obstaclePlayerY));
+const containerWidth = elements.obstacleContainer.offsetWidth;
+obstaclePlayerX = cx - containerRect.left - 25;
+obstaclePlayerY = cy - containerRect.top - 25;
+obstaclePlayerX = Math.max(0, Math.min(containerWidth - 50, obstaclePlayerX));
+obstaclePlayerY = Math.max(0, Math.min(containerWidth - 50, obstaclePlayerY));
 elements.obstaclePlayer.style.left = obstaclePlayerX + 'px';
 elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
 }
 function endObstacleDrag() {
 obstacleDragging = false;
 }
-
 function openModal(modal) { modalOpen = true; modal.classList.add('active'); }
 function closeModal(modal) { modalOpen = false; modal.classList.remove('active'); }
-
 function init() {
 cacheElements();
 playerId = getPlayerId();
@@ -2156,22 +2409,17 @@ initTicTacToe();
 initObstacleGame();
 setupAutoSave();
 updateOnlineStatus();
-
 setInterval(function() {
 getLeaderboard();
 updateOnlineStatus();
 }, 5000);
-
 window.addEventListener('beforeunload', function() { if (autoSaveEnabled && lsAvailable()) saveGame(false); });
-
 elements.eyes.forEach(function(eye) {
 eye.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); });
 eye.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); }, { passive: false });
 });
-
 elements.blob.addEventListener('click', function(e) { if (e.target.closest('.eye')) return; tickleBlob(); });
 elements.blob.addEventListener('touchstart', function(e) { if (e.target.closest('.eye')) return; tickleBlob(); }, { passive: false });
-
 elements.foodItem.addEventListener('mousedown', function(e) { startDrag(e, 'food'); });
 elements.foodItem.addEventListener('touchstart', function(e) { startDrag(e, 'food'); }, { passive: false });
 elements.drinkItem.addEventListener('mousedown', function(e) { startDrag(e, 'drink'); });
@@ -2180,15 +2428,12 @@ document.addEventListener('mousemove', moveDragClone);
 document.addEventListener('touchmove', moveDragClone, { passive: false });
 document.addEventListener('mouseup', endDrag);
 document.addEventListener('touchend', endDrag);
-
 elements.fridgeBtn.addEventListener('click', function() { openModal(elements.fridgeModal); });
 elements.fridgeClose.addEventListener('click', function() { closeModal(elements.fridgeModal); });
 elements.fridgeModal.addEventListener('click', function(e) { if (e.target.id === 'fridgeModal') closeModal(elements.fridgeModal); });
-
 elements.achievementsBtn.addEventListener('click', function() { renderAchievements(); openModal(elements.achievementsModal); });
 elements.achievementsClose.addEventListener('click', function() { closeModal(elements.achievementsModal); });
 elements.achievementsModal.addEventListener('click', function(e) { if (e.target.id === 'achievementsModal') closeModal(elements.achievementsModal); });
-
 elements.leaderboardBtn.addEventListener('click', openLeaderboardModal);
 elements.leaderboardClose.addEventListener('click', closeLeaderboardModal);
 elements.leaderboardModal.addEventListener('click', function(e) { if (e.target.id === 'leaderboardModal') closeLeaderboardModal(); });
@@ -2198,7 +2443,6 @@ saveGame(false);
 getLeaderboard();
 showSaveStatus('Отправлено в рейтинг!', 'success');
 });
-
 document.querySelectorAll('.minigame-tab').forEach(tab => {
 tab.addEventListener('click', function() {
 document.querySelectorAll('.minigame-tab').forEach(t => t.classList.remove('active'));
@@ -2213,15 +2457,12 @@ initObstacleGame();
 }
 });
 });
-
 elements.minigamesBtn.addEventListener('click', function() { openModal(elements.minigamesModal); elements.blob.classList.add('playing'); });
 elements.minigamesClose.addEventListener('click', function() { closeModal(elements.minigamesModal); elements.blob.classList.remove('playing'); stopObstacleGame(); });
 elements.minigamesModal.addEventListener('click', function(e) { if (e.target.id === 'minigamesModal') { closeModal(elements.minigamesModal); elements.blob.classList.remove('playing'); stopObstacleGame(); } });
-
 elements.settingsBtn.addEventListener('click', function() { elements.playerIdEl.textContent = playerId; openModal(elements.settingsModal); });
 elements.settingsClose.addEventListener('click', function() { closeModal(elements.settingsModal); });
 elements.settingsModal.addEventListener('click', function(e) { if (e.target.id === 'settingsModal') closeModal(elements.settingsModal); });
-
 elements.saveBtn.addEventListener('click', function() { saveGame(true); });
 elements.loadBtn.addEventListener('click', function() { loadGame(); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); });
 elements.resetBtn.addEventListener('click', function() {
@@ -2248,7 +2489,6 @@ elements.userNicknameEl.textContent = userNickname;
 saveGame(true); getLeaderboard();
 });
 elements.tttResetBtn.addEventListener('click', initTicTacToe);
-
 elements.obstacleStartBtn.addEventListener('click', function() {
 if (obstacleGameActive) {
 pauseObstacleGame();
@@ -2257,14 +2497,12 @@ startObstacleGame();
 }
 });
 elements.obstacleResetBtn.addEventListener('click', initObstacleGame);
-
 elements.obstaclePlayer.addEventListener('mousedown', startObstacleDrag);
 elements.obstaclePlayer.addEventListener('touchstart', startObstacleDrag, { passive: false });
 document.addEventListener('mousemove', moveObstacleDrag);
 document.addEventListener('touchmove', moveObstacleDrag, { passive: false });
 document.addEventListener('mouseup', endObstacleDrag);
 document.addEventListener('touchend', endObstacleDrag);
-
 elements.welcomeStartBtn.addEventListener('click', function() {
 closeModal(elements.welcomeModal);
 elements.bubble.textContent = 'Давай дружить!'; elements.bubble.classList.add('show');
@@ -2275,7 +2513,6 @@ setTimeout(function() { openModal(elements.welcomeModal); }, 500);
 setTimeout(function() { elements.bubble.textContent = 'С возвращением!'; elements.bubble.classList.add('show'); }, 500);
 }
 }
-
 init();
 </script>
 </body>
