@@ -531,7 +531,7 @@ font-size: 0.75rem;
 }
 .online-indicator {
 position: absolute;
-top: 55px;
+top: 60px;
 left: 10px;
 background: rgba(255,255,255,0.9);
 padding: 6px 12px;
@@ -557,7 +557,7 @@ animation: onlinePulse 2s infinite;
 }
 .auto-save-indicator {
 position: absolute;
-top: 55px;
+top: 60px;
 right: 10px;
 background: rgba(255,255,255,0.9);
 padding: 6px 12px;
@@ -1142,270 +1142,79 @@ color: #546e7a;
 .fridge-section { margin-bottom: 20px; }
 .fridge-section-title { font-size: 1rem; color: #546e7a; font-weight: bold; margin-bottom: 10px; }
 
-/* MOBILE OPTIMIZATIONS */
 @media (max-width: 480px) {
-.blob-container {
-width: 240px;
-height: 240px;
-}
-.face {
-width: 130px;
-height: 80px;
-}
-.eye {
-width: 34px;
-height: 40px;
-}
-.pupil {
-width: 13px;
-height: 16px;
-}
-.mouth {
-width: 50px;
-height: 25px;
-}
-.items-container {
-bottom: 100px;
-gap: 15px;
-}
-.draggable-item {
-width: 75px;
-height: 75px;
-}
-.draggable-item img {
-width: 48px;
-height: 48px;
-}
-.menu-buttons {
-right: 10px;
-bottom: 80px;
-gap: 8px;
-}
-.menu-btn {
-width: 58px;
-height: 58px;
-}
-.menu-btn-icon {
-font-size: 1.4rem;
-}
-.menu-btn-label {
-font-size: 0.55rem;
-}
-.stats-panel {
-left: 5px;
-top: 42%;
-padding: 8px 10px;
-}
-.stat-item {
-font-size: 0.65rem;
-gap: 4px;
-margin-bottom: 4px;
-}
-.stat-icon {
-font-size: 0.9rem;
-}
-.xp-container {
-top: 15px;
-width: 280px;
-}
-.xp-bar-bg {
-height: 20px;
-}
-.xp-text {
-font-size: 0.7rem;
-}
-.level-badge {
-width: 26px;
-height: 26px;
-font-size: 0.8rem;
-}
-.online-indicator {
-top: 60px;
-left: 5px;
-padding: 5px 10px;
-font-size: 0.7rem;
-}
-.auto-save-indicator {
-top: 60px;
-right: 5px;
-padding: 5px 10px;
-font-size: 0.7rem;
-}
-.modal-content {
-padding: 15px;
-width: 98%;
-max-height: 90vh;
-}
-.modal-title {
-font-size: 1.15rem;
-}
-.modal-close {
-width: 32px;
-height: 32px;
-font-size: 1.2rem;
-}
-.achievements-grid {
-grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-gap: 10px;
-}
-.achievement-card {
-padding: 12px;
-gap: 10px;
-}
-.achievement-icon {
-width: 40px;
-height: 40px;
-font-size: 1.1rem;
-}
-.achievement-name {
-font-size: 0.75rem;
-}
-.achievement-desc {
-font-size: 0.6rem;
-}
-.fridge-items {
-grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-gap: 10px;
-}
-.fridge-item {
-padding: 10px;
-}
-.fridge-item img {
-width: 45px;
-height: 45px;
-}
-.tic-tac-toe-board {
-width: 210px;
-height: 210px;
-gap: 5px;
-padding: 5px;
-}
-.tic-tac-toe-cell {
-width: 63px;
-height: 63px;
-font-size: 2rem;
-}
-.tic-tac-toe-cell.x {
-font-size: 2.3rem;
-}
-.tic-tac-toe-cell.o {
-width: 56px;
-height: 56px;
-}
-.obstacle-game-container {
-width: 280px;
-height: 280px;
-}
-.obstacle-player {
-width: 45px;
-height: 45px;
-}
-.btn-primary, .btn-secondary, .btn-danger {
-padding: 8px 18px;
-font-size: 0.8rem;
-margin: 3px;
-}
-.input-field {
-padding: 8px 10px;
-font-size: 0.85rem;
-}
-.leaderboard-list {
-max-height: 280px;
-}
-.leaderboard-item {
-padding: 10px;
-}
-.leaderboard-rank {
-width: 30px;
-height: 30px;
-font-size: 0.75rem;
-}
-.leaderboard-name {
-font-size: 0.75rem;
-}
-.leaderboard-stats {
-font-size: 0.65rem;
-}
-.leaderboard-xp {
-font-size: 0.7rem;
-}
-.hint {
-font-size: 0.7rem;
-bottom: 5px;
-}
-.bubble {
-top: -60px;
-padding: 10px 18px;
-font-size: 1rem;
-}
+.blob-container { width: 240px; height: 240px; }
+.face { width: 130px; height: 80px; }
+.eye { width: 34px; height: 40px; }
+.pupil { width: 13px; height: 16px; }
+.mouth { width: 50px; height: 25px; }
+.items-container { bottom: 100px; gap: 15px; }
+.draggable-item { width: 75px; height: 75px; }
+.draggable-item img { width: 48px; height: 48px; }
+.menu-buttons { right: 10px; bottom: 80px; gap: 8px; }
+.menu-btn { width: 58px; height: 58px; }
+.menu-btn-icon { font-size: 1.4rem; }
+.menu-btn-label { font-size: 0.55rem; }
+.stats-panel { left: 5px; top: 42%; padding: 8px 10px; }
+.stat-item { font-size: 0.65rem; gap: 4px; margin-bottom: 4px; }
+.stat-icon { font-size: 0.9rem; }
+.xp-container { top: 15px; width: 280px; }
+.xp-bar-bg { height: 20px; }
+.xp-text { font-size: 0.7rem; }
+.level-badge { width: 26px; height: 26px; font-size: 0.8rem; }
+.online-indicator { top: 60px; left: 5px; padding: 5px 10px; font-size: 0.7rem; }
+.auto-save-indicator { top: 60px; right: 5px; padding: 5px 10px; font-size: 0.7rem; }
+.modal-content { padding: 15px; width: 98%; max-height: 90vh; }
+.modal-title { font-size: 1.15rem; }
+.modal-close { width: 32px; height: 32px; font-size: 1.2rem; }
+.achievements-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+.achievement-card { padding: 12px; gap: 10px; }
+.achievement-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+.achievement-name { font-size: 0.75rem; }
+.achievement-desc { font-size: 0.6rem; }
+.fridge-items { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 10px; }
+.fridge-item { padding: 10px; }
+.fridge-item img { width: 45px; height: 45px; }
+.tic-tac-toe-board { width: 210px; height: 210px; gap: 5px; padding: 5px; }
+.tic-tac-toe-cell { width: 63px; height: 63px; font-size: 2rem; }
+.tic-tac-toe-cell.x { font-size: 2.3rem; }
+.tic-tac-toe-cell.o { width: 56px; height: 56px; }
+.obstacle-game-container { width: 280px; height: 280px; }
+.obstacle-player { width: 45px; height: 45px; }
+.btn-primary, .btn-secondary, .btn-danger { padding: 8px 18px; font-size: 0.8rem; margin: 3px; }
+.input-field { padding: 8px 10px; font-size: 0.85rem; }
+.leaderboard-list { max-height: 280px; }
+.leaderboard-item { padding: 10px; }
+.leaderboard-rank { width: 30px; height: 30px; font-size: 0.75rem; }
+.leaderboard-name { font-size: 0.75rem; }
+.leaderboard-stats { font-size: 0.65rem; }
+.leaderboard-xp { font-size: 0.7rem; }
+.hint { font-size: 0.7rem; bottom: 5px; }
+.bubble { top: -60px; padding: 10px 18px; font-size: 1rem; }
 }
 
 @media (max-width: 360px) {
-.blob-container {
-width: 200px;
-height: 200px;
-}
-.face {
-width: 110px;
-height: 70px;
-}
-.eye {
-width: 30px;
-height: 36px;
-}
-.mouth {
-width: 45px;
-height: 22px;
-}
-.items-container {
-bottom: 90px;
-gap: 12px;
-}
-.draggable-item {
-width: 68px;
-height: 68px;
-}
-.draggable-item img {
-width: 42px;
-height: 42px;
-}
-.menu-btn {
-width: 52px;
-height: 52px;
-}
-.menu-btn-icon {
-font-size: 1.3rem;
-}
-.stats-panel {
-display: none;
-}
-.xp-container {
-width: 240px;
-}
-.tic-tac-toe-board {
-width: 180px;
-height: 180px;
-}
-.tic-tac-toe-cell {
-width: 54px;
-height: 54px;
-}
-.obstacle-game-container {
-width: 260px;
-height: 260px;
-}
-.online-indicator {
-top: 58px;
-}
-.auto-save-indicator {
-top: 58px;
-}
+.blob-container { width: 200px; height: 200px; }
+.face { width: 110px; height: 70px; }
+.eye { width: 30px; height: 36px; }
+.mouth { width: 45px; height: 22px; }
+.items-container { bottom: 90px; gap: 12px; }
+.draggable-item { width: 68px; height: 68px; }
+.draggable-item img { width: 42px; height: 42px; }
+.menu-btn { width: 52px; height: 52px; }
+.menu-btn-icon { font-size: 1.3rem; }
+.stats-panel { display: none; }
+.xp-container { width: 240px; }
+.tic-tac-toe-board { width: 180px; height: 180px; }
+.tic-tac-toe-cell { width: 54px; height: 54px; }
+.obstacle-game-container { width: 260px; height: 260px; }
+.online-indicator { top: 58px; }
+.auto-save-indicator { top: 58px; }
 }
 </style>
 </head>
 <body>
 <div class="scene">
-<!-- XP Bar -->
 <div class="xp-container">
 <div class="xp-bar-bg">
 <div class="xp-bar-fill" id="xpFill"></div>
@@ -1413,39 +1222,20 @@ top: 58px;
 </div>
 <div class="level-badge" id="levelBadge">1</div>
 </div>
-<!-- Online Indicator -->
 <div class="online-indicator">
 <span class="online-dot"></span>
 <span id="userNickname" class="user-nickname-display">Гость</span>
 <span style="color: #90a4ae;">|</span>
 <span id="onlineCount">🌐 0</span>
 </div>
-<!-- Auto Save Indicator -->
 <div class="auto-save-indicator" id="autoSaveIndicator">Автосохранение</div>
-<!-- Stats Panel -->
 <div class="stats-panel">
-<div class="stat-item">
-<span class="stat-icon">🍗</span>
-<span class="stat-value" id="foodCount">0</span>
+<div class="stat-item"><span class="stat-icon">🍗</span><span class="stat-value" id="foodCount">0</span></div>
+<div class="stat-item"><span class="stat-icon">💧</span><span class="stat-value" id="drinkCount">0</span></div>
+<div class="stat-item"><span class="stat-icon">👆</span><span class="stat-value" id="tickleCount">0</span></div>
+<div class="stat-item"><span class="stat-icon">🎮</span><span class="stat-value" id="gamesWon">0</span></div>
+<div class="stat-item"><span class="stat-icon">⭐</span><span class="stat-value" id="totalXp">0</span></div>
 </div>
-<div class="stat-item">
-<span class="stat-icon">💧</span>
-<span class="stat-value" id="drinkCount">0</span>
-</div>
-<div class="stat-item">
-<span class="stat-icon">👆</span>
-<span class="stat-value" id="tickleCount">0</span>
-</div>
-<div class="stat-item">
-<span class="stat-icon">🎮</span>
-<span class="stat-value" id="gamesWon">0</span>
-</div>
-<div class="stat-item">
-<span class="stat-icon">⭐</span>
-<span class="stat-value" id="totalXp">0</span>
-</div>
-</div>
-<!-- The Character -->
 <div class="blob-container" id="blobContainer">
 <div class="bubble" id="bubble">Привет!</div>
 <div class="blob" id="blob">
@@ -1461,51 +1251,25 @@ top: 58px;
 </div>
 </div>
 </div>
-<!-- Draggable Items -->
 <div class="items-container">
 <div class="draggable-item" id="foodItem" data-type="food">
 <img id="foodImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png" alt="Food">
-<div class="item-label">
-<span id="foodName">Курица</span>
-<div class="item-xp" id="foodXp">+25 XP</div>
-</div>
+<div class="item-label"><span id="foodName">Курица</span><div class="item-xp" id="foodXp">+25 XP</div></div>
 </div>
 <div class="draggable-item" id="drinkItem" data-type="drink">
 <img id="drinkImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png" alt="Drink">
-<div class="item-label">
-<span id="drinkName">Вода</span>
-<div class="item-xp" id="drinkXp">+15 XP</div>
+<div class="item-label"><span id="drinkName">Вода</span><div class="item-xp" id="drinkXp">+15 XP</div></div>
 </div>
 </div>
-</div>
-<!-- Menu Buttons -->
 <div class="menu-buttons">
-<div class="menu-btn fridge-btn" id="fridgeBtn">
-<span class="menu-btn-icon">🧊</span>
-<span class="menu-btn-label">Еда</span>
-<div class="fridge-handle"></div>
-</div>
-<div class="menu-btn" id="minigamesBtn">
-<span class="menu-btn-icon">🎮</span>
-<span class="menu-btn-label">Игры</span>
-</div>
-<div class="menu-btn" id="leaderboardBtn">
-<span class="menu-btn-icon">🏆</span>
-<span class="menu-btn-label">Топ-20</span>
-</div>
-<div class="menu-btn" id="achievementsBtn">
-<span class="menu-btn-icon">🏅</span>
-<span class="menu-btn-label">Ачивки</span>
-</div>
-<div class="menu-btn" id="settingsBtn">
-<span class="menu-btn-icon">⚙️</span>
-<span class="menu-btn-label">Настр.</span>
-</div>
+<div class="menu-btn fridge-btn" id="fridgeBtn"><span class="menu-btn-icon">🧊</span><span class="menu-btn-label">Еда</span><div class="fridge-handle"></div></div>
+<div class="menu-btn" id="minigamesBtn"><span class="menu-btn-icon">🎮</span><span class="menu-btn-label">Игры</span></div>
+<div class="menu-btn" id="leaderboardBtn"><span class="menu-btn-icon">🏆</span><span class="menu-btn-label">Топ-20</span></div>
+<div class="menu-btn" id="achievementsBtn"><span class="menu-btn-icon">🏅</span><span class="menu-btn-label">Ачивки</span></div>
+<div class="menu-btn" id="settingsBtn"><span class="menu-btn-icon">⚙️</span><span class="menu-btn-label">Настр.</span></div>
 </div>
 <div class="hint">Перетащи еду или воду в рот!</div>
-<!-- Level Up Celebration -->
 <div class="levelup-celebration" id="celebration"></div>
-<!-- Achievement Notification -->
 <div class="achievement-notification" id="achievementNotification">
 <div class="achievement-notification-icon">🏆</div>
 <div class="achievement-notification-text">
@@ -1513,48 +1277,28 @@ top: 58px;
 <div class="achievement-notification-name" id="achievementNotificationName">Название</div>
 </div>
 </div>
-<!-- Fridge Modal -->
 <div class="modal" id="fridgeModal">
 <div class="modal-content">
-<div class="modal-header">
-<span class="modal-title">🧊 Холодильник</span>
-<button class="modal-close" id="fridgeClose">×</button>
-</div>
-<div class="fridge-section">
-<div class="fridge-section-title">🍗 Еда</div>
-<div class="fridge-items" id="foodItems"></div>
-</div>
-<div class="fridge-section">
-<div class="fridge-section-title">💧 Напитки</div>
-<div class="fridge-items" id="drinkItems"></div>
+<div class="modal-header"><span class="modal-title">🧊 Холодильник</span><button class="modal-close" id="fridgeClose">×</button></div>
+<div class="fridge-section"><div class="fridge-section-title">🍗 Еда</div><div class="fridge-items" id="foodItems"></div></div>
+<div class="fridge-section"><div class="fridge-section-title">💧 Напитки</div><div class="fridge-items" id="drinkItems"></div></div>
 </div>
 </div>
-</div>
-<!-- Achievements Modal -->
 <div class="modal" id="achievementsModal">
 <div class="modal-content">
-<div class="modal-header">
-<span class="modal-title">🏅 Достижения</span>
-<button class="modal-close" id="achievementsClose">×</button>
-</div>
+<div class="modal-header"><span class="modal-title">🏅 Достижения</span><button class="modal-close" id="achievementsClose">×</button></div>
 <div class="achievements-grid" id="achievementsGrid"></div>
 </div>
 </div>
-<!-- Leaderboard Modal -->
 <div class="modal" id="leaderboardModal">
 <div class="modal-content">
-<div class="modal-header">
-<span class="modal-title">🏆 Топ-20 Игроков</span>
-<button class="modal-close" id="leaderboardClose">×</button>
-</div>
+<div class="modal-header"><span class="modal-title">🏆 Топ-20 Игроков</span><button class="modal-close" id="leaderboardClose">×</button></div>
 <div class="leaderboard-header">
 <span class="leaderboard-header-title">Рейтинг по XP</span>
 <span class="leaderboard-header-count" id="leaderboardCount">0 игроков</span>
 </div>
 <div class="settings-section">
-<ul class="leaderboard-list" id="leaderboardList">
-<li class="leaderboard-loading">Загрузка рейтинга...</li>
-</ul>
+<ul class="leaderboard-list" id="leaderboardList"><li class="leaderboard-loading">Загрузка рейтинга...</li></ul>
 </div>
 <div class="settings-buttons">
 <button class="btn-secondary" id="refreshLeaderboardBtn">🔄 Обновить</button>
@@ -1562,116 +1306,73 @@ top: 58px;
 </div>
 </div>
 </div>
-<!-- Mini Games Modal -->
 <div class="modal" id="minigamesModal">
 <div class="modal-content">
-<div class="modal-header">
-<span class="modal-title">🎮 Мини-игры</span>
-<button class="modal-close" id="minigamesClose">×</button>
-</div>
+<div class="modal-header"><span class="modal-title">🎮 Мини-игры</span><button class="modal-close" id="minigamesClose">×</button></div>
 <div class="minigame-tabs">
 <button class="minigame-tab active" data-game="tictactoe">Крестики-Нолики</button>
 <button class="minigame-tab" data-game="obstacle">Уклоняйся</button>
 </div>
-<!-- Tic Tac Toe Game -->
 <div id="tictactoeGame" class="game-content active">
 <div class="tic-tac-toe-info">
 <div class="tic-tac-toe-status" id="tttStatus">Твой ход! (X)</div>
-<div class="tic-tac-toe-score">
-<div>Ты: <span id="tttPlayerScore">0</span></div>
-<div>Блоб: <span id="tttBlobScore">0</span></div>
-<div>Ничьи: <span id="tttDraws">0</span></div>
-</div>
+<div class="tic-tac-toe-score"><div>Ты: <span id="tttPlayerScore">0</span></div><div>Блоб: <span id="tttBlobScore">0</span></div><div>Ничьи: <span id="tttDraws">0</span></div></div>
 </div>
 <div class="tic-tac-toe-board" id="tttBoard"></div>
-<div class="settings-buttons">
-<button class="btn-primary" id="tttResetBtn">Новая игра</button>
+<div class="settings-buttons"><button class="btn-primary" id="tttResetBtn">Новая игра</button></div>
 </div>
-</div>
-<!-- Obstacle Game -->
 <div id="obstacleGame" class="game-content">
 <div class="obstacle-game-info">
 <div class="obstacle-game-status" id="obstacleStatus">Перетаскивай блоба! Избегай красных блоков!</div>
-<div class="obstacle-game-score">
-<div>Счёт: <span id="obstacleScore">0</span></div>
-<div>Рекорд: <span id="obstacleBest">0</span></div>
-</div>
+<div class="obstacle-game-score"><div>Счёт: <span id="obstacleScore">0</span></div><div>Рекорд: <span id="obstacleBest">0</span></div></div>
 </div>
 <div class="obstacle-game-container" id="obstacleContainer">
 <div class="obstacle-player" id="obstaclePlayer">
 <div class="obstacle-player-face">
-<div class="obstacle-player-eyes">
-<div class="obstacle-player-eye"></div>
-<div class="obstacle-player-eye"></div>
-</div>
+<div class="obstacle-player-eyes"><div class="obstacle-player-eye"></div><div class="obstacle-player-eye"></div></div>
 <div class="obstacle-player-mouth"></div>
 </div>
 </div>
 </div>
-<div class="settings-buttons">
-<button class="btn-primary" id="obstacleStartBtn">▶️ Старт</button>
-<button class="btn-secondary" id="obstacleResetBtn">🔄 Сброс</button>
+<div class="settings-buttons"><button class="btn-primary" id="obstacleStartBtn">▶️ Старт</button><button class="btn-secondary" id="obstacleResetBtn">🔄 Сброс</button></div>
 </div>
 </div>
 </div>
-</div>
-<!-- Settings Modal -->
 <div class="modal" id="settingsModal">
 <div class="modal-content">
-<div class="modal-header">
-<span class="modal-title">⚙️ Настройки</span>
-<button class="modal-close" id="settingsClose">×</button>
-</div>
+<div class="modal-header"><span class="modal-title">⚙️ Настройки</span><button class="modal-close" id="settingsClose">×</button></div>
 <div class="settings-section">
 <div class="settings-title">👤 Профиль</div>
 <input type="text" class="input-field" id="nicknameInput" placeholder="Ваш ник" maxlength="20">
-<div class="settings-buttons">
-<button class="btn-primary" id="saveNicknameBtn">Сохранить ник</button>
-</div>
+<div class="settings-buttons"><button class="btn-primary" id="saveNicknameBtn">Сохранить ник</button></div>
 </div>
 <div class="settings-section">
 <div class="settings-title">💾 Сохранение</div>
-<div class="player-id-display">
-<div class="player-id-label">ID:</div>
-<div class="player-id-value" id="playerId">Загрузка...</div>
-</div>
-<div class="settings-buttons">
-<button class="btn-primary" id="saveBtn">Сохранить</button>
-<button class="btn-secondary" id="loadBtn">Загрузить</button>
-<button class="btn-danger" id="resetBtn">Сброс</button>
-</div>
+<div class="player-id-display"><div class="player-id-label">ID:</div><div class="player-id-value" id="playerId">Загрузка...</div></div>
+<div class="settings-buttons"><button class="btn-primary" id="saveBtn">Сохранить</button><button class="btn-secondary" id="loadBtn">Загрузить</button><button class="btn-danger" id="resetBtn">Сброс</button></div>
 <div class="save-status" id="saveStatus"></div>
 </div>
 <div class="settings-section">
 <div class="settings-title">📤 Экспорт / Импорт</div>
 <div class="export-import-area">
 <textarea id="exportImportData" placeholder="Код сохранения..."></textarea>
-<div class="settings-buttons">
-<button class="btn-secondary" id="exportBtn">Экспорт</button>
-<button class="btn-primary" id="importBtn">Импорт</button>
+<div class="settings-buttons"><button class="btn-secondary" id="exportBtn">Экспорт</button><button class="btn-primary" id="importBtn">Импорт</button></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<!-- Welcome Modal -->
 <div class="modal" id="welcomeModal">
 <div class="modal-content">
 <div class="welcome-content">
 <h2>👋 Добро пожаловать!</h2>
 <p>Кормите, поите, щекочите блоба!</p>
 <p><strong>👆 Живот</strong> = щекотка | <strong>👁️ Глаз</strong> = ой!</p>
-<div class="welcome-buttons">
-<button class="btn-primary" id="welcomeStartBtn">Начать!</button>
-</div>
+<div class="welcome-buttons"><button class="btn-primary" id="welcomeStartBtn">Начать!</button></div>
 </div>
 </div>
 </div>
 </div>
 <script>
-// ============================================
-// FIREBASE CONFIG
-// ============================================
 const firebaseConfig = {
 apiKey: "AIzaSyD-py6cHpsfZCOOHl1ouY4cXJGepPl0OT4",
 authDomain: "bloblob-82656.firebaseapp.com",
@@ -1681,11 +1382,8 @@ messagingSenderId: "196103290442",
 appId: "1:196103290442:web:a8a1a8dee3880416dfb0b3",
 measurementId: "G-TX10GYXF4Z"
 };
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-// ============================================
-// Data
 const foodData = [
 { id: 'chicken', name: 'Курица', xp: 25, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png' },
 { id: 'burger', name: 'Бургер', xp: 35, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/134fe074b-69dc-4957-a33a-4f0751c46d5e.png' },
@@ -1712,7 +1410,6 @@ const achievementsData = [
 ];
 const annoyedResponses = ["Эй! Не надо!", "Бля, ты чего?!", "Отстань!", "Мне неприятно!", "Ай!"];
 const tickleResponses = ["Ха-ха-ха!", "Ой! Прекрати!", "Щекотно!", "Ахаха!", "Хи-хи!"];
-// State
 let level = 1, currentXp = 0, xpToNextLevel = 100, totalXp = 0;
 let foodCount = 0, drinkCount = 0, tickleCount = 0, eyeClickCount = 0, gamesWon = 0;
 let isBusy = false, isAnnoyed = false, isTickled = false;
@@ -1724,16 +1421,9 @@ let dragClone = null, dragType = null;
 let tttBoard = [], tttPlayerTurn = true, tttGameActive = true;
 let tttPlayerScore = 0, tttBlobScore = 0, tttDraws = 0;
 let modalOpen = false;
-// Obstacle Game State
-let obstacleGameActive = false;
-let obstacleScore = 0;
-let obstacleBest = 0;
-let obstaclePlayerX = 135;
-let obstaclePlayerY = 135;
-let obstacles = [];
-let obstacleInterval = null;
-let obstacleSpeed = 2;
-let obstacleSpeedIncrease = 0.3;
+let obstacleGameActive = false, obstacleScore = 0, obstacleBest = 0;
+let obstaclePlayerX = 135, obstaclePlayerY = 135, obstacles = [];
+let obstacleInterval = null, obstacleSpeed = 2, obstacleSpeedIncrease = 0.3;
 const elements = {};
 function cacheElements() {
 elements.blob = document.getElementById('blob');
@@ -1812,25 +1502,15 @@ elements.obstacleBest = document.getElementById('obstacleBest');
 elements.obstacleStartBtn = document.getElementById('obstacleStartBtn');
 elements.obstacleResetBtn = document.getElementById('obstacleResetBtn');
 }
-function lsAvailable() {
-try { localStorage.setItem('test', 'test'); localStorage.removeItem('test'); return true; }
-catch { return false; }
-}
+function lsAvailable() { try { localStorage.setItem('test', 'test'); localStorage.removeItem('test'); return true; } catch { return false; } }
 function getPlayerId() {
 if (!lsAvailable()) return 'no_storage';
 let ids = JSON.parse(localStorage.getItem('livingBlob_playerIds') || '[]');
-if (ids.length === 0) {
-playerId = 'player_' + Math.random().toString(36).substring(2, 15);
-ids.push(playerId);
-localStorage.setItem('livingBlob_playerIds', JSON.stringify(ids));
-} else {
-playerId = ids[ids.length - 1];
-}
+if (ids.length === 0) { playerId = 'player_' + Math.random().toString(36).substring(2, 15); ids.push(playerId); localStorage.setItem('livingBlob_playerIds', JSON.stringify(ids)); }
+else { playerId = ids[ids.length - 1]; }
 return playerId;
 }
-function getGameState() {
-return { level, currentXp, xpToNextLevel, totalXp, foodCount, drinkCount, tickleCount, eyeClickCount, gamesWon, nickname: userNickname, selectedFoodId: selectedFood.id, selectedDrinkId: selectedDrink.id, unlockedAchievements, tttPlayerScore, tttBlobScore, tttDraws, obstacleBest };
-}
+function getGameState() { return { level, currentXp, xpToNextLevel, totalXp, foodCount, drinkCount, tickleCount, eyeClickCount, gamesWon, nickname: userNickname, selectedFoodId: selectedFood.id, selectedDrinkId: selectedDrink.id, unlockedAchievements, tttPlayerScore, tttBlobScore, tttDraws, obstacleBest }; }
 function loadGameState(data) {
 if (!data) return false;
 level = data.level || 1; currentXp = data.currentXp || 0; xpToNextLevel = data.xpToNextLevel || 100;
@@ -1843,67 +1523,26 @@ if (data.selectedFoodId) selectedFood = foodData.find(f => f.id === data.selecte
 if (data.selectedDrinkId) selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
 return true;
 }
-// === FIREBASE SAVE FUNCTION ===
 function saveGame(showNotif = true) {
-const playerId = getPlayerId();
+const pid = getPlayerId();
 const gameState = getGameState();
-// Сохраняем локально
-if (lsAvailable()) {
-localStorage.setItem('livingBlob_' + playerId, JSON.stringify(gameState));
-localStorage.setItem('livingBlob_nickname', userNickname);
-}
-// Отправляем в Firebase
-db.ref('users/' + playerId).set({
-nickname: userNickname,
-totalXp: totalXp,
-level: level,
-foodCount: foodCount,
-drinkCount: drinkCount,
-tickleCount: tickleCount,
-gamesWon: gamesWon,
-lastSeen: Date.now(),
-gameState: gameState
-}).then(() => {
-if (showNotif) {
-showSaveStatus('Сохранено в облако!', 'success');
-showAutoSaveIndicator('saved');
-}
+if (lsAvailable()) { localStorage.setItem('livingBlob_' + pid, JSON.stringify(gameState)); localStorage.setItem('livingBlob_nickname', userNickname); }
+db.ref('users/' + pid).set({ nickname: userNickname, totalXp: totalXp, level: level, foodCount: foodCount, drinkCount: drinkCount, tickleCount: tickleCount, gamesWon: gamesWon, lastSeen: Date.now(), gameState: gameState }).then(() => {
+if (showNotif) { showSaveStatus('Сохранено в облако!', 'success'); showAutoSaveIndicator('saved'); }
 updateOnlineStatus();
-}).catch((error) => {
-console.error(error);
-if (showNotif) showSaveStatus('Ошибка сети!', 'error');
-});
+}).catch((error) => { console.error(error); if (showNotif) showSaveStatus('Ошибка сети!', 'error'); });
 return true;
 }
 function loadGame() {
 if (!lsAvailable()) { showSaveStatus('LocalStorage недоступен!', 'error'); return false; }
-try {
-const saved = localStorage.getItem('livingBlob_' + playerId);
-if (saved) { loadGameState(JSON.parse(saved)); showSaveStatus('Загружено!', 'success'); return true; }
-return false;
-} catch { showSaveStatus('Ошибка загрузки!', 'error'); return false; }
+try { const saved = localStorage.getItem('livingBlob_' + playerId); if (saved) { loadGameState(JSON.parse(saved)); showSaveStatus('Загружено!', 'success'); return true; } return false; }
+catch { showSaveStatus('Ошибка загрузки!', 'error'); return false; }
 }
-function showSaveStatus(msg, type) {
-elements.saveStatus.textContent = msg;
-elements.saveStatus.className = 'save-status ' + type;
-setTimeout(() => { elements.saveStatus.className = 'save-status'; }, 3000);
-}
-function showAutoSaveIndicator(state) {
-elements.autoSaveIndicator.className = 'auto-save-indicator ' + state;
-setTimeout(() => { if (autoSaveEnabled) elements.autoSaveIndicator.className = 'auto-save-indicator'; }, 2000);
-}
-function setupAutoSave() {
-if (autoSaveInterval) clearInterval(autoSaveInterval);
-if (autoSaveEnabled && lsAvailable()) {
-autoSaveInterval = setInterval(() => { showAutoSaveIndicator('saving'); saveGame(false); }, 30000);
-}
-}
-// === FIREBASE ONLINE STATUS ===
-function updateOnlineStatus() {
-const playerId = getPlayerId();
-db.ref('users/' + playerId + '/lastSeen').set(Date.now());
-}
-// === FIREBASE LEADERBOARD - FIXED FOR 20 PLAYERS ===
+function showSaveStatus(msg, type) { elements.saveStatus.textContent = msg; elements.saveStatus.className = 'save-status ' + type; setTimeout(() => { elements.saveStatus.className = 'save-status'; }, 3000); }
+function showAutoSaveIndicator(state) { elements.autoSaveIndicator.className = 'auto-save-indicator ' + state; setTimeout(() => { if (autoSaveEnabled) elements.autoSaveIndicator.className = 'auto-save-indicator'; }, 2000); }
+function setupAutoSave() { if (autoSaveInterval) clearInterval(autoSaveInterval); if (autoSaveEnabled && lsAvailable()) { autoSaveInterval = setInterval(() => { showAutoSaveIndicator('saving'); saveGame(false); }, 30000); } }
+function updateOnlineStatus() { const pid = getPlayerId(); db.ref('users/' + pid + '/lastSeen').set(Date.now()); }
+// === FIXED LEADERBOARD FUNCTION ===
 function getLeaderboard() {
 elements.leaderboardList.innerHTML = '<li class="leaderboard-loading">Загрузка рейтинга...</li>';
 db.ref('users').orderByChild('totalXp').limitToLast(20).once('value', (snapshot) => {
@@ -1911,13 +1550,7 @@ const lb = [];
 snapshot.forEach((childSnapshot) => {
 const user = childSnapshot.val();
 const isOnline = (Date.now() - user.lastSeen) < 30000;
-lb.push({
-nickname: user.nickname,
-totalXp: user.totalXp,
-level: user.level,
-foodCount: user.foodCount,
-isOnline: isOnline
-});
+lb.push({ nickname: user.nickname, totalXp: user.totalXp, level: user.level, foodCount: user.foodCount, isOnline: isOnline });
 });
 renderLeaderboardUI(lb.reverse());
 }).catch((error) => {
@@ -1951,20 +1584,14 @@ elements.leaderboardCount.textContent = users.length + ' игроков';
 const onlineCount = users.filter(u => u.isOnline).length;
 elements.onlineCountEl.textContent = '🌐 ' + onlineCount;
 }
-function escapeHtml(text) {
-const div = document.createElement('div');
-div.textContent = text;
-return div.innerHTML;
-}
+function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+// === FIXED OPEN LEADERBOARD MODAL ===
 function openLeaderboardModal() {
 getLeaderboard();
 modalOpen = true;
 elements.leaderboardModal.classList.add('active');
 }
-function closeLeaderboardModal() {
-modalOpen = false;
-elements.leaderboardModal.classList.remove('active');
-}
+function closeLeaderboardModal() { modalOpen = false; elements.leaderboardModal.classList.remove('active'); }
 function updateDisplay() {
 elements.xpFill.style.width = (currentXp / xpToNextLevel * 100) + '%';
 elements.xpText.textContent = 'Уровень ' + level + ' • ' + currentXp + '/' + xpToNextLevel + ' XP';
@@ -1975,35 +1602,20 @@ elements.gamesWonEl.textContent = gamesWon;
 elements.totalXpEl.textContent = totalXp;
 }
 function renderFridgeItems() {
-elements.foodItems.innerHTML = foodData.map(item =>
-'<div class="fridge-item ' + (item.id === selectedFood.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="food">' +
-'<img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div>' +
-'</div>'
-).join('');
-elements.drinkItems.innerHTML = drinkData.map(item =>
-'<div class="fridge-item ' + (item.id === selectedDrink.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="drink">' +
-'<img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div>' +
-'</div>'
-).join('');
+elements.foodItems.innerHTML = foodData.map(item => '<div class="fridge-item ' + (item.id === selectedFood.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="food"><img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div></div>').join('');
+elements.drinkItems.innerHTML = drinkData.map(item => '<div class="fridge-item ' + (item.id === selectedDrink.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="drink"><img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div></div>').join('');
 document.querySelectorAll('.fridge-item').forEach(el => el.addEventListener('click', function() {
 const id = this.dataset.id, type = this.dataset.type;
 if (type === 'food') { selectedFood = foodData.find(f => f.id === id); elements.foodImg.src = selectedFood.img; elements.foodName.textContent = selectedFood.name; elements.foodXp.textContent = '+' + selectedFood.xp + ' XP'; }
 else { selectedDrink = drinkData.find(d => d.id === id); elements.drinkImg.src = selectedDrink.img; elements.drinkName.textContent = selectedDrink.name; elements.drinkXp.textContent = '+' + selectedDrink.xp + ' XP'; }
-renderFridgeItems();
-saveGame(false);
+renderFridgeItems(); saveGame(false);
 }));
 }
 function renderAchievements() {
 const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
 elements.achievementsGrid.innerHTML = achievementsData.map(ach => {
 const unlocked = unlockedAchievements.includes(ach.id);
-return '<div class="achievement-card ' + (unlocked ? 'unlocked' : '') + '">' +
-'<div class="achievement-icon">' + (unlocked ? ach.icon : '🔒') + '</div>' +
-'<div class="achievement-info">' +
-'<div class="achievement-name">' + (unlocked ? ach.name : '???') + '</div>' +
-'<div class="achievement-desc">' + (unlocked ? ach.desc : 'Играйте...') + '</div>' +
-'<div class="achievement-progress">' + (unlocked ? '✓' : '🔒') + '</div>' +
-'</div></div>';
+return '<div class="achievement-card ' + (unlocked ? 'unlocked' : '') + '"><div class="achievement-icon">' + (unlocked ? ach.icon : '🔒') + '</div><div class="achievement-info"><div class="achievement-name">' + (unlocked ? ach.name : '???') + '</div><div class="achievement-desc">' + (unlocked ? ach.desc : 'Играйте...') + '</div><div class="achievement-progress">' + (unlocked ? '✓' : '🔒') + '</div></div></div>';
 }).join('');
 }
 function checkAchievements() {
@@ -2023,69 +1635,40 @@ if (newUnlock) { renderAchievements(); updateDisplay(); saveGame(false); }
 function annoyBlob() {
 if (isBusy || isAnnoyed || modalOpen) return;
 isAnnoyed = true; isBusy = true; eyeClickCount++;
-elements.eyes.forEach(function(e) {
-e.style.height = '';
-void e.offsetHeight;
-e.classList.add('squint');
-});
-elements.mouth.classList.add('annoyed');
-elements.blob.classList.add('annoyed');
+elements.eyes.forEach(function(e) { e.style.height = ''; void e.offsetHeight; e.classList.add('squint'); });
+elements.mouth.classList.add('annoyed'); elements.blob.classList.add('annoyed');
 elements.bubble.textContent = annoyedResponses[Math.floor(Math.random() * annoyedResponses.length)];
 elements.bubble.classList.add('annoyed', 'show');
 setTimeout(function() {
-elements.eyes.forEach(function(e) {
-e.classList.remove('squint');
-e.style.height = '';
-});
-elements.mouth.classList.remove('annoyed');
-elements.blob.classList.remove('annoyed');
-elements.bubble.classList.remove('annoyed');
+elements.eyes.forEach(function(e) { e.classList.remove('squint'); e.style.height = ''; });
+elements.mouth.classList.remove('annoyed'); elements.blob.classList.remove('annoyed'); elements.bubble.classList.remove('annoyed');
 isAnnoyed = false; isBusy = false;
-setTimeout(function() {
-elements.bubble.textContent = 'Ладно...';
-setTimeout(function() {
-elements.bubble.textContent = 'Больше не надо!';
-saveGame(false);
-}, 2000);
-}, 500);
+setTimeout(function() { elements.bubble.textContent = 'Ладно...'; setTimeout(function() { elements.bubble.textContent = 'Больше не надо!'; saveGame(false); }, 2000); }, 500);
 }, 1500);
 }
 function tickleBlob() {
 if (isBusy || isTickled || modalOpen) return;
 isTickled = true; isBusy = true; tickleCount++; updateDisplay();
-elements.blob.style.animation = '';
-void elements.blob.offsetHeight;
-elements.blob.classList.add('tickled');
+elements.blob.style.animation = ''; void elements.blob.offsetHeight; elements.blob.classList.add('tickled');
 elements.mouth.classList.add('laughing');
 elements.bubble.textContent = tickleResponses[Math.floor(Math.random() * tickleResponses.length)];
 elements.bubble.classList.add('laughing', 'show');
 const rect = elements.blob.getBoundingClientRect();
 addXp(5, rect.left + rect.width/2, rect.top + rect.height/2);
 setTimeout(function() {
-elements.blob.classList.remove('tickled');
-elements.blob.style.animation = '';
-elements.mouth.classList.remove('laughing');
-elements.bubble.classList.remove('laughing');
+elements.blob.classList.remove('tickled'); elements.blob.style.animation = ''; elements.mouth.classList.remove('laughing'); elements.bubble.classList.remove('laughing');
 isTickled = false; isBusy = false;
-setTimeout(function() {
-elements.bubble.textContent = 'Весело! +5 XP';
-setTimeout(function() {
-elements.bubble.textContent = 'Ещё!';
-saveGame(false);
-}, 2000);
-}, 500);
+setTimeout(function() { elements.bubble.textContent = 'Весело! +5 XP'; setTimeout(function() { elements.bubble.textContent = 'Ещё!'; saveGame(false); }, 2000); }, 500);
 }, 2000);
 }
 function addXp(amount, x, y) {
 currentXp += amount; totalXp += amount;
 const xpGain = document.createElement('div');
-xpGain.className = 'xp-gain';
-xpGain.textContent = '+' + amount + ' XP';
+xpGain.className = 'xp-gain'; xpGain.textContent = '+' + amount + ' XP';
 xpGain.style.left = x + 'px'; xpGain.style.top = y + 'px';
 document.body.appendChild(xpGain);
 setTimeout(function() { xpGain.remove(); }, 1000);
-updateDisplay();
-checkAchievements();
+updateDisplay(); checkAchievements();
 if (currentXp >= xpToNextLevel) levelUp();
 }
 function levelUp() {
@@ -2093,18 +1676,13 @@ level++; currentXp -= xpToNextLevel; xpToNextLevel = Math.floor(xpToNextLevel * 
 elements.levelBadge.textContent = level;
 elements.levelBadge.style.animation = 'none'; void elements.levelBadge.offsetHeight; elements.levelBadge.style.animation = 'levelPulse 0.5s ease';
 elements.bubble.textContent = 'Уровень ' + level + '!';
-showCelebration();
-updateDisplay();
-checkAchievements();
-saveGame(false);
+showCelebration(); updateDisplay(); checkAchievements(); saveGame(false);
 }
 function showCelebration() {
-elements.celebration.classList.add('active');
-elements.celebration.innerHTML = '';
+elements.celebration.classList.add('active'); elements.celebration.innerHTML = '';
 const colors = ['#ff5252','#ff4081','#e040fb','#7c4dff','#536dfe','#448aff','#40c4ff','#18ffff','#64ffda','#69f0ae','#b2ff59','#eeff41','#ffff00','#ffd740','#ffab40','#ff6e40'];
 for (let i = 0; i < 50; i++) {
-const c = document.createElement('div');
-c.className = 'confetti';
+const c = document.createElement('div'); c.className = 'confetti';
 c.style.left = Math.random() * 100 + 'vw';
 c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 c.style.animationDelay = Math.random() * 0.5 + 's';
@@ -2119,38 +1697,27 @@ const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
 const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
 const dist = Math.min(12, Math.hypot(e.clientX - cx, e.clientY - cy) / 15);
 const x = Math.cos(angle) * dist, y = Math.sin(angle) * dist;
-elements.pupils.forEach(function(p) {
-p.style.transform = 'translate(-50%, -50%) translate(' + x + 'px, ' + y + 'px)';
-});
+elements.pupils.forEach(function(p) { p.style.transform = 'translate(-50%, -50%) translate(' + x + 'px, ' + y + 'px)'; });
 });
 setInterval(function() {
 if (!isBusy && !isAnnoyed && !isTickled && !modalOpen) {
-elements.eyes.forEach(function(e) {
-e.style.animation = 'blink 0.2s linear';
-setTimeout(function() { e.style.animation = ''; }, 200);
-});
+elements.eyes.forEach(function(e) { e.style.animation = 'blink 0.2s linear'; setTimeout(function() { e.style.animation = ''; }, 200); });
 }
 }, 4000);
 function startDrag(e, type) {
 if (isBusy || isAnnoyed || isTickled || modalOpen) return;
-e.preventDefault();
-dragType = type;
+e.preventDefault(); dragType = type;
 const itemData = type === 'food' ? selectedFood : selectedDrink;
 const itemEl = type === 'food' ? elements.foodItem : elements.drinkItem;
-dragClone = document.createElement('div');
-dragClone.className = 'drag-clone';
+dragClone = document.createElement('div'); dragClone.className = 'drag-clone';
 dragClone.innerHTML = '<img src="' + itemData.img + '"><div class="item-label">' + itemData.name + '<br>+' + itemData.xp + ' XP</div>';
-document.body.appendChild(dragClone);
-moveDragClone(e);
-itemEl.style.opacity = '0.3';
+document.body.appendChild(dragClone); moveDragClone(e); itemEl.style.opacity = '0.3';
 }
 function moveDragClone(e) {
-if (!dragClone) return;
-e.preventDefault();
+if (!dragClone) return; e.preventDefault();
 const cx = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
 const cy = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-dragClone.style.left = (cx - 42) + 'px';
-dragClone.style.top = (cy - 42) + 'px';
+dragClone.style.left = (cx - 42) + 'px'; dragClone.style.top = (cy - 42) + 'px';
 }
 function endDrag(e) {
 if (!dragClone) return;
@@ -2159,9 +1726,7 @@ const mouthRect = elements.mouth.getBoundingClientRect();
 const dist = Math.hypot(cloneRect.left + cloneRect.width/2 - mouthRect.left - mouthRect.width/2, cloneRect.top + cloneRect.height/2 - mouthRect.top - mouthRect.height/2);
 if (dist < 100) interact(dragType, cloneRect.left + cloneRect.width/2, cloneRect.top + cloneRect.height/2);
 dragClone.remove(); dragClone = null;
-elements.foodItem.style.opacity = '1';
-elements.drinkItem.style.opacity = '1';
-dragType = null;
+elements.foodItem.style.opacity = '1'; elements.drinkItem.style.opacity = '1'; dragType = null;
 }
 function interact(type, x, y) {
 isBusy = true;
@@ -2170,80 +1735,53 @@ if (type === 'food') { elements.blob.classList.add('eating'); elements.mouth.cla
 else { elements.blob.classList.add('drinking'); elements.mouth.classList.add('drinking'); elements.bubble.textContent = 'Ах!'; drinkCount++; }
 updateDisplay(); checkAchievements();
 setTimeout(function() {
-elements.blob.classList.remove('eating', 'drinking');
-elements.mouth.classList.remove('eating', 'drinking');
+elements.blob.classList.remove('eating', 'drinking'); elements.mouth.classList.remove('eating', 'drinking');
 elements.bubble.textContent = 'Спасибо! +' + itemData.xp + ' XP';
 addXp(itemData.xp, x, y);
 setTimeout(function() { isBusy = false; elements.bubble.textContent = 'Ещё!'; saveGame(false); }, 1500);
 }, 1500);
 }
-// Tic Tac Toe - FIXED SYMMETRICAL
 function initTicTacToe() {
-elements.tttBoard.innerHTML = '';
-tttBoard = ['', '', '', '', '', '', '', '', ''];
+elements.tttBoard.innerHTML = ''; tttBoard = ['', '', '', '', '', '', '', '', ''];
 for (let i = 0; i < 9; i++) {
-const cell = document.createElement('div');
-cell.className = 'tic-tac-toe-cell';
-cell.dataset.index = i;
+const cell = document.createElement('div'); cell.className = 'tic-tac-toe-cell'; cell.dataset.index = i;
 cell.addEventListener('click', function() { handleTicTacToeClick(this); });
 elements.tttBoard.appendChild(cell);
 }
-tttPlayerTurn = true; tttGameActive = true;
-elements.tttStatus.textContent = 'Твой ход! (X)';
+tttPlayerTurn = true; tttGameActive = true; elements.tttStatus.textContent = 'Твой ход! (X)';
 }
 function createBlobFace() {
-const face = document.createElement('div');
-face.className = 'tic-tac-toe-blob-face';
-face.innerHTML = `
-<div class="tic-tac-toe-blob-eyes">
-<div class="tic-tac-toe-blob-eye"></div>
-<div class="tic-tac-toe-blob-eye"></div>
-</div>
-<div class="tic-tac-toe-blob-mouth"></div>
-`;
+const face = document.createElement('div'); face.className = 'tic-tac-toe-blob-face';
+face.innerHTML = '<div class="tic-tac-toe-blob-eyes"><div class="tic-tac-toe-blob-eye"></div><div class="tic-tac-toe-blob-eye"></div></div><div class="tic-tac-toe-blob-mouth"></div>';
 return face;
 }
 function handleTicTacToeClick(cell) {
 const idx = parseInt(cell.dataset.index);
 if (!tttGameActive || !tttPlayerTurn || tttBoard[idx]) return;
-tttBoard[idx] = 'X';
-cell.innerHTML = '<span class="tic-tac-toe-cell x">X</span>';
-cell.classList.add('taken', 'x');
+tttBoard[idx] = 'X'; cell.innerHTML = '<span class="tic-tac-toe-cell x">X</span>'; cell.classList.add('taken', 'x');
 if (checkTicTacToeWin('X')) { endTicTacToeGame('player'); return; }
 if (tttBoard.every(function(c) { return c; })) { endTicTacToeGame('draw'); return; }
-tttPlayerTurn = false;
-elements.tttStatus.textContent = 'Блоб думает...';
-setTimeout(blobMakeMove, 800);
+tttPlayerTurn = false; elements.tttStatus.textContent = 'Блоб думает...'; setTimeout(blobMakeMove, 800);
 }
 function blobMakeMove() {
 if (!tttGameActive) return;
-let move = findBestMove('O');
-if (move === -1) move = findBestMove('X');
-if (move === -1) {
-const empty = tttBoard.map(function(c, i) { return c === '' ? i : null; }).filter(function(i) { return i !== null; });
-move = empty[Math.floor(Math.random() * empty.length)];
-}
+let move = findBestMove('O'); if (move === -1) move = findBestMove('X');
+if (move === -1) { const empty = tttBoard.map(function(c, i) { return c === '' ? i : null; }).filter(function(i) { return i !== null; }); move = empty[Math.floor(Math.random() * empty.length)]; }
 if (move !== -1) {
 tttBoard[move] = 'O';
 const cell = document.querySelector('.tic-tac-toe-cell[data-index="' + move + '"]');
-cell.innerHTML = '';
-cell.appendChild(createBlobFace());
-cell.classList.add('taken', 'o');
+cell.innerHTML = ''; cell.appendChild(createBlobFace()); cell.classList.add('taken', 'o');
 if (checkTicTacToeWin('O')) { endTicTacToeGame('blob'); return; }
 if (tttBoard.every(function(c) { return c; })) { endTicTacToeGame('draw'); return; }
 }
-tttPlayerTurn = true;
-elements.tttStatus.textContent = 'Твой ход! (X)';
+tttPlayerTurn = true; elements.tttStatus.textContent = 'Твой ход! (X)';
 }
 function findBestMove(player) {
 const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 for (let i = 0; i < wins.length; i++) {
-const [a,b,c] = wins[i];
-const vals = [tttBoard[a], tttBoard[b], tttBoard[c]];
+const [a,b,c] = wins[i]; const vals = [tttBoard[a], tttBoard[b], tttBoard[c]];
 if (vals.filter(function(v) { return v === player; }).length === 2 && vals.filter(function(v) { return v === ''; }).length === 1) {
-if (tttBoard[a] === '') return a;
-if (tttBoard[b] === '') return b;
-if (tttBoard[c] === '') return c;
+if (tttBoard[a] === '') return a; if (tttBoard[b] === '') return b; if (tttBoard[c] === '') return c;
 }
 }
 return -1;
@@ -2268,158 +1806,84 @@ tttDraws++; elements.tttStatus.textContent = 'Ничья! +5 XP';
 elements.bubble.textContent = 'Ничья!'; addXp(5, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
 }
 updateDisplay(); checkAchievements(); saveGame(false);
-elements.tttPlayerScore.textContent = tttPlayerScore;
-elements.tttBlobScore.textContent = tttBlobScore;
-elements.tttDraws.textContent = tttDraws;
-setTimeout(function() {
-elements.bubble.classList.remove('winner', 'loser');
-elements.mouth.classList.remove('winner', 'loser');
-elements.eyes.forEach(function(e) { e.classList.remove('winner'); });
-}, 3000);
+elements.tttPlayerScore.textContent = tttPlayerScore; elements.tttBlobScore.textContent = tttBlobScore; elements.tttDraws.textContent = tttDraws;
+setTimeout(function() { elements.bubble.classList.remove('winner', 'loser'); elements.mouth.classList.remove('winner', 'loser'); elements.eyes.forEach(function(e) { e.classList.remove('winner'); }); }, 3000);
 }
-// Obstacle Game - FIXED COLLISION DETECTION
 function initObstacleGame() {
-obstacleScore = 0;
-obstacleSpeed = 2;
-obstacleSpeedIncrease = 0.3;
-obstacles = [];
-elements.obstacleScore.textContent = '0';
-elements.obstacleBest.textContent = obstacleBest;
+obstacleScore = 0; obstacleSpeed = 2; obstacleSpeedIncrease = 0.3; obstacles = [];
+elements.obstacleScore.textContent = '0'; elements.obstacleBest.textContent = obstacleBest;
 const containerWidth = elements.obstacleContainer.offsetWidth;
-obstaclePlayerX = containerWidth / 2 - 25;
-obstaclePlayerY = containerWidth / 2 - 25;
-elements.obstaclePlayer.style.left = obstaclePlayerX + 'px';
-elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
+obstaclePlayerX = containerWidth / 2 - 25; obstaclePlayerY = containerWidth / 2 - 25;
+elements.obstaclePlayer.style.left = obstaclePlayerX + 'px'; elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
 elements.obstacleContainer.querySelectorAll('.obstacle').forEach(o => o.remove());
 }
 function startObstacleGame() {
 if (obstacleGameActive) return;
-obstacleGameActive = true;
-elements.obstacleStartBtn.textContent = '⏸️ Пауза';
+obstacleGameActive = true; elements.obstacleStartBtn.textContent = '⏸️ Пауза';
 elements.obstacleStatus.textContent = 'Перетаскивай блоба! Избегай красных блоков!';
-initObstacleGame();
-obstacleInterval = setInterval(spawnObstacle, 1000);
-requestAnimationFrame(updateObstacleGame);
+initObstacleGame(); obstacleInterval = setInterval(spawnObstacle, 1000); requestAnimationFrame(updateObstacleGame);
 }
 function pauseObstacleGame() {
-obstacleGameActive = false;
-elements.obstacleStartBtn.textContent = '▶️ Старт';
-elements.obstacleStatus.textContent = 'Пауза';
+obstacleGameActive = false; elements.obstacleStartBtn.textContent = '▶️ Старт'; elements.obstacleStatus.textContent = 'Пауза';
 if (obstacleInterval) clearInterval(obstacleInterval);
 }
 function stopObstacleGame() {
-obstacleGameActive = false;
-elements.obstacleStartBtn.textContent = '▶️ Старт';
+obstacleGameActive = false; elements.obstacleStartBtn.textContent = '▶️ Старт';
 if (obstacleInterval) clearInterval(obstacleInterval);
 }
 function spawnObstacle() {
 if (!obstacleGameActive) return;
-const obstacle = document.createElement('div');
-obstacle.className = 'obstacle';
+const obstacle = document.createElement('div'); obstacle.className = 'obstacle';
 const size = Math.random() * 35 + 25;
-obstacle.style.width = size + 'px';
-obstacle.style.height = size + 'px';
+obstacle.style.width = size + 'px'; obstacle.style.height = size + 'px';
 const containerWidth = elements.obstacleContainer.offsetWidth;
 obstacle.style.left = Math.random() * (containerWidth - size) + 'px';
-obstacle.style.top = '-50px';
-obstacle.dataset.y = -50;
-obstacle.dataset.w = size;
-obstacle.dataset.h = size;
-elements.obstacleContainer.appendChild(obstacle);
-obstacles.push(obstacle);
+obstacle.style.top = '-50px'; obstacle.dataset.y = -50; obstacle.dataset.w = size; obstacle.dataset.h = size;
+elements.obstacleContainer.appendChild(obstacle); obstacles.push(obstacle);
 }
 function updateObstacleGame() {
 if (!obstacleGameActive) return;
-const playerRect = {
-x: obstaclePlayerX + 8,
-y: obstaclePlayerY + 8,
-w: 34,
-h: 34
-};
+const playerRect = { x: obstaclePlayerX + 8, y: obstaclePlayerY + 8, w: 34, h: 34 };
 obstacles.forEach((obstacle, index) => {
-let y = parseFloat(obstacle.dataset.y);
-y += obstacleSpeed;
-obstacle.dataset.y = y;
-obstacle.style.top = y + 'px';
+let y = parseFloat(obstacle.dataset.y); y += obstacleSpeed;
+obstacle.dataset.y = y; obstacle.style.top = y + 'px';
 const containerHeight = elements.obstacleContainer.offsetHeight;
-if (y > containerHeight) {
-obstacle.remove();
-obstacles.splice(index, 1);
-obstacleScore++;
-elements.obstacleScore.textContent = obstacleScore;
-if (obstacleScore % 5 === 0) {
-obstacleSpeed += obstacleSpeedIncrease;
-}
-}
-// FIXED: Accurate collision detection
-const obsX = parseFloat(obstacle.style.left);
-const obsY = y;
-const obsW = parseFloat(obstacle.dataset.w);
-const obsH = parseFloat(obstacle.dataset.h);
-if (playerRect.x < obsX + obsW &&
-playerRect.x + playerRect.w > obsX &&
-playerRect.y < obsY + obsH &&
-playerRect.y + playerRect.h > obsY) {
-stopObstacleGame();
-elements.obstacleStatus.textContent = 'Игра окончена! Счёт: ' + obstacleScore;
-if (obstacleScore > obstacleBest) {
-obstacleBest = obstacleScore;
-elements.obstacleBest.textContent = obstacleBest;
-}
+if (y > containerHeight) { obstacle.remove(); obstacles.splice(index, 1); obstacleScore++; elements.obstacleScore.textContent = obstacleScore; if (obstacleScore % 5 === 0) { obstacleSpeed += obstacleSpeedIncrease; } }
+const obsX = parseFloat(obstacle.style.left); const obsY = y;
+const obsW = parseFloat(obstacle.dataset.w); const obsH = parseFloat(obstacle.dataset.h);
+if (playerRect.x < obsX + obsW && playerRect.x + playerRect.w > obsX && playerRect.y < obsY + obsH && playerRect.y + playerRect.h > obsY) {
+stopObstacleGame(); elements.obstacleStatus.textContent = 'Игра окончена! Счёт: ' + obstacleScore;
+if (obstacleScore > obstacleBest) { obstacleBest = obstacleScore; elements.obstacleBest.textContent = obstacleBest; }
 addXp(obstacleScore * 2, elements.obstacleContainer.getBoundingClientRect().left + 140, elements.obstacleContainer.getBoundingClientRect().top + 140);
 }
 });
 requestAnimationFrame(updateObstacleGame);
 }
 let obstacleDragging = false;
-function startObstacleDrag(e) {
-if (!obstacleGameActive) return;
-e.preventDefault();
-obstacleDragging = true;
-}
+function startObstacleDrag(e) { if (!obstacleGameActive) return; e.preventDefault(); obstacleDragging = true; }
 function moveObstacleDrag(e) {
-if (!obstacleDragging || !obstacleGameActive) return;
-e.preventDefault();
+if (!obstacleDragging || !obstacleGameActive) return; e.preventDefault();
 const containerRect = elements.obstacleContainer.getBoundingClientRect();
 const cx = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
 const cy = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
 const containerWidth = elements.obstacleContainer.offsetWidth;
-obstaclePlayerX = cx - containerRect.left - 25;
-obstaclePlayerY = cy - containerRect.top - 25;
+obstaclePlayerX = cx - containerRect.left - 25; obstaclePlayerY = cy - containerRect.top - 25;
 obstaclePlayerX = Math.max(0, Math.min(containerWidth - 50, obstaclePlayerX));
 obstaclePlayerY = Math.max(0, Math.min(containerWidth - 50, obstaclePlayerY));
-elements.obstaclePlayer.style.left = obstaclePlayerX + 'px';
-elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
+elements.obstaclePlayer.style.left = obstaclePlayerX + 'px'; elements.obstaclePlayer.style.top = obstaclePlayerY + 'px';
 }
-function endObstacleDrag() {
-obstacleDragging = false;
-}
+function endObstacleDrag() { obstacleDragging = false; }
 function openModal(modal) { modalOpen = true; modal.classList.add('active'); }
 function closeModal(modal) { modalOpen = false; modal.classList.remove('active'); }
 function init() {
-cacheElements();
-playerId = getPlayerId();
-elements.playerIdEl.textContent = playerId;
-if (lsAvailable()) {
-const savedNick = localStorage.getItem('livingBlob_nickname');
-if (savedNick) { userNickname = savedNick; }
-}
-elements.userNicknameEl.textContent = userNickname;
-elements.nicknameInput.value = userNickname;
+cacheElements(); playerId = getPlayerId(); elements.playerIdEl.textContent = playerId;
+if (lsAvailable()) { const savedNick = localStorage.getItem('livingBlob_nickname'); if (savedNick) { userNickname = savedNick; } }
+elements.userNicknameEl.textContent = userNickname; elements.nicknameInput.value = userNickname;
 const hasSave = lsAvailable() ? localStorage.getItem('livingBlob_' + playerId) : null;
 if (hasSave) { loadGame(); }
-renderFridgeItems();
-renderAchievements();
-getLeaderboard();
-updateDisplay();
-initTicTacToe();
-initObstacleGame();
-setupAutoSave();
-updateOnlineStatus();
-setInterval(function() {
-getLeaderboard();
-updateOnlineStatus();
-}, 5000);
+renderFridgeItems(); renderAchievements(); getLeaderboard(); updateDisplay();
+initTicTacToe(); initObstacleGame(); setupAutoSave(); updateOnlineStatus();
+setInterval(function() { getLeaderboard(); updateOnlineStatus(); }, 5000);
 window.addEventListener('beforeunload', function() { if (autoSaveEnabled && lsAvailable()) saveGame(false); });
 elements.eyes.forEach(function(eye) {
 eye.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); });
@@ -2431,10 +1895,8 @@ elements.foodItem.addEventListener('mousedown', function(e) { startDrag(e, 'food
 elements.foodItem.addEventListener('touchstart', function(e) { startDrag(e, 'food'); }, { passive: false });
 elements.drinkItem.addEventListener('mousedown', function(e) { startDrag(e, 'drink'); });
 elements.drinkItem.addEventListener('touchstart', function(e) { startDrag(e, 'drink'); }, { passive: false });
-document.addEventListener('mousemove', moveDragClone);
-document.addEventListener('touchmove', moveDragClone, { passive: false });
-document.addEventListener('mouseup', endDrag);
-document.addEventListener('touchend', endDrag);
+document.addEventListener('mousemove', moveDragClone); document.addEventListener('touchmove', moveDragClone, { passive: false });
+document.addEventListener('mouseup', endDrag); document.addEventListener('touchend', endDrag);
 elements.fridgeBtn.addEventListener('click', function() { openModal(elements.fridgeModal); });
 elements.fridgeClose.addEventListener('click', function() { closeModal(elements.fridgeModal); });
 elements.fridgeModal.addEventListener('click', function(e) { if (e.target.id === 'fridgeModal') closeModal(elements.fridgeModal); });
@@ -2445,23 +1907,15 @@ elements.leaderboardBtn.addEventListener('click', openLeaderboardModal);
 elements.leaderboardClose.addEventListener('click', closeLeaderboardModal);
 elements.leaderboardModal.addEventListener('click', function(e) { if (e.target.id === 'leaderboardModal') closeLeaderboardModal(); });
 elements.refreshLeaderboardBtn.addEventListener('click', function() { getLeaderboard(); showSaveStatus('Обновлено!', 'success'); });
-elements.submitToLeaderboardBtn.addEventListener('click', function() {
-saveGame(false);
-getLeaderboard();
-showSaveStatus('Отправлено в рейтинг!', 'success');
-});
+elements.submitToLeaderboardBtn.addEventListener('click', function() { saveGame(false); getLeaderboard(); showSaveStatus('Отправлено в рейтинг!', 'success'); });
 document.querySelectorAll('.minigame-tab').forEach(tab => {
 tab.addEventListener('click', function() {
 document.querySelectorAll('.minigame-tab').forEach(t => t.classList.remove('active'));
 document.querySelectorAll('.game-content').forEach(g => g.classList.remove('active'));
 this.classList.add('active');
 const game = this.dataset.game;
-if (game === 'tictactoe') {
-document.getElementById('tictactoeGame').classList.add('active');
-} else if (game === 'obstacle') {
-document.getElementById('obstacleGame').classList.add('active');
-initObstacleGame();
-}
+if (game === 'tictactoe') { document.getElementById('tictactoeGame').classList.add('active'); }
+else if (game === 'obstacle') { document.getElementById('obstacleGame').classList.add('active'); initObstacleGame(); }
 });
 });
 elements.minigamesBtn.addEventListener('click', function() { openModal(elements.minigamesModal); elements.blob.classList.add('playing'); });
@@ -2484,41 +1938,23 @@ showSaveStatus('Сброшено!', 'success'); updateDisplay(); renderFridgeIte
 });
 elements.exportBtn.addEventListener('click', function() { elements.exportImportData.value = btoa(JSON.stringify(getGameState())); showSaveStatus('Скопируйте код!', 'success'); });
 elements.importBtn.addEventListener('click', function() {
-try {
-const data = JSON.parse(atob(elements.exportImportData.value.trim()));
-loadGameState(data); saveGame(false); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); initObstacleGame();
-showSaveStatus('Импортировано!', 'success');
-} catch { showSaveStatus('Ошибка!', 'error'); }
+try { const data = JSON.parse(atob(elements.exportImportData.value.trim())); loadGameState(data); saveGame(false); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); initObstacleGame(); showSaveStatus('Импортировано!', 'success'); }
+catch { showSaveStatus('Ошибка!', 'error'); }
 });
 elements.saveNicknameBtn.addEventListener('click', function() {
 userNickname = elements.nicknameInput.value.trim().substring(0, 20) || 'Гость';
-elements.userNicknameEl.textContent = userNickname;
-saveGame(true); getLeaderboard();
+elements.userNicknameEl.textContent = userNickname; saveGame(true); getLeaderboard();
 });
 elements.tttResetBtn.addEventListener('click', initTicTacToe);
-elements.obstacleStartBtn.addEventListener('click', function() {
-if (obstacleGameActive) {
-pauseObstacleGame();
-} else {
-startObstacleGame();
-}
-});
+elements.obstacleStartBtn.addEventListener('click', function() { if (obstacleGameActive) { pauseObstacleGame(); } else { startObstacleGame(); } });
 elements.obstacleResetBtn.addEventListener('click', initObstacleGame);
 elements.obstaclePlayer.addEventListener('mousedown', startObstacleDrag);
 elements.obstaclePlayer.addEventListener('touchstart', startObstacleDrag, { passive: false });
-document.addEventListener('mousemove', moveObstacleDrag);
-document.addEventListener('touchmove', moveObstacleDrag, { passive: false });
-document.addEventListener('mouseup', endObstacleDrag);
-document.addEventListener('touchend', endObstacleDrag);
-elements.welcomeStartBtn.addEventListener('click', function() {
-closeModal(elements.welcomeModal);
-elements.bubble.textContent = 'Давай дружить!'; elements.bubble.classList.add('show');
-});
-if (!hasSave) {
-setTimeout(function() { openModal(elements.welcomeModal); }, 500);
-} else {
-setTimeout(function() { elements.bubble.textContent = 'С возвращением!'; elements.bubble.classList.add('show'); }, 500);
-}
+document.addEventListener('mousemove', moveObstacleDrag); document.addEventListener('touchmove', moveObstacleDrag, { passive: false });
+document.addEventListener('mouseup', endObstacleDrag); document.addEventListener('touchend', endObstacleDrag);
+elements.welcomeStartBtn.addEventListener('click', function() { closeModal(elements.welcomeModal); elements.bubble.textContent = 'Давай дружить!'; elements.bubble.classList.add('show'); });
+if (!hasSave) { setTimeout(function() { openModal(elements.welcomeModal); }, 500); }
+else { setTimeout(function() { elements.bubble.textContent = 'С возвращением!'; elements.bubble.classList.add('show'); }, 500); }
 }
 init();
 </script>
