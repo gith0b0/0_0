@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Живой Сайт</title>
+    <link href="https://cdn.jsdelivr.net/npm/fontsource-nunito@4.0.0/index.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #e0f7fa;
+            --blob-color: #4fc3f7;
+            --blob-shadow: #0288d1;
+            --text-color: #01579b;
+            --xp-bar-bg: #b2dfdb;
+            --xp-bar-fill: #26a69a;
+            --fridge-bg: #eceff1;
+            --achievement-locked: #cfd8dc;
+            --achievement-unlocked: #ffca28;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* XP Bar */
+        .xp-container {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            max-width: 90%;
+            z-index: 50;
+        }
+
+        .xp-bar-bg {
+            width: 100%;
+            height: 25px;
+            background: var(--xp-bar-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--xp-bar-fill), #4dd0e1);
+            border-radius: 15px;
+            transition: width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            position: relative;
+        }
+
+        .xp-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .xp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .level-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ffca28;
+            color: #5d4037;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        /* The Living Blob */
+        .blob-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: breathe 4s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .blob {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, #81d4fa, var(--blob-color));
+            border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 
+                        0 20px 40px rgba(2, 136, 209, 0.3);
+            position: relative;
+            transition: border-radius 0.5s ease, background 0.5s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .blob:hover {
+            transform: scale(1.03);
+        }
+
+        .blob.drinking {
+            background: radial-gradient(circle at 30% 30%, #80deea, #26c6da);
+        }
+
+        .blob.tickled {
+            animation: tickle 0.3s infinite;
+        }
+
+        .blob.annoyed {
+            background: radial-gradient(circle at 30% 30%, #ffccbc, #ff8a65);
+        }
+
+        .blob.eating {
+            animation: eatBounce 0.2s infinite;
+        }
+
+        .blob.playing {
+            background: radial-gradient(circle at 30% 30%, #ce93d8, #ab47bc);
+        }
+
+        /* Face Features */
+        .face {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 100px;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .eyes {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .eye {
+            width: 40px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: height 0.1s;
+            cursor: pointer;
+            pointer-events: auto;
+            z-index: 30;
+        }
+
+        .eye:hover {
+            transform: scale(1.05);
+        }
+
+        .eye.squint {
+            height: 8px;
+            border-radius: 5px;
+        }
+
+        .eye.winner {
+            animation: eyeWinner 0.5s infinite;
+        }
+
+        @keyframes eyeWinner {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .pupil {
+            width: 16px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s;
+        }
+
+        .mouth {
+            width: 60px;
+            height: 30px;
+            background: #d84315;
+            border-radius: 0 0 60px 60px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .mouth.annoyed {
+            height: 15px;
+            border-radius: 60px 60px 0 0;
+            background: #5d4037;
+        }
+
+        .mouth.laughing {
+            height: 50px;
+            width: 70px;
+            border-radius: 0 0 70px 70px;
+        }
+
+        .mouth.eating {
+            animation: chew 0.15s infinite;
+        }
+
+        .mouth.drinking {
+            animation: drink 0.25s infinite;
+        }
+
+        .mouth.winner {
+            height: 50px;
+            width: 70px;
+            border-radius: 0 0 70px 70px;
+            background: #4caf50;
+        }
+
+        .mouth.loser {
+            height: 20px;
+            border-radius: 60px 60px 0 0;
+            background: #f44336;
+        }
+
+        .tongue {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+            background: #ff8a80;
+            border-radius: 50%;
+            transition: bottom 0.3s;
+        }
+
+        .teeth {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: white;
+            border-radius: 0 0 5px 5px;
+        }
+
+        /* Dialogue Bubble */
+        .bubble {
+            position: absolute;
+            top: -80px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            color: var(--text-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            white-space: nowrap;
+            z-index: 20;
+        }
+
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent;
+        }
+
+        .bubble.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bubble.annoyed {
+            background: #ffccbc;
+            color: #bf360c;
+        }
+
+        .bubble.laughing {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .bubble.winner {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .bubble.loser {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        /* Draggable Items Container */
+        .items-container {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 30px;
+            z-index: 100;
+        }
+
+        .draggable-item {
+            width: 100px;
+            height: 100px;
+            cursor: grab;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s;
+            position: relative;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            padding: 10px;
+        }
+
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.15);
+        }
+
+        .draggable-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+            pointer-events: none;
+        }
+
+        .item-label {
+            font-size: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            text-align: center;
+            margin-top: 5px;
+            white-space: nowrap;
+        }
+
+        .item-xp {
+            font-size: 0.7rem;
+            color: #26a69a;
+            font-weight: bold;
+        }
+
+        /* Menu Buttons Container */
+        .menu-buttons {
+            position: absolute;
+            right: 30px;
+            bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .menu-btn {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #cfd8dc 0%, #b0bec5 100%);
+            border-radius: 15px;
+            border: 3px solid #90a4ae;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .menu-btn:active {
+            transform: scale(0.98);
+        }
+
+        .menu-btn-icon {
+            font-size: 2rem;
+        }
+
+        .menu-btn-label {
+            font-size: 0.7rem;
+            color: #37474f;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        .fridge-btn .fridge-handle {
+            width: 8px;
+            height: 25px;
+            background: #546e7a;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        /* Modal Base Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--fridge-bg);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            border: 5px solid #90a4ae;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #37474f;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            background: #ef5350;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* Fridge Specific */
+        .fridge-section {
+            margin-bottom: 25px;
+        }
+
+        .fridge-section-title {
+            font-size: 1.2rem;
+            color: #546e7a;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fridge-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .fridge-item {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid transparent;
+        }
+
+        .fridge-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .fridge-item.selected {
+            border-color: #26a69a;
+            background: #e8f5e9;
+        }
+
+        .fridge-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .fridge-item-name {
+            font-size: 0.85rem;
+            color: #37474f;
+            font-weight: 600;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .fridge-item-xp {
+            font-size: 0.75rem;
+            color: #26a69a;
+            font-weight: bold;
+        }
+
+        /* Achievements Specific */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .achievement-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid var(--achievement-locked);
+            opacity: 0.6;
+        }
+
+        .achievement-card.unlocked {
+            border-color: var(--achievement-unlocked);
+            opacity: 1;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            box-shadow: 0 5px 20px rgba(255, 202, 40, 0.4);
+        }
+
+        .achievement-card.unlocked:hover {
+            transform: translateY(-5px);
+        }
+
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--achievement-locked);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .achievement-card.unlocked .achievement-icon {
+            background: var(--achievement-unlocked);
+            animation: achievementGlow 2s infinite;
+        }
+
+        @keyframes achievementGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 202, 40, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 202, 40, 0.8); }
+        }
+
+        .achievement-info {
+            flex: 1;
+        }
+
+        .achievement-name {
+            font-size: 0.95rem;
+            color: #37474f;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .achievement-desc {
+            font-size: 0.75rem;
+            color: #78909c;
+        }
+
+        .achievement-card.unlocked .achievement-desc {
+            color: #5d4037;
+        }
+
+        .achievement-progress {
+            font-size: 0.7rem;
+            color: #90a4ae;
+            margin-top: 5px;
+        }
+
+        .achievement-card.unlocked .achievement-progress {
+            color: #26a69a;
+            font-weight: bold;
+        }
+
+        /* Mini Games - Tic Tac Toe */
+        .minigames-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .minigame-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .minigame-tab {
+            padding: 10px 20px;
+            background: #cfd8dc;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #546e7a;
+            transition: all 0.2s;
+        }
+
+        .minigame-tab.active {
+            background: #26a69a;
+            color: white;
+        }
+
+        .minigame-tab:hover {
+            background: #80cbc4;
+        }
+
+        .tic-tac-toe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            background: #90a4ae;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px auto;
+        }
+
+        .tic-tac-toe-cell {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .tic-tac-toe-cell:hover:not(.taken) {
+            background: #e8f5e9;
+            transform: scale(1.05);
+        }
+
+        .tic-tac-toe-cell.taken {
+            cursor: not-allowed;
+        }
+
+        .tic-tac-toe-cell.x {
+            color: #e53935;
+        }
+
+        .tic-tac-toe-cell.o {
+            color: #1e88e5;
+        }
+
+        .tic-tac-toe-cell.winner {
+            background: #c8e6c9;
+            animation: cellWinner 0.5s infinite;
+        }
+
+        @keyframes cellWinner {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .tic-tac-toe-info {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .tic-tac-toe-status {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #37474f;
+            margin-bottom: 10px;
+        }
+
+        .tic-tac-toe-score {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 0.95rem;
+            color: #546e7a;
+        }
+
+        .tic-tac-toe-score span {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(38, 166, 154, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(38, 166, 154, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: #cfd8dc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-weight: bold;
+        }
+
+        /* XP Gain Animation */
+        .xp-gain {
+            position: absolute;
+            color: #26a69a;
+            font-weight: bold;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: xpFloat 1s ease-out forwards;
+            z-index: 200;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        @keyframes xpFloat {
+            0% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-50px) scale(1.2); 
+            }
+        }
+
+        /* Animations */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
+            50% { transform: scale(1.02); border-radius: 50% 50% 45% 55% / 50% 50% 55% 45%; }
+        }
+
+        @keyframes blink {
+            0%, 90%, 100% { height: 50px; }
+            95% { height: 2px; }
+        }
+
+        @keyframes chew {
+            0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
+            50% { height: 20px; border-radius: 0 0 30px 30px; }
+        }
+
+        @keyframes drink {
+            0%, 100% { height: 35px; border-radius: 0 0 60px 60px; }
+            50% { height: 45px; border-radius: 50%; }
+        }
+
+        @keyframes tickle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(-5deg); }
+            75% { transform: scale(1.05) rotate(5deg); }
+        }
+
+        @keyframes eatBounce {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.05) translateY(-5px); }
+        }
+
+        /* Achievement Notification */
+        .achievement-notification {
+            position: fixed;
+            top: 100px;
+            right: -400px;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 3px solid #ffca28;
+            box-shadow: 0 5px 20px rgba(255, 202, 40, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 3000;
+            transition: right 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .achievement-notification.show {
+            right: 30px;
+        }
+
+        .achievement-notification-icon {
+            width: 50px;
+            height: 50px;
+            background: #ffca28;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        .achievement-notification-text {
+            color: #5d4037;
+        }
+
+        .achievement-notification-title {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .achievement-notification-name {
+            font-size: 0.85rem;
+            color: #78909c;
+        }
+
+        /* Level Up Celebration */
+        .levelup-celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+            display: none;
+        }
+
+        .levelup-celebration.active {
+            display: block;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Dragging clone */
+        .drag-clone {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            pointer-events: none;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .drag-clone img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .drag-clone .item-label {
+            font-size: 0.75rem;
+            color: var(--text-color);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 10px;
+            color: rgba(1, 87, 155, 0.5);
+            font-size: 0.85rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="scene">
+        <!-- XP Bar -->
+        <div class="xp-container">
+            <div class="xp-bar-bg">
+                <div class="xp-bar-fill" id="xpFill"></div>
+                <div class="xp-text" id="xpText">Уровень 1 • 0/100 XP</div>
+            </div>
+            <div class="level-badge" id="levelBadge">1</div>
+        </div>
+
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <div class="stat-item">
+                <span class="stat-icon">🍗</span>
+                <span>Съедено: <span class="stat-value" id="foodCount">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💧</span>
+                <span>Выпито: <span class="stat-value" id="drinkCount">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">👆</span>
+                <span>Пощекотано: <span class="stat-value" id="tickleCount">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🎮</span>
+                <span>Игр выиграно: <span class="stat-value" id="gamesWon">0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🏆</span>
+                <span>Ачивки: <span class="stat-value" id="achievementCount">0/0</span></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">⭐</span>
+                <span>Всего XP: <span class="stat-value" id="totalXp">0</span></span>
+            </div>
+        </div>
+
+        <!-- The Character -->
+        <div class="blob-container" id="blobContainer">
+            <div class="bubble" id="bubble">Привет!</div>
+            <div class="blob" id="blob">
+                <div class="face">
+                    <div class="eyes">
+                        <div class="eye" id="eyeLeft" data-side="left"><div class="pupil"></div></div>
+                        <div class="eye" id="eyeRight" data-side="right"><div class="pupil"></div></div>
+                    </div>
+                    <div class="mouth" id="mouth">
+                        <div class="teeth"></div>
+                        <div class="tongue"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Draggable Items -->
+        <div class="items-container">
+            <div class="draggable-item" id="foodItem" data-type="food">
+                <img id="foodImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png" alt="Food">
+                <div class="item-label">
+                    <span id="foodName">Курица</span>
+                    <div class="item-xp" id="foodXp">+25 XP</div>
+                </div>
+            </div>
+            <div class="draggable-item" id="drinkItem" data-type="drink">
+                <img id="drinkImg" src="https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png" alt="Drink">
+                <div class="item-label">
+                    <span id="drinkName">Вода</span>
+                    <div class="item-xp" id="drinkXp">+15 XP</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Buttons -->
+        <div class="menu-buttons">
+            <div class="menu-btn fridge-btn" id="fridgeBtn">
+                <span class="menu-btn-icon">🧊</span>
+                <span class="menu-btn-label">Еда</span>
+                <div class="fridge-handle"></div>
+            </div>
+            <div class="menu-btn" id="minigamesBtn">
+                <span class="menu-btn-icon">🎮</span>
+                <span class="menu-btn-label">Игры</span>
+            </div>
+            <div class="menu-btn" id="achievementsBtn">
+                <span class="menu-btn-icon">🏆</span>
+                <span class="menu-btn-label">Ачивки</span>
+            </div>
+        </div>
+
+        <div class="hint">Перетащи еду или воду в рот!</div>
+
+        <!-- Level Up Celebration -->
+        <div class="levelup-celebration" id="celebration"></div>
+
+        <!-- Achievement Notification -->
+        <div class="achievement-notification" id="achievementNotification">
+            <div class="achievement-notification-icon">🏆</div>
+            <div class="achievement-notification-text">
+                <div class="achievement-notification-title">Новая ачивка!</div>
+                <div class="achievement-notification-name" id="achievementNotificationName">Название</div>
+            </div>
+        </div>
+
+        <!-- Fridge Modal -->
+        <div class="modal" id="fridgeModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">🧊 Холодильник</span>
+                    <button class="modal-close" id="fridgeClose">×</button>
+                </div>
+                
+                <div class="fridge-section">
+                    <div class="fridge-section-title">🍗 Еда</div>
+                    <div class="fridge-items" id="foodItems"></div>
+                </div>
+                
+                <div class="fridge-section">
+                    <div class="fridge-section-title">💧 Напитки</div>
+                    <div class="fridge-items" id="drinkItems"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Modal -->
+        <div class="modal" id="achievementsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">🏆 Достижения</span>
+                    <button class="modal-close" id="achievementsClose">×</button>
+                </div>
+                <div class="achievements-grid" id="achievementsGrid"></div>
+            </div>
+        </div>
+
+        <!-- Mini Games Modal -->
+        <div class="modal" id="minigamesModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">🎮 Мини-игры</span>
+                    <button class="modal-close" id="minigamesClose">×</button>
+                </div>
+                
+                <div class="minigames-container">
+                    <div class="minigame-tabs">
+                        <button class="minigame-tab active" data-game="tictactoe">Крестики-Нолики</button>
+                    </div>
+                    
+                    <!-- Tic Tac Toe Game -->
+                    <div id="tictactoeGame">
+                        <div class="tic-tac-toe-info">
+                            <div class="tic-tac-toe-status" id="tttStatus">Твой ход! (X)</div>
+                            <div class="tic-tac-toe-score">
+                                <div>Ты (X): <span id="tttPlayerScore">0</span></div>
+                                <div>Блоб (O): <span id="tttBlobScore">0</span></div>
+                                <div>Ничьи: <span id="tttDraws">0</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="tic-tac-toe-board" id="tttBoard">
+                            <div class="tic-tac-toe-cell" data-index="0"></div>
+                            <div class="tic-tac-toe-cell" data-index="1"></div>
+                            <div class="tic-tac-toe-cell" data-index="2"></div>
+                            <div class="tic-tac-toe-cell" data-index="3"></div>
+                            <div class="tic-tac-toe-cell" data-index="4"></div>
+                            <div class="tic-tac-toe-cell" data-index="5"></div>
+                            <div class="tic-tac-toe-cell" data-index="6"></div>
+                            <div class="tic-tac-toe-cell" data-index="7"></div>
+                            <div class="tic-tac-toe-cell" data-index="8"></div>
+                        </div>
+                        
+                        <button class="btn-primary" id="tttResetBtn">Новая игра</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Food and Drink Data
+        const foodData = [
+            { id: 'chicken', name: 'Курица', xp: 25, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png' },
+            { id: 'burger', name: 'Бургер', xp: 35, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/134fe074b-69dc-4957-a33a-4f0751c46d5e.png' },
+            { id: 'pizza', name: 'Пицца', xp: 30, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1e0797689-ad14-4043-8359-49d8981c4f2c.png' },
+            { id: 'apple', name: 'Яблоко', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1571d8010-90fa-4d26-8844-cd052898cfd6.png' }
+        ];
+
+        const drinkData = [
+            { id: 'water', name: 'Вода', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png' },
+            { id: 'juice', name: 'Сок', xp: 20, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/122a8fae9-253e-4b9e-a8b1-38a8fd5a541c.png' },
+            { id: 'soda', name: 'Газировка', xp: 18, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/184eb8fcd-63bc-4bd0-bbc2-55382b073aa6.png' },
+            { id: 'milk', name: 'Молоко', xp: 22, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1c3d69fed-7c01-47f8-acbd-b8dc39f72196.png' }
+        ];
+
+        // Achievements Data
+        const achievementsData = [
+            { id: 'first_feed', name: 'Первый обед', desc: 'Покормите персонажа впервые', icon: '🍗', condition: (state) => state.foodCount >= 1 },
+            { id: 'first_drink', name: 'Первый глоток', desc: 'Напоите персонажа впервые', icon: '💧', condition: (state) => state.drinkCount >= 1 },
+            { id: 'first_tickle', name: 'Щекотка!', desc: 'Пощекочите персонажа впервые', icon: '😂', condition: (state) => state.tickleCount >= 1 },
+            { id: 'first_win', name: 'Первая победа', desc: 'Выиграйте в крестики-нолики', icon: '🎮', condition: (state) => state.gamesWon >= 1 },
+            { id: 'feed_5', name: 'Обжора', desc: 'Покормите 5 раз', icon: '🍽️', condition: (state) => state.foodCount >= 5 },
+            { id: 'feed_10', name: 'Гурман', desc: 'Покормите 10 раз', icon: '👨‍🍳', condition: (state) => state.foodCount >= 10 },
+            { id: 'feed_25', name: 'Мега Обжора', desc: 'Покормите 25 раз', icon: '🤤', condition: (state) => state.foodCount >= 25 },
+            { id: 'drink_5', name: 'Водохлёб', desc: 'Напоите 5 раз', icon: '🥤', condition: (state) => state.drinkCount >= 5 },
+            { id: 'drink_10', name: 'Сомелье', desc: 'Напоите 10 раз', icon: '🍷', condition: (state) => state.drinkCount >= 10 },
+            { id: 'tickle_5', name: 'Щекотун', desc: 'Пощекочите 5 раз', icon: '🤣', condition: (state) => state.tickleCount >= 5 },
+            { id: 'tickle_10', name: 'Комик', desc: 'Пощекочите 10 раз', icon: '🎭', condition: (state) => state.tickleCount >= 10 },
+            { id: 'level_5', name: 'Новичок', desc: 'Достигните 5 уровня', icon: '⭐', condition: (state) => state.level >= 5 },
+            { id: 'level_10', name: 'Опытный', desc: 'Достигните 10 уровня', icon: '🌟', condition: (state) => state.level >= 10 },
+            { id: 'level_20', name: 'Мастер', desc: 'Достигните 20 уровня', icon: '💫', condition: (state) => state.level >= 20 },
+            { id: 'xp_500', name: 'Коллекционер XP', desc: 'Получите 500 XP', icon: '💎', condition: (state) => state.totalXp >= 500 },
+            { id: 'xp_1000', name: 'XP Магнат', desc: 'Получите 1000 XP', icon: '💰', condition: (state) => state.totalXp >= 1000 },
+            { id: 'xp_5000', name: 'XP Легенда', desc: 'Получите 5000 XP', icon: '👑', condition: (state) => state.totalXp >= 5000 }
+        ];
+
+        // Dialogue responses
+        const annoyedResponses = [
+            "Эй! Не надо!",
+            "Бля, ты чего?!",
+            "Отстань!",
+            "Мне неприятно!",
+            "Прекрати!",
+            "Ай! Мои глаза!"
+        ];
+
+        const tickleResponses = [
+            "Ха-ха-ха! Щекотно!",
+            "Ой! Прекрати!",
+            "Ха-ха! Щекотка!",
+            "Ахаха! Смешно!",
+            "Хи-хи! Ещё!",
+            "Ой-ой-ой! Ха-ха!"
+        ];
+
+        // Tic Tac Toe State
+        let tttBoard = ['', '', '', '', '', '', '', '', ''];
+        let tttPlayerTurn = true;
+        let tttGameActive = true;
+        let tttPlayerScore = 0;
+        let tttBlobScore = 0;
+        let tttDraws = 0;
+
+        // Elements
+        const blob = document.getElementById('blob');
+        const blobContainer = document.getElementById('blobContainer');
+        const bubble = document.getElementById('bubble');
+        const mouth = document.getElementById('mouth');
+        const eyes = document.querySelectorAll('.eye');
+        const pupils = document.querySelectorAll('.pupil');
+        const xpFill = document.getElementById('xpFill');
+        const xpText = document.getElementById('xpText');
+        const levelBadge = document.getElementById('levelBadge');
+        const foodCountEl = document.getElementById('foodCount');
+        const drinkCountEl = document.getElementById('drinkCount');
+        const tickleCountEl = document.getElementById('tickleCount');
+        const gamesWonEl = document.getElementById('gamesWon');
+        const achievementCountEl = document.getElementById('achievementCount');
+        const totalXpEl = document.getElementById('totalXp');
+        const celebration = document.getElementById('celebration');
+        const fridgeBtn = document.getElementById('fridgeBtn');
+        const minigamesBtn = document.getElementById('minigamesBtn');
+        const achievementsBtn = document.getElementById('achievementsBtn');
+        const fridgeModal = document.getElementById('fridgeModal');
+        const achievementsModal = document.getElementById('achievementsModal');
+        const minigamesModal = document.getElementById('minigamesModal');
+        const fridgeClose = document.getElementById('fridgeClose');
+        const achievementsClose = document.getElementById('achievementsClose');
+        const minigamesClose = document.getElementById('minigamesClose');
+        const foodItemsContainer = document.getElementById('foodItems');
+        const drinkItemsContainer = document.getElementById('drinkItems');
+        const achievementsGrid = document.getElementById('achievementsGrid');
+        const foodItem = document.getElementById('foodItem');
+        const drinkItem = document.getElementById('drinkItem');
+        const foodImg = document.getElementById('foodImg');
+        const drinkImg = document.getElementById('drinkImg');
+        const foodName = document.getElementById('foodName');
+        const drinkName = document.getElementById('drinkName');
+        const foodXp = document.getElementById('foodXp');
+        const drinkXp = document.getElementById('drinkXp');
+        const achievementNotification = document.getElementById('achievementNotification');
+        const achievementNotificationName = document.getElementById('achievementNotificationName');
+        const tttCells = document.querySelectorAll('.tic-tac-toe-cell');
+        const tttStatus = document.getElementById('tttStatus');
+        const tttPlayerScoreEl = document.getElementById('tttPlayerScore');
+        const tttBlobScoreEl = document.getElementById('tttBlobScore');
+        const tttDrawsEl = document.getElementById('tttDraws');
+        const tttResetBtn = document.getElementById('tttResetBtn');
+
+        // Game State
+        let level = 1;
+        let currentXp = 0;
+        let xpToNextLevel = 100;
+        let totalXp = 0;
+        let foodCount = 0;
+        let drinkCount = 0;
+        let tickleCount = 0;
+        let gamesWon = 0;
+        let isBusy = false;
+        let selectedFood = foodData[0];
+        let selectedDrink = drinkData[0];
+        let dragClone = null;
+        let dragType = null;
+        let isAnnoyed = false;
+        let isTickled = false;
+        let unlockedAchievements = [];
+
+        // Initialize
+        function init() {
+            renderFridgeItems();
+            renderAchievements();
+            updateDisplay();
+            setupInteractions();
+            checkAchievements();
+            initTicTacToe();
+            
+            setTimeout(() => {
+                bubble.textContent = "Привет! Я живой сайт.";
+                bubble.classList.add('show');
+            }, 500);
+
+            setTimeout(() => {
+                bubble.textContent = "Я голоден и хочу пить...";
+            }, 3500);
+        }
+
+        // Setup Eye and Body Interactions
+        function setupInteractions() {
+            eyes.forEach(eye => {
+                eye.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (isBusy || isAnnoyed || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+                    annoyBlob();
+                });
+            });
+
+            blob.addEventListener('click', (e) => {
+                if (isBusy || isTickled || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+                if (e.target.closest('.eye')) return;
+                tickleBlob();
+            });
+        }
+
+        // Annoy Response
+        function annoyBlob() {
+            isAnnoyed = true;
+            isBusy = true;
+
+            eyes.forEach(eye => eye.classList.add('squint'));
+            mouth.classList.add('annoyed');
+            blob.classList.add('annoyed');
+
+            bubble.textContent = annoyedResponses[Math.floor(Math.random() * annoyedResponses.length)];
+            bubble.classList.add('annoyed');
+            bubble.classList.add('show');
+
+            setTimeout(() => {
+                eyes.forEach(eye => eye.classList.remove('squint'));
+                mouth.classList.remove('annoyed');
+                blob.classList.remove('annoyed');
+                bubble.classList.remove('annoyed');
+                isAnnoyed = false;
+                isBusy = false;
+
+                setTimeout(() => {
+                    bubble.textContent = "Ладно, прощаю...";
+                    setTimeout(() => {
+                        bubble.textContent = "Но больше не надо!";
+                    }, 2000);
+                }, 500);
+            }, 1500);
+        }
+
+        // Tickle Response
+        function tickleBlob() {
+            isTickled = true;
+            isBusy = true;
+            tickleCount++;
+            updateDisplay();
+
+            blob.classList.add('tickled');
+            mouth.classList.add('laughing');
+
+            bubble.textContent = tickleResponses[Math.floor(Math.random() * tickleResponses.length)];
+            bubble.classList.add('laughing');
+            bubble.classList.add('show');
+
+            const tickleXp = 5;
+            const rect = blob.getBoundingClientRect();
+            addXp(tickleXp, rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+            setTimeout(() => {
+                blob.classList.remove('tickled');
+                mouth.classList.remove('laughing');
+                bubble.classList.remove('laughing');
+                isTickled = false;
+                isBusy = false;
+
+                setTimeout(() => {
+                    bubble.textContent = "Было весело! +5 XP";
+                    setTimeout(() => {
+                        bubble.textContent = "Пощекочи ещё!";
+                    }, 2000);
+                }, 500);
+            }, 2000);
+        }
+
+        // Render Fridge Items
+        function renderFridgeItems() {
+            foodItemsContainer.innerHTML = foodData.map(item => `
+                <div class="fridge-item ${item.id === selectedFood.id ? 'selected' : ''}" data-id="${item.id}" data-type="food">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="fridge-item-name">${item.name}</div>
+                    <div class="fridge-item-xp">+${item.xp} XP</div>
+                </div>
+            `).join('');
+
+            drinkItemsContainer.innerHTML = drinkData.map(item => `
+                <div class="fridge-item ${item.id === selectedDrink.id ? 'selected' : ''}" data-id="${item.id}" data-type="drink">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="fridge-item-name">${item.name}</div>
+                    <div class="fridge-item-xp">+${item.xp} XP</div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.fridge-item').forEach(item => {
+                item.addEventListener('click', () => selectItem(item));
+            });
+        }
+
+        // Select Item from Fridge
+        function selectItem(element) {
+            const id = element.dataset.id;
+            const type = element.dataset.type;
+
+            if (type === 'food') {
+                selectedFood = foodData.find(f => f.id === id);
+                foodImg.src = selectedFood.img;
+                foodName.textContent = selectedFood.name;
+                foodXp.textContent = `+${selectedFood.xp} XP`;
+            } else {
+                selectedDrink = drinkData.find(d => d.id === id);
+                drinkImg.src = selectedDrink.img;
+                drinkName.textContent = selectedDrink.name;
+                drinkXp.textContent = `+${selectedDrink.xp} XP`;
+            }
+
+            renderFridgeItems();
+        }
+
+        // Render Achievements
+        function renderAchievements() {
+            const state = { level, foodCount, drinkCount, tickleCount, totalXp, gamesWon };
+            
+            achievementsGrid.innerHTML = achievementsData.map(ach => {
+                const unlocked = unlockedAchievements.includes(ach.id);
+                return `
+                    <div class="achievement-card ${unlocked ? 'unlocked' : ''}">
+                        <div class="achievement-icon">${unlocked ? ach.icon : '🔒'}</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">${unlocked ? ach.name : '???'}</div>
+                            <div class="achievement-desc">${unlocked ? ach.desc : 'Продолжайте играть...'}</div>
+                            <div class="achievement-progress">${unlocked ? '✓ Получено!' : 'Заблокировано'}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            achievementCountEl.textContent = `${unlockedAchievements.length}/${achievementsData.length}`;
+        }
+
+        // Check Achievements
+        function checkAchievements() {
+            const state = { level, foodCount, drinkCount, tickleCount, totalXp, gamesWon };
+            let newUnlock = false;
+
+            achievementsData.forEach(ach => {
+                if (!unlockedAchievements.includes(ach.id) && ach.condition(state)) {
+                    unlockedAchievements.push(ach.id);
+                    showAchievementNotification(ach);
+                    newUnlock = true;
+                }
+            });
+
+            if (newUnlock) {
+                renderAchievements();
+                updateDisplay();
+            }
+        }
+
+        // Show Achievement Notification
+        function showAchievementNotification(ach) {
+            achievementNotificationName.textContent = ach.name;
+            achievementNotification.classList.add('show');
+
+            setTimeout(() => {
+                achievementNotification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Update Display
+        function updateDisplay() {
+            const percentage = (currentXp / xpToNextLevel) * 100;
+            xpFill.style.width = percentage + '%';
+            xpText.textContent = `Уровень ${level} • ${currentXp}/${xpToNextLevel} XP`;
+            foodCountEl.textContent = foodCount;
+            drinkCountEl.textContent = drinkCount;
+            tickleCountEl.textContent = tickleCount;
+            gamesWonEl.textContent = gamesWon;
+            totalXpEl.textContent = totalXp;
+            achievementCountEl.textContent = `${unlockedAchievements.length}/${achievementsData.length}`;
+        }
+
+        // Eye Tracking
+        document.addEventListener('mousemove', (e) => {
+            if (isBusy || isAnnoyed || isTickled || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+
+            const rect = blobContainer.getBoundingClientRect();
+            const blobCenterX = rect.left + rect.width / 2;
+            const blobCenterY = rect.top + rect.height / 2;
+
+            const angle = Math.atan2(e.clientY - blobCenterY, e.clientX - blobCenterX);
+            const distance = Math.min(12, Math.hypot(e.clientX - blobCenterX, e.clientY - blobCenterY) / 15);
+
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+
+            pupils.forEach(pupil => {
+                pupil.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Blinking
+        setInterval(() => {
+            if (!isBusy && !isAnnoyed && !isTickled && !fridgeModal.classList.contains('active') && !achievementsModal.classList.contains('active') && !minigamesModal.classList.contains('active')) {
+                eyes.forEach(eye => {
+                    eye.style.animation = 'blink 0.2s linear';
+                    setTimeout(() => eye.style.animation = '', 200);
+                });
+            }
+        }, 4000);
+
+        // XP System
+        function addXp(amount, x, y) {
+            currentXp += amount;
+            totalXp += amount;
+            showXpGain(amount, x, y);
+            updateDisplay();
+            checkAchievements();
+
+            if (currentXp >= xpToNextLevel) {
+                levelUp();
+            }
+        }
+
+        function levelUp() {
+            level++;
+            currentXp = currentXp - xpToNextLevel;
+            xpToNextLevel = Math.floor(xpToNextLevel * 1.5);
+            levelBadge.textContent = level;
+            levelBadge.style.animation = 'none';
+            levelBadge.offsetHeight;
+            levelBadge.style.animation = 'levelPulse 0.5s ease';
+            bubble.textContent = `Уровень ${level}! Ура!`;
+            showCelebration();
+            updateDisplay();
+            checkAchievements();
+        }
+
+        function showXpGain(amount, x, y) {
+            const xpGain = document.createElement('div');
+            xpGain.className = 'xp-gain';
+            xpGain.textContent = `+${amount} XP`;
+            xpGain.style.left = x + 'px';
+            xpGain.style.top = y + 'px';
+            document.body.appendChild(xpGain);
+            setTimeout(() => xpGain.remove(), 1000);
+        }
+
+        function showCelebration() {
+            celebration.classList.add('active');
+            celebration.innerHTML = '';
+            const colors = ['#ff5252', '#ff4081', '#e040fb', '#7c4dff', '#536dfe', '#448aff', '#40c4ff', '#18ffff', '#64ffda', '#69f0ae', '#b2ff59', '#eeff41', '#ffff00', '#ffd740', '#ffab40', '#ff6e40'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                celebration.appendChild(confetti);
+            }
+            
+            setTimeout(() => {
+                celebration.classList.remove('active');
+                celebration.innerHTML = '';
+            }, 3000);
+        }
+
+        // Drag and Drop
+        function startDrag(e, type) {
+            if (isBusy || isAnnoyed || isTickled || fridgeModal.classList.contains('active') || achievementsModal.classList.contains('active') || minigamesModal.classList.contains('active')) return;
+            e.preventDefault();
+
+            dragType = type;
+            const itemData = type === 'food' ? selectedFood : selectedDrink;
+            const rect = (type === 'food' ? foodItem : drinkItem).getBoundingClientRect();
+
+            dragClone = document.createElement('div');
+            dragClone.className = 'drag-clone';
+            dragClone.innerHTML = `
+                <img src="${itemData.img}" alt="${itemData.name}">
+                <div class="item-label">${itemData.name}<br>+${itemData.xp} XP</div>
+            `;
+            document.body.appendChild(dragClone);
+
+            moveDragClone(e);
+            (type === 'food' ? foodItem : drinkItem).style.opacity = '0.3';
+        }
+
+        function moveDragClone(e) {
+            if (!dragClone) return;
+            e.preventDefault();
+
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            dragClone.style.left = (clientX - 50) + 'px';
+            dragClone.style.top = (clientY - 50) + 'px';
+        }
+
+        function endDrag(e) {
+            if (!dragClone) return;
+
+            const cloneRect = dragClone.getBoundingClientRect();
+            const mouthRect = mouth.getBoundingClientRect();
+
+            const cloneCenterX = cloneRect.left + cloneRect.width / 2;
+            const cloneCenterY = cloneRect.top + cloneRect.height / 2;
+            const mouthCenterX = mouthRect.left + mouthRect.width / 2;
+            const mouthCenterY = mouthRect.top + mouthRect.height / 2;
+
+            const distance = Math.hypot(cloneCenterX - mouthCenterX, cloneCenterY - mouthCenterY);
+
+            if (distance < 100) {
+                interact(dragType, cloneCenterX, cloneCenterY);
+            }
+
+            dragClone.remove();
+            dragClone = null;
+            foodItem.style.opacity = '1';
+            drinkItem.style.opacity = '1';
+            dragType = null;
+        }
+
+        function interact(type, x, y) {
+            isBusy = true;
+            const itemData = type === 'food' ? selectedFood : selectedDrink;
+
+            if (type === 'food') {
+                blob.classList.add('eating');
+                mouth.classList.add('eating');
+                bubble.textContent = "Ням-ням-ням!";
+                foodCount++;
+            } else {
+                blob.classList.add('drinking');
+                mouth.classList.add('drinking');
+                bubble.textContent = "Ах, освежает!";
+                drinkCount++;
+            }
+
+            updateDisplay();
+            checkAchievements();
+
+            setTimeout(() => {
+                blob.classList.remove('eating', 'drinking');
+                mouth.classList.remove('eating', 'drinking');
+                bubble.textContent = `Спасибо! +${itemData.xp} XP`;
+                addXp(itemData.xp, x, y);
+
+                setTimeout(() => {
+                    isBusy = false;
+                    const messages = ["Ещё хочу...", "Было вкусно!", "Я счастлив!", "Давай ещё!", "Ты лучший!"];
+                    bubble.textContent = messages[Math.floor(Math.random() * messages.length)];
+                }, 1500);
+            }, 1500);
+        }
+
+        // Tic Tac Toe Functions
+        function initTicTacToe() {
+            tttCells.forEach(cell => {
+                cell.addEventListener('click', () => handleTicTacToeClick(cell));
+            });
+            tttResetBtn.addEventListener('click', resetTicTacToe);
+        }
+
+        function handleTicTacToeClick(cell) {
+            const index = parseInt(cell.dataset.index);
+            
+            if (!tttGameActive || !tttPlayerTurn || tttBoard[index] !== '') return;
+            
+            // Player move
+            tttBoard[index] = 'X';
+            cell.textContent = 'X';
+            cell.classList.add('taken', 'x');
+            
+            if (checkTicTacToeWin('X')) {
+                endTicTacToeGame('player');
+                return;
+            }
+            
+            if (tttBoard.every(cell => cell !== '')) {
+                endTicTacToeGame('draw');
+                return;
+            }
+            
+            tttPlayerTurn = false;
+            tttStatus.textContent = 'Блоб думает...';
+            
+            // Blob move after delay
+            setTimeout(() => {
+                blobMakeMove();
+            }, 800);
+        }
+
+        function blobMakeMove() {
+            if (!tttGameActive) return;
+            
+            // Simple AI: try to win, block player, or random
+            let move = findBestMove('O');
+            if (move === -1) move = findBestMove('X');
+            if (move === -1) {
+                const emptyCells = tttBoard.map((cell, i) => cell === '' ? i : null).filter(i => i !== null);
+                move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            }
+            
+            if (move !== -1) {
+                tttBoard[move] = 'O';
+                const cell = document.querySelector(`.tic-tac-toe-cell[data-index="${move}"]`);
+                cell.textContent = 'O';
+                cell.classList.add('taken', 'o');
+                
+                if (checkTicTacToeWin('O')) {
+                    endTicTacToeGame('blob');
+                    return;
+                }
+                
+                if (tttBoard.every(cell => cell !== '')) {
+                    endTicTacToeGame('draw');
+                    return;
+                }
+            }
+            
+            tttPlayerTurn = true;
+            tttStatus.textContent = 'Твой ход! (X)';
+        }
+
+        function findBestMove(player) {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                const values = [tttBoard[a], tttBoard[b], tttBoard[c]];
+                const playerCount = values.filter(v => v === player).length;
+                const emptyCount = values.filter(v => v === '').length;
+                
+                if (playerCount === 2 && emptyCount === 1) {
+                    if (tttBoard[a] === '') return a;
+                    if (tttBoard[b] === '') return b;
+                    if (tttBoard[c] === '') return c;
+                }
+            }
+            
+            return -1;
+        }
+
+        function checkTicTacToeWin(player) {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            
+            return winPatterns.some(pattern => {
+                return pattern.every(index => tttBoard[index] === player);
+            });
+        }
+
+        function endTicTacToeGame(result) {
+            tttGameActive = false;
+            
+            if (result === 'player') {
+                tttPlayerScore++;
+                tttStatus.textContent = 'Ты победил! +20 XP';
+                bubble.textContent = 'Хорошая игра...';
+                bubble.classList.add('loser');
+                bubble.classList.add('show');
+                mouth.classList.add('loser');
+                addXp(20, blobContainer.getBoundingClientRect().left + 150, blobContainer.getBoundingClientRect().top);
+            } else if (result === 'blob') {
+                tttBlobScore++;
+                gamesWon++;
+                tttStatus.textContent = 'Блоб победил! +10 XP';
+                bubble.textContent = 'Я победил! Ура!';
+                bubble.classList.add('winner');
+                bubble.classList.add('show');
+                mouth.classList.add('winner');
+                eyes.forEach(eye => eye.classList.add('winner'));
+                addXp(10, blobContainer.getBoundingClientRect().left + 150, blobContainer.getBoundingClientRect().top);
+            } else {
+                tttDraws++;
+                tttStatus.textContent = 'Ничья! +5 XP';
+                bubble.textContent = 'Ничья! Давай ещё!';
+                addXp(5, blobContainer.getBoundingClientRect().left + 150, blobContainer.getBoundingClientRect().top);
+            }
+            
+            updateDisplay();
+            checkAchievements();
+            
+            // Highlight winning cells
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            
+            if (result !== 'draw') {
+                const winner = result === 'player' ? 'X' : 'O';
+                winPatterns.forEach(pattern => {
+                    if (pattern.every(index => tttBoard[index] === winner)) {
+                        pattern.forEach(index => {
+                            document.querySelector(`.tic-tac-toe-cell[data-index="${index}"]`).classList.add('winner');
+                        });
+                    }
+                });
+            }
+            
+            tttPlayerScoreEl.textContent = tttPlayerScore;
+            tttBlobScoreEl.textContent = tttBlobScore;
+            tttDrawsEl.textContent = tttDraws;
+            
+            setTimeout(() => {
+                bubble.classList.remove('winner', 'loser');
+                mouth.classList.remove('winner', 'loser');
+                eyes.forEach(eye => eye.classList.remove('winner'));
+            }, 3000);
+        }
+
+        function resetTicTacToe() {
+            tttBoard = ['', '', '', '', '', '', '', '', ''];
+            tttPlayerTurn = true;
+            tttGameActive = true;
+            tttStatus.textContent = 'Твой ход! (X)';
+            
+            tttCells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('taken', 'x', 'o', 'winner');
+            });
+        }
+
+        // Event Listeners
+        foodItem.addEventListener('mousedown', (e) => startDrag(e, 'food'));
+        foodItem.addEventListener('touchstart', (e) => startDrag(e, 'food'), { passive: false });
+
+        drinkItem.addEventListener('mousedown', (e) => startDrag(e, 'drink'));
+        drinkItem.addEventListener('touchstart', (e) => startDrag(e, 'drink'), { passive: false });
+
+        document.addEventListener('mousemove', moveDragClone);
+        document.addEventListener('touchmove', moveDragClone, { passive: false });
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
+
+        // Fridge Modal
+        fridgeBtn.addEventListener('click', () => {
+            fridgeModal.classList.add('active');
+        });
+
+        fridgeClose.addEventListener('click', () => {
+            fridgeModal.classList.remove('active');
+        });
+
+        fridgeModal.addEventListener('click', (e) => {
+            if (e.target === fridgeModal) {
+                fridgeModal.classList.remove('active');
+            }
+        });
+
+        // Achievements Modal
+        achievementsBtn.addEventListener('click', () => {
+            renderAchievements();
+            achievementsModal.classList.add('active');
+        });
+
+        achievementsClose.addEventListener('click', () => {
+            achievementsModal.classList.remove('active');
+        });
+
+        achievementsModal.addEventListener('click', (e) => {
+            if (e.target === achievementsModal) {
+                achievementsModal.classList.remove('active');
+            }
+        });
+
+        // Mini Games Modal
+        minigamesBtn.addEventListener('click', () => {
+            minigamesModal.classList.add('active');
+            blob.classList.add('playing');
+        });
+
+        minigamesClose.addEventListener('click', () => {
+            minigamesModal.classList.remove('active');
+            blob.classList.remove('playing');
+        });
+
+        minigamesModal.addEventListener('click', (e) => {
+            if (e.target === minigamesModal) {
+                minigamesModal.classList.remove('active');
+                blob.classList.remove('playing');
+            }
+        });
+
+        // Initialize game
+        init();
+
+    </script>
+</body>
+</html>
+
