@@ -133,6 +133,21 @@ animation: breathe 4s ease-in-out infinite;
 .blob:hover {
 transform: scale(1.03);
 }
+.blob.kissed::after {
+content: '💋';
+position: absolute;
+top: 40%;
+right: 15%;
+font-size: 2.5rem;
+animation: kissPulse 2s infinite;
+filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+z-index: 30;
+pointer-events: none;
+}
+@keyframes kissPulse {
+0%, 100% { transform: scale(1) rotate(-10deg); }
+50% { transform: scale(1.1) rotate(-10deg); }
+}
 @keyframes breathe {
 0%, 100% { transform: scale(1); border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
 50% { transform: scale(1.02); border-radius: 50% 50% 45% 55% / 50% 50% 55% 45%; }
@@ -1141,7 +1156,6 @@ color: #546e7a;
 }
 .fridge-section { margin-bottom: 20px; }
 .fridge-section-title { font-size: 1rem; color: #546e7a; font-weight: bold; margin-bottom: 10px; }
-
 @media (max-width: 480px) {
 .blob-container { width: 240px; height: 240px; }
 .face { width: 130px; height: 80px; }
@@ -1192,7 +1206,6 @@ color: #546e7a;
 .hint { font-size: 0.7rem; bottom: 5px; }
 .bubble { top: -60px; padding: 10px 18px; font-size: 1rem; }
 }
-
 @media (max-width: 360px) {
 .blob-container { width: 200px; height: 200px; }
 .face { width: 110px; height: 70px; }
@@ -1424,6 +1437,7 @@ let modalOpen = false;
 let obstacleGameActive = false, obstacleScore = 0, obstacleBest = 0;
 let obstaclePlayerX = 135, obstaclePlayerY = 135, obstacles = [];
 let obstacleInterval = null, obstacleSpeed = 2, obstacleSpeedIncrease = 0.3;
+let isFirstPlace = false;
 const elements = {};
 function cacheElements() {
 elements.blob = document.getElementById('blob');
@@ -1527,7 +1541,7 @@ function saveGame(showNotif = true) {
 const pid = getPlayerId();
 const gameState = getGameState();
 if (lsAvailable()) { localStorage.setItem('livingBlob_' + pid, JSON.stringify(gameState)); localStorage.setItem('livingBlob_nickname', userNickname); }
-db.ref('users/' + pid).set({ nickname: userNickname, totalXp: totalXp, level: level, foodCount: foodCount, drinkCount: drinkCount, tickleCount: tickleCount, gamesWon: gamesWon, lastSeen: Date.now(), gameState: gameState }).then(() => {
+db.ref('users/' + pid).set({ nickname: userNickname, totalXp: totalXp, level: level, foodCount: foodCount, drinkCount: drinkCount, tickleCount: tickleCount, gamesWon: gamesWon, lastSeen: Date.now(), gameState: gameState, isFirstPlace: isFirstPlace }).then(() => {
 if (showNotif) { showSaveStatus('Сохранено в облако!', 'success'); showAutoSaveIndicator('saved'); }
 updateOnlineStatus();
 }).catch((error) => { console.error(error); if (showNotif) showSaveStatus('Ошибка сети!', 'error'); });
@@ -1542,7 +1556,6 @@ function showSaveStatus(msg, type) { elements.saveStatus.textContent = msg; elem
 function showAutoSaveIndicator(state) { elements.autoSaveIndicator.className = 'auto-save-indicator ' + state; setTimeout(() => { if (autoSaveEnabled) elements.autoSaveIndicator.className = 'auto-save-indicator'; }, 2000); }
 function setupAutoSave() { if (autoSaveInterval) clearInterval(autoSaveInterval); if (autoSaveEnabled && lsAvailable()) { autoSaveInterval = setInterval(() => { showAutoSaveIndicator('saving'); saveGame(false); }, 30000); } }
 function updateOnlineStatus() { const pid = getPlayerId(); db.ref('users/' + pid + '/lastSeen').set(Date.now()); }
-// === FIXED LEADERBOARD FUNCTION ===
 function getLeaderboard() {
 elements.leaderboardList.innerHTML = '<li class="leaderboard-loading">Загрузка рейтинга...</li>';
 db.ref('users').orderByChild('totalXp').limitToLast(20).once('value', (snapshot) => {
@@ -1562,13 +1575,17 @@ function renderLeaderboardUI(users) {
 if (users.length === 0) {
 elements.leaderboardList.innerHTML = '<li class="leaderboard-empty">Пока нет игроков в рейтинге. Будьте первыми!</li>';
 elements.leaderboardCount.textContent = '0 игроков';
+elements.blob.classList.remove('kissed');
+isFirstPlace = false;
 return;
 }
 let html = '';
+let playerIsFirst = false;
 users.forEach((u, i) => {
 const rank = i + 1;
 const rankClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : 'normal';
 const isCurrent = u.nickname === userNickname;
+if (isCurrent && rank === 1) playerIsFirst = true;
 const onlineDot = u.isOnline ? '<span style="color:#4caf50; margin-left:5px;" title="Онлайн">●</span>' : '';
 html += '<li class="leaderboard-item ' + (isCurrent ? 'current-user' : '') + '">' +
 '<div class="leaderboard-rank ' + rankClass + '">' + rank + '</div>' +
@@ -1583,9 +1600,18 @@ elements.leaderboardList.innerHTML = html;
 elements.leaderboardCount.textContent = users.length + ' игроков';
 const onlineCount = users.filter(u => u.isOnline).length;
 elements.onlineCountEl.textContent = '🌐 ' + onlineCount;
+
+if (playerIsFirst) {
+elements.blob.classList.add('kissed');
+elements.bubble.textContent = 'Я первый! 💋';
+elements.bubble.classList.add('show', 'winner');
+isFirstPlace = true;
+} else {
+elements.blob.classList.remove('kissed');
+isFirstPlace = false;
+}
 }
 function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
-// === FIXED OPEN LEADERBOARD MODAL ===
 function openLeaderboardModal() {
 getLeaderboard();
 modalOpen = true;
@@ -1883,7 +1909,7 @@ const hasSave = lsAvailable() ? localStorage.getItem('livingBlob_' + playerId) :
 if (hasSave) { loadGame(); }
 renderFridgeItems(); renderAchievements(); updateDisplay();
 initTicTacToe(); initObstacleGame(); setupAutoSave(); updateOnlineStatus();
-setInterval(function() { getLeaderboard(); updateOnlineStatus(); }, 300000);
+setInterval(function() { getLeaderboard(); updateOnlineStatus(); }, 30000);
 window.addEventListener('beforeunload', function() { if (autoSaveEnabled && lsAvailable()) saveGame(false); });
 elements.eyes.forEach(function(eye) {
 eye.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); annoyBlob(); });
