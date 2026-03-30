@@ -10,7 +10,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <style>
-/* ... (ВСЕ СТИЛИ ОСТАЛИСЬ БЕЗ ИЗМЕНЕНИЙ, ЧТОБЫ НЕ СЛОМАТЬ АНИМАЦИИ) ... */
 :root {
 --bg-color: #e0f7fa;
 --blob-color: #4fc3f7;
@@ -1158,7 +1157,6 @@ color: #546e7a;
 }
 .fridge-section { margin-bottom: 20px; }
 .fridge-section-title { font-size: 1rem; color: #546e7a; font-weight: bold; margin-bottom: 10px; }
-/* Auth styles */
 .auth-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
 .auth-tab { flex: 1; padding: 10px; background: #cfd8dc; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: #546e7a; }
 .auth-tab.active { background: #26a69a; color: white; }
@@ -1407,7 +1405,6 @@ color: #546e7a;
 </div>
 </div>
 </div>
-<!-- Auth Modal -->
 <div class="modal" id="authModal">
 <div class="modal-content">
 <div class="modal-header"><span class="modal-title">🔐 Вход / Регистрация</span><button class="modal-close" id="authClose">×</button></div>
@@ -1487,7 +1484,8 @@ let obstaclePlayerX = 135, obstaclePlayerY = 135, obstacles = [];
 let obstacleInterval = null, obstacleSpeed = 2, obstacleSpeedIncrease = 0.3;
 let isFirstPlace = false;
 let isLoggedIn = false;
-let guestIdBeforeLogin = null; // Для миграции
+let guestIdBeforeLogin = null;
+let dataLoadedFromCloud = false; // ФЛАГ: данные загружены из облака
 const elements = {};
 function cacheElements() {
 elements.blob = document.getElementById('blob');
@@ -1607,20 +1605,40 @@ if (data.selectedFoodId) selectedFood = foodData.find(f => f.id === data.selecte
 if (data.selectedDrinkId) selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
 return true;
 }
-function saveGame(showNotif = true) {
+function saveGame(showNotif = true, forceCloud = false) {
+// 🔴 ВАЖНО: Не сохраняем в облако, если данные ещё не загружены оттуда
+if (isLoggedIn && !dataLoadedFromCloud && !forceCloud) {
+console.log('⏸ Сохранение отложено - данные ещё не загружены из облака');
+return false;
+}
 const pid = getPlayerId();
 const gameState = getGameState();
 if (lsAvailable()) { localStorage.setItem('livingBlob_' + pid, JSON.stringify(gameState)); localStorage.setItem('livingBlob_nickname', userNickname); }
-db.ref('users/' + pid).set({ nickname: userNickname, totalXp: totalXp, level: level, foodCount: foodCount, drinkCount: drinkCount, tickleCount: tickleCount, gamesWon: gamesWon, lastSeen: Date.now(), gameState: gameState, isFirstPlace: isFirstPlace, email: userEmail }).then(() => {
+if (isLoggedIn) {
+db.ref('users/' + pid).set({ 
+nickname: userNickname, 
+totalXp: totalXp, 
+level: level, 
+foodCount: foodCount, 
+drinkCount: drinkCount, 
+tickleCount: tickleCount, 
+gamesWon: gamesWon, 
+lastSeen: Date.now(), 
+gameState: gameState, 
+isFirstPlace: isFirstPlace, 
+email: userEmail,
+lastUpdated: Date.now() // 🔴 Метка времени для синхронизации
+}).then(() => {
 if (showNotif) { showSaveStatus('Сохранено в облако!', 'success'); showAutoSaveIndicator('saved'); }
 updateOnlineStatus();
 }).catch((error) => { console.error(error); if (showNotif) showSaveStatus('Ошибка сети!', 'error'); });
+}
 return true;
 }
 function loadGame() {
 const pid = getPlayerId();
 if (!lsAvailable()) { showSaveStatus('LocalStorage недоступен!', 'error'); return false; }
-try { const saved = localStorage.getItem('livingBlob_' + pid); if (saved) { loadGameState(JSON.parse(saved)); showSaveStatus('Загружено!', 'success'); return true; } return false; }
+try { const saved = localStorage.getItem('livingBlob_' + pid); if (saved) { loadGameState(JSON.parse(saved)); showSaveStatus('Загружено локально!', 'success'); return true; } return false; }
 catch { showSaveStatus('Ошибка загрузки!', 'error'); return false; }
 }
 function loadGameFromFirebase() {
@@ -1629,29 +1647,62 @@ return new Promise((resolve) => {
 db.ref('users/' + pid).once('value', (snapshot) => {
 const data = snapshot.val();
 if (data && data.gameState) {
+// 🔴 Сравниваем версии - облако новее?
+const localDataStr = lsAvailable() ? localStorage.getItem('livingBlob_' + pid) : null;
+let shouldUseCloud = true;
+if (localDataStr) {
+try {
+const localData = JSON.parse(localDataStr);
+// Если локальные данные новее (больше XP или уровень выше) - используем их
+if (localData.totalXp > data.totalXp || localData.level > data.level) {
+shouldUseCloud = false;
+console.log('📱 Локальные данные новее, используем их');
+}
+} catch(e) {}
+}
+if (shouldUseCloud) {
 loadGameState(data.gameState);
 if (data.nickname) userNickname = data.nickname;
-showSaveStatus('Загружено из облака!', 'success');
+// 🔴 Сохраняем облачные данные локально
+if (lsAvailable()) { localStorage.setItem('livingBlob_' + pid, JSON.stringify(data.gameState)); }
+showSaveStatus('✅ Загружено из облака!', 'success');
+dataLoadedFromCloud = true; // 🔴 ФЛАГ: данные загружены
 resolve(true);
 } else {
+// Используем локальные данные, но обновляем облако
+loadGameState(JSON.parse(localDataStr));
+showSaveStatus('📱 Использованы локальные данные', 'success');
+dataLoadedFromCloud = true;
+setTimeout(() => saveGame(false, true), 2000); // Обновляем облако через 2 сек
+resolve(true);
+}
+} else {
+dataLoadedFromCloud = true;
 resolve(false);
 }
 }).catch((error) => {
 console.error('Firebase load error:', error);
+dataLoadedFromCloud = true;
 resolve(false);
 });
 });
 }
-// ФУНКЦИЯ МИГРАЦИИ ПРОГРЕССА
 function migrateGuestProgress() {
 if (!guestIdBeforeLogin || !lsAvailable()) return;
 const guestDataStr = localStorage.getItem('livingBlob_' + guestIdBeforeLogin);
 if (guestDataStr) {
 try {
 const guestData = JSON.parse(guestDataStr);
-// Проверяем, есть ли прогресс (уровень > 1 или XP > 0)
 if (guestData.level > 1 || guestData.totalXp > 0 || guestData.unlockedAchievements.length > 0) {
-// Копируем прогресс в новый аккаунт
+// 🔴 Сначала проверяем, есть ли уже данные в облаке
+db.ref('users/' + playerId).once('value', (snapshot) => {
+const cloudData = snapshot.val();
+if (cloudData && cloudData.gameState && cloudData.gameState.totalXp > guestData.totalXp) {
+// В облаке данные новее - не перезаписываем
+console.log('☁️ В облаке данные новее, миграция отменена');
+showAuthSuccess('✅ Вход выполнен! Данные облака сохранены.');
+} else {
+// Мигрируем гостевые данные
 db.ref('users/' + playerId).set({
 nickname: guestData.nickname || userNickname,
 totalXp: guestData.totalXp,
@@ -1663,15 +1714,18 @@ gamesWon: guestData.gamesWon,
 lastSeen: Date.now(),
 gameState: guestData,
 isFirstPlace: false,
-email: userEmail
+email: userEmail,
+lastUpdated: Date.now()
 }).then(() => {
-// Загружаем данные в текущую сессию
 loadGameState(guestData);
+if (lsAvailable()) { localStorage.setItem('livingBlob_' + playerId, JSON.stringify(guestData)); }
 updateDisplay();
 renderFridgeItems();
 renderAchievements();
 showAuthSuccess('✅ Прогресс перенесён!');
-console.log('Progress migrated from', guestIdBeforeLogin, 'to', playerId);
+dataLoadedFromCloud = true;
+});
+}
 });
 }
 } catch (e) {
@@ -2027,7 +2081,6 @@ elements.obstaclePlayer.style.left = obstaclePlayerX + 'px'; elements.obstaclePl
 function endObstacleDrag() { obstacleDragging = false; }
 function openModal(modal) { modalOpen = true; modal.classList.add('active'); }
 function closeModal(modal) { modalOpen = false; modal.classList.remove('active'); }
-// Auth functions
 function showAuthError(msg) {
 elements.authError.textContent = msg;
 elements.authError.style.display = 'block';
@@ -2054,23 +2107,23 @@ playerId = getPlayerId();
 elements.playerIdEl.textContent = playerId;
 }
 function signIn(email, password) {
-// ЗАПОМИНАЕМ ГОСТЕВОЙ ID ПЕРЕД ВХОДОМ
-guestIdBeforeLogin = getPlayerId(); 
+guestIdBeforeLogin = getPlayerId();
 auth.signInWithEmailAndPassword(email, password)
 .then((userCredential) => {
 isLoggedIn = true;
 userEmail = userCredential.user.email;
 showAuthSuccess('Вход выполнен!');
-// ПРОВЕРЯЕМ МИГРАЦИЮ
+// 🔴 Сначала загружаем из облака, ТОЛЬКО ПОТОМ миграция
+loadGameFromFirebase().then((cloudHasData) => {
+if (!cloudHasData) {
 migrateGuestProgress();
-// ЗАГРУЖАЕМ ДАННЫЕ ИЗ ОБЛАКА (ЕСЛИ ЕСТЬ)
-loadGameFromFirebase().then(() => {
+}
 updateAuthUI();
 updateDisplay();
 renderFridgeItems();
 renderAchievements();
 closeModal(elements.authModal);
-saveGame(false);
+// 🔴 НЕ вызываем saveGame() сразу после входа!
 });
 })
 .catch((error) => {
@@ -2078,18 +2131,17 @@ showAuthError('Ошибка: ' + error.message);
 });
 }
 function signUp(email, password) {
-// ЗАПОМИНАЕМ ГОСТЕВОЙ ID ПЕРЕД РЕГИСТРАЦИЕЙ
 guestIdBeforeLogin = getPlayerId();
 auth.createUserWithEmailAndPassword(email, password)
 .then((userCredential) => {
 isLoggedIn = true;
 userEmail = userCredential.user.email;
 showAuthSuccess('Регистрация успешна!');
-// ПРОВЕРЯЕМ МИГРАЦИЮ
+// 🔴 Для новой регистрации можно сразу сохранить
 migrateGuestProgress();
 updateAuthUI();
 closeModal(elements.authModal);
-saveGame(true);
+saveGame(true, true);
 })
 .catch((error) => {
 showAuthError('Ошибка: ' + error.message);
@@ -2100,6 +2152,7 @@ auth.signOut()
 .then(() => {
 isLoggedIn = false;
 userEmail = '';
+dataLoadedFromCloud = false;
 playerId = getPlayerId();
 showAuthSuccess('Выход выполнен!');
 updateAuthUI();
@@ -2118,12 +2171,12 @@ showAuthError('Ошибка выхода: ' + error.message);
 }
 function init() {
 cacheElements();
-// Auth state listener
 auth.onAuthStateChanged((user) => {
 if (user) {
 isLoggedIn = true;
 playerId = user.uid;
 userEmail = user.email;
+// 🔴 Загружаем из облака при старте
 loadGameFromFirebase().then(() => {
 updateAuthUI();
 updateDisplay();
@@ -2132,6 +2185,7 @@ renderAchievements();
 });
 } else {
 isLoggedIn = false;
+dataLoadedFromCloud = false;
 playerId = getPlayerId();
 updateAuthUI();
 }
@@ -2165,7 +2219,7 @@ elements.leaderboardBtn.addEventListener('click', openLeaderboardModal);
 elements.leaderboardClose.addEventListener('click', closeLeaderboardModal);
 elements.leaderboardModal.addEventListener('click', function(e) { if (e.target.id === 'leaderboardModal') closeLeaderboardModal(); });
 elements.refreshLeaderboardBtn.addEventListener('click', function() { getLeaderboard(); showSaveStatus('Обновлено!', 'success'); });
-elements.submitToLeaderboardBtn.addEventListener('click', function() { saveGame(false); getLeaderboard(); showSaveStatus('Отправлено в рейтинг!', 'success'); });
+elements.submitToLeaderboardBtn.addEventListener('click', function() { saveGame(false, true); getLeaderboard(); showSaveStatus('Отправлено в рейтинг!', 'success'); });
 document.querySelectorAll('.minigame-tab').forEach(tab => {
 tab.addEventListener('click', function() {
 document.querySelectorAll('.minigame-tab').forEach(t => t.classList.remove('active'));
@@ -2182,7 +2236,7 @@ elements.minigamesModal.addEventListener('click', function(e) { if (e.target.id 
 elements.settingsBtn.addEventListener('click', function() { elements.playerIdEl.textContent = playerId; openModal(elements.settingsModal); });
 elements.settingsClose.addEventListener('click', function() { closeModal(elements.settingsModal); });
 elements.settingsModal.addEventListener('click', function(e) { if (e.target.id === 'settingsModal') closeModal(elements.settingsModal); });
-elements.saveBtn.addEventListener('click', function() { saveGame(true); });
+elements.saveBtn.addEventListener('click', function() { saveGame(true, true); });
 elements.loadBtn.addEventListener('click', function() { if (isLoggedIn) { loadGameFromFirebase(); } else { loadGame(); } updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); });
 elements.resetBtn.addEventListener('click', function() {
 if (confirm('Сбросить весь прогресс?')) {
@@ -2197,12 +2251,12 @@ showSaveStatus('Сброшено!', 'success'); updateDisplay(); renderFridgeIte
 });
 elements.exportBtn.addEventListener('click', function() { elements.exportImportData.value = btoa(JSON.stringify(getGameState())); showSaveStatus('Скопируйте код!', 'success'); });
 elements.importBtn.addEventListener('click', function() {
-try { const data = JSON.parse(atob(elements.exportImportData.value.trim())); loadGameState(data); saveGame(false); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); initObstacleGame(); showSaveStatus('Импортировано!', 'success'); }
+try { const data = JSON.parse(atob(elements.exportImportData.value.trim())); loadGameState(data); saveGame(false, true); updateDisplay(); renderFridgeItems(); renderAchievements(); initTicTacToe(); initObstacleGame(); showSaveStatus('Импортировано!', 'success'); }
 catch { showSaveStatus('Ошибка!', 'error'); }
 });
 elements.saveNicknameBtn.addEventListener('click', function() {
 userNickname = elements.nicknameInput.value.trim().substring(0, 20) || 'Гость';
-elements.userNicknameEl.textContent = userNickname; saveGame(true); getLeaderboard();
+elements.userNicknameEl.textContent = userNickname; saveGame(true, true); getLeaderboard();
 });
 elements.tttResetBtn.addEventListener('click', initTicTacToe);
 elements.obstacleStartBtn.addEventListener('click', function() { if (obstacleGameActive) { pauseObstacleGame(); } else { startObstacleGame(); } });
@@ -2214,7 +2268,6 @@ document.addEventListener('mouseup', endObstacleDrag); document.addEventListener
 elements.welcomeStartBtn.addEventListener('click', function() { closeModal(elements.welcomeModal); elements.bubble.textContent = 'Давай дружить!'; elements.bubble.classList.add('show'); });
 if (!hasSave && !isLoggedIn) { setTimeout(function() { openModal(elements.welcomeModal); }, 500); }
 else { setTimeout(function() { elements.bubble.textContent = 'С возвращением!'; elements.bubble.classList.add('show'); }, 500); }
-// Auth modal events
 elements.loginBtn.addEventListener('click', function() { openModal(elements.authModal); });
 elements.logoutBtn.addEventListener('click', function() { if (confirm('Выйти из аккаунта?')) signOut(); });
 elements.authClose.addEventListener('click', function() { closeModal(elements.authModal); });
