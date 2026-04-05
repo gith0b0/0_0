@@ -1259,6 +1259,8 @@ color: #546e7a;
 <div class="stat-item"><span class="stat-icon">👆</span><span class="stat-value" id="tickleCount">0</span></div>
 <div class="stat-item"><span class="stat-icon">🎮</span><span class="stat-value" id="gamesWon">0</span></div>
 <div class="stat-item"><span class="stat-icon">⭐</span><span class="stat-value" id="totalXp">0</span></div>
+<div class="stat-item"><span class="stat-icon">💰</span><span class="stat-value" id="coinsCount">0</span></div>
+
 </div>
 <div class="blob-container" id="blobContainer">
 <div class="bubble" id="bubble">Привет!</div>
@@ -1291,6 +1293,7 @@ color: #546e7a;
 <div class="menu-btn" id="leaderboardBtn"><span class="menu-btn-icon">🏆</span><span class="menu-btn-label">Топ-20</span></div>
 <div class="menu-btn" id="achievementsBtn"><span class="menu-btn-icon">🏅</span><span class="menu-btn-label">Ачивки</span></div>
 <div class="menu-btn" id="settingsBtn"><span class="menu-btn-icon">⚙️</span><span class="menu-btn-label">Настр.</span></div>
+<div class="menu-btn" id="collectionBtn"><span class="menu-btn-icon">🎁</span><span class="menu-btn-label">Коллек.</span></div>
 </div>
 <div class="hint">Перетащи еду или воду в рот!</div>
 <div class="levelup-celebration" id="celebration"></div>
@@ -1363,38 +1366,60 @@ color: #546e7a;
 </div>
 </div>
 <div class="modal" id="settingsModal">
-<div class="modal-content">
-<div class="modal-header"><span class="modal-title">⚙️ Настройки</span><button class="modal-close" id="settingsClose">×</button></div>
-<div class="settings-section">
-<div class="settings-title">👤 Аккаунт</div>
-<div class="user-info-panel" id="userInfoPanel">
-<div class="user-email" id="userEmail">Не авторизован</div>
-<div class="settings-buttons">
-<button class="btn-primary" id="loginBtn">Войти</button>
-<button class="logout-btn" id="logoutBtn" style="display:none;">Выйти</button>
+  <div class="modal-content">
+    <div class="modal-header"><span class="modal-title">⚙️ Настройки</span><button class="modal-close" id="settingsClose">×</button></div>
+    <div class="settings-section">
+      <div class="settings-title">👤 Аккаунт</div>
+      <div class="user-info-panel" id="userInfoPanel">
+        <div class="user-email" id="userEmail">Не авторизован</div>
+        <div class="settings-buttons">
+          <button class="btn-primary" id="loginBtn">Войти</button>
+          <button class="logout-btn" id="logoutBtn" style="display:none;">Выйти</button>
+        </div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">👤 Профиль</div>
+      <input type="text" class="input-field" id="nicknameInput" placeholder="Ваш ник" maxlength="20">
+      <div class="settings-buttons"><button class="btn-primary" id="saveNicknameBtn">Сохранить ник</button></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">💾 Сохранение</div>
+      <div class="player-id-display"><div class="player-id-label">ID:</div><div class="player-id-value" id="playerId">Загрузка...</div></div>
+      <div class="settings-buttons"><button class="btn-primary" id="saveBtn">Сохранить</button><button class="btn-secondary" id="loadBtn">Загрузить</button><button class="btn-danger" id="resetBtn">Сброс</button></div>
+      <div class="save-status" id="saveStatus"></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">📤 Экспорт / Импорт</div>
+      <div class="export-import-area">
+        <textarea id="exportImportData" placeholder="Код сохранения..."></textarea>
+        <div class="settings-buttons"><button class="btn-secondary" id="exportBtn">Экспорт</button><button class="btn-primary" id="importBtn">Импорт</button></div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- ⬇️ МОДАЛКА КОЛЛЕКЦИИ - ОТДЕЛЬНО (не внутри настроек!) ⬇️ -->
+<div class="modal" id="collectionModal">
+  <div class="modal-content">
+    <div class="modal-header"><span class="modal-title">🎁 Коллекция</span><button class="modal-close" id="collectionClose">×</button></div>
+    <div class="settings-section">
+      <div class="player-id-display">
+        <div class="player-id-label">Ваши монеты:</div>
+        <div class="player-id-value" style="font-size: 1.5rem; color: #ffca28;">💰 <span id="collectionCoins">0</span></div>
+      </div>
+      <div class="settings-buttons">
+        <button class="btn-primary" id="openCaseBtn">📦 Открыть кейс (10 💰)</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">📦 Ваши предметы:</div>
+      <div class="fridge-items" id="collectionItems"></div>
+    </div>
+  </div>
 </div>
-</div>
-<div class="settings-section">
-<div class="settings-title">👤 Профиль</div>
-<input type="text" class="input-field" id="nicknameInput" placeholder="Ваш ник" maxlength="20">
-<div class="settings-buttons"><button class="btn-primary" id="saveNicknameBtn">Сохранить ник</button></div>
-</div>
-<div class="settings-section">
-<div class="settings-title">💾 Сохранение</div>
-<div class="player-id-display"><div class="player-id-label">ID:</div><div class="player-id-value" id="playerId">Загрузка...</div></div>
-<div class="settings-buttons"><button class="btn-primary" id="saveBtn">Сохранить</button><button class="btn-secondary" id="loadBtn">Загрузить</button><button class="btn-danger" id="resetBtn">Сброс</button></div>
-<div class="save-status" id="saveStatus"></div>
-</div>
-<div class="settings-section">
-<div class="settings-title">📤 Экспорт / Импорт</div>
-<div class="export-import-area">
-<textarea id="exportImportData" placeholder="Код сохранения..."></textarea>
-<div class="settings-buttons"><button class="btn-secondary" id="exportBtn">Экспорт</button><button class="btn-primary" id="importBtn">Импорт</button></div>
-</div>
-</div>
-</div>
-</div>
+<!-- ⬆️ КОНЕЦ МОДАЛКИ КОЛЛЕКЦИИ ⬆️ -->
+
 <div class="modal" id="welcomeModal">
 <div class="modal-content">
 <div class="welcome-content">
@@ -1446,13 +1471,21 @@ const foodData = [
 { id: 'chicken', name: 'Курица', xp: 25, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1bc50fade-05fc-4e09-89fc-fbe22e0360af.png' },
 { id: 'burger', name: 'Бургер', xp: 35, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/134fe074b-69dc-4957-a33a-4f0751c46d5e.png' },
 { id: 'pizza', name: 'Пицца', xp: 30, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1e0797689-ad14-4043-8359-49d8981c4f2c.png' },
-{ id: 'apple', name: 'Яблоко', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1571d8010-90fa-4d26-8844-cd052898cfd6.png' }
+{ id: 'apple', name: 'Яблоко', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1571d8010-90fa-4d26-8844-cd052898cfd6.png' },
+{ id: 'cake', name: 'Торт', xp: 40, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/05ad8ea6b-573f-4ff7-98aa-2df515ab9bbc9630.png' },
+{ id: 'pasta', name: 'Паста', xp: 30, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/05ad8ea6b-573f-4ff7-98aa-2df515ab9bbc9527.png' },
+{ id: 'sushi', name: 'Суши', xp: 45, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/05ad8ea6b-573f-4ff7-98aa-2df515ab9bbc7766.png' },
+{ id: 'chocolate', name: 'Шоколад', xp: 25, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/05ad8ea6b-573f-4ff7-98aa-2df515ab9bbc6875.png' }
 ];
 const drinkData = [
 { id: 'water', name: 'Вода', xp: 15, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/14770e70c-4daf-46a5-af5e-af72873d0d0e.png' },
 { id: 'juice', name: 'Сок', xp: 20, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/122a8fae9-253e-4b9e-a8b1-38a8fd5a541c.png' },
 { id: 'soda', name: 'Газировка', xp: 18, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/184eb8fcd-63bc-4bd0-bbc2-55382b073aa6.png' },
-{ id: 'milk', name: 'Молоко', xp: 22, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1c3d69fed-7c01-47f8-acbd-b8dc39f72196.png' }
+{ id: 'milk', name: 'Молоко', xp: 22, img: 'https://image.qwenlm.ai/public_source/a83c6c93-a83f-44db-8a98-e42ac9908948/1c3d69fed-7c01-47f8-acbd-b8dc39f72196.png' },
+{ id: 'coffee', name: 'Кофе', xp: 20, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/25ad8ea6b-573f-4ff7-98aa-2df515ab9bbc8151.png' },
+{ id: 'tea', name: 'Чай', xp: 18, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/05ad8ea6b-573f-4ff7-98aa-2df515ab9bbc5197.png' },
+{ id: 'smoothie', name: 'Смузи', xp: 28, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/15ad8ea6b-573f-4ff7-98aa-2df515ab9bbc3101.png' },
+{ id: 'cocoa', name: 'Какао', xp: 24, img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/05ad8ea6b-573f-4ff7-98aa-2df515ab9bbc4764.png' }
 ];
 const achievementsData = [
 { id: 'first_feed', name: 'Первый обед', desc: 'Покормите впервые', icon: '🍗', condition: s => s.foodCount >= 1 },
@@ -1466,13 +1499,21 @@ const achievementsData = [
 { id: 'xp_500', name: 'Коллекционер', desc: '500 XP', icon: '💎', condition: s => s.totalXp >= 500 },
 { id: 'xp_1000', name: 'Магнат', desc: '1000 XP', icon: '💰', condition: s => s.totalXp >= 1000 }
 ];
+const collectionItems = [
+  { id: 'toy_car', name: 'Игрушечная машинка', rarity: 'common', img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/1ef3aba1a-166f-4b13-a40d-78f3a3df813a9640.png' },
+  { id: 'cap', name: 'Бейсболка', rarity: 'common', img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/4ef3aba1a-166f-4b13-a40d-78f3a3df813a9442.png' },
+  { id: 'sunglasses', name: 'Солнцезащитные очки', rarity: 'rare', img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/2ef3aba1a-166f-4b13-a40d-78f3a3df813a2875.png' },
+  { id: 'rubber_duck', name: 'Резиновая утка', rarity: 'epic', img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/1ef3aba1a-166f-4b13-a40d-78f3a3df813a6706.png' },
+  { id: 'rainbow', name: 'Радуга', rarity: 'legendary', img: 'https://image.qwenlm.ai/public_source/e3d5be17-f22a-4cc4-a28b-af78c400eece/3ef3aba1a-166f-4b13-a40d-78f3a3df813a2673.png' }
+];
 const annoyedResponses = ["Эй! Не надо!", "Бля, ты чего?!", "Отстань!", "Мне неприятно!", "Ай!"];
 const tickleResponses = ["Ха-ха-ха!", "Ой! Прекрати!", "Щекотно!", "Ахаха!", "Хи-хи!"];
 let level = 1, currentXp = 0, xpToNextLevel = 100, totalXp = 0;
-let foodCount = 0, drinkCount = 0, tickleCount = 0, eyeClickCount = 0, gamesWon = 0;
+let foodCount = 0, drinkCount = 0, tickleCount = 0, eyeClickCount = 0, gamesWon = 0, coins = 0;;
 let isBusy = false, isAnnoyed = false, isTickled = false;
 let selectedFood = foodData[0], selectedDrink = drinkData[0];
 let unlockedAchievements = [];
+let collectedItems = [];
 let playerId = '', userNickname = 'Гость', userEmail = '';
 let autoSaveEnabled = true, autoSaveInterval = null;
 let dragClone = null, dragType = null;
@@ -1500,6 +1541,7 @@ elements.drinkCountEl = document.getElementById('drinkCount');
 elements.tickleCountEl = document.getElementById('tickleCount');
 elements.gamesWonEl = document.getElementById('gamesWon');
 elements.totalXpEl = document.getElementById('totalXp');
+elements.coinsCountEl = document.getElementById('coinsCount');
 elements.celebration = document.getElementById('celebration');
 elements.achievementNotification = document.getElementById('achievementNotification');
 elements.achievementNotificationName = document.getElementById('achievementNotificationName');
@@ -1580,6 +1622,12 @@ elements.registerSubmitBtn = document.getElementById('registerSubmitBtn');
 elements.authError = document.getElementById('authError');
 elements.authSuccess = document.getElementById('authSuccess');
 elements.userInfoPanel = document.getElementById('userInfoPanel');
+ elements.collectionBtn = document.getElementById('collectionBtn');
+  elements.collectionModal = document.getElementById('collectionModal');
+  elements.collectionClose = document.getElementById('collectionClose');
+  elements.collectionCoins = document.getElementById('collectionCoins');
+  elements.collectionItems = document.getElementById('collectionItems');
+  elements.openCaseBtn = document.getElementById('openCaseBtn');
 }
 function lsAvailable() { try { localStorage.setItem('test', 'test'); localStorage.removeItem('test'); return true; } catch { return false; } }
 function getPlayerId() {
@@ -1592,7 +1640,7 @@ if (ids.length === 0) { playerId = 'guest_' + Math.random().toString(36).substri
 else { playerId = ids[ids.length - 1]; }
 return playerId;
 }
-function getGameState() { return { level, currentXp, xpToNextLevel, totalXp, foodCount, drinkCount, tickleCount, eyeClickCount, gamesWon, nickname: userNickname, selectedFoodId: selectedFood.id, selectedDrinkId: selectedDrink.id, unlockedAchievements, tttPlayerScore, tttBlobScore, tttDraws, obstacleBest }; }
+function getGameState() { return { level, currentXp, xpToNextLevel, totalXp, foodCount, drinkCount, tickleCount, eyeClickCount, gamesWon, coins, nickname: userNickname, selectedFoodId: selectedFood.id, selectedDrinkId: selectedDrink.id, unlockedAchievements, tttPlayerScore, tttBlobScore, tttDraws, obstacleBest, collectedItems: collectedItems || [] }; }
 function loadGameState(data) {
 if (!data) return false;
 level = data.level || 1; currentXp = data.currentXp || 0; xpToNextLevel = data.xpToNextLevel || 100;
@@ -1600,7 +1648,7 @@ totalXp = data.totalXp || 0; foodCount = data.foodCount || 0; drinkCount = data.
 tickleCount = data.tickleCount || 0; eyeClickCount = data.eyeClickCount || 0; gamesWon = data.gamesWon || 0;
 userNickname = data.nickname || 'Гость'; unlockedAchievements = data.unlockedAchievements || [];
 tttPlayerScore = data.tttPlayerScore || 0; tttBlobScore = data.tttBlobScore || 0; tttDraws = data.tttDraws || 0;
-obstacleBest = data.obstacleBest || 0;
+obstacleBest = data.obstacleBest || 0; collectedItems = data.collectedItems || [];
 if (data.selectedFoodId) selectedFood = foodData.find(f => f.id === data.selectedFoodId) || foodData[0];
 if (data.selectedDrinkId) selectedDrink = drinkData.find(d => d.id === data.selectedDrinkId) || drinkData[0];
 return true;
@@ -1806,6 +1854,7 @@ elements.drinkCountEl.textContent = drinkCount;
 elements.tickleCountEl.textContent = tickleCount;
 elements.gamesWonEl.textContent = gamesWon;
 elements.totalXpEl.textContent = totalXp;
+elements.coinsCountEl.textContent = coins;
 }
 function renderFridgeItems() {
 elements.foodItems.innerHTML = foodData.map(item => '<div class="fridge-item ' + (item.id === selectedFood.id ? 'selected' : '') + '" data-id="' + item.id + '" data-type="food"><img src="' + item.img + '"><div class="fridge-item-name">' + item.name + '</div><div class="fridge-item-xp">+' + item.xp + ' XP</div></div>').join('');
@@ -1823,6 +1872,41 @@ elements.achievementsGrid.innerHTML = achievementsData.map(ach => {
 const unlocked = unlockedAchievements.includes(ach.id);
 return '<div class="achievement-card ' + (unlocked ? 'unlocked' : '') + '"><div class="achievement-icon">' + (unlocked ? ach.icon : '🔒') + '</div><div class="achievement-info"><div class="achievement-name">' + (unlocked ? ach.name : '???') + '</div><div class="achievement-desc">' + (unlocked ? ach.desc : 'Играйте...') + '</div><div class="achievement-progress">' + (unlocked ? '✓' : '🔒') + '</div></div></div>';
 }).join('');
+}
+function renderCollectionItems() {
+  if (collectedItems.length === 0) {
+    elements.collectionItems.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #78909c; padding: 20px;">Пока нет предметов. Откройте кейс!</div>';
+    return;
+  }
+  elements.collectionItems.innerHTML = collectedItems.map(itemId => {
+    const item = collectionItems.find(i => i.id === itemId);
+    if (!item) return '';
+    const rarityColors = { common: '#90a4ae', rare: '#42a5f5', epic: '#ab47bc', legendary: '#ffca28' };
+    return '<div class="fridge-item" style="border-color: ' + rarityColors[item.rarity] + ';">' +
+      '<img src="' + item.img + '">' +
+      '<div class="fridge-item-name">' + item.name + '</div>' +
+      '<div class="fridge-item-xp" style="color: ' + rarityColors[item.rarity] + ';">' + item.rarity.toUpperCase() + '</div>' +
+    '</div>';
+  }).join('');
+}
+function openCase() {
+  if (coins < 10) {
+    showSaveStatus('Недостаточно монет! Нужно 10 💰', 'error');
+    return;
+  }
+  coins -= 10;
+  const randomItem = collectionItems[Math.floor(Math.random() * collectionItems.length)];
+  collectedItems.push(randomItem.id);
+  updateDisplay();
+  renderCollectionItems();
+  saveGame(false);
+  
+  // Показываем что выпало
+  elements.bubble.textContent = 'Выпало: ' + randomItem.name + '!';
+  elements.bubble.classList.add('show');
+  setTimeout(() => { elements.bubble.classList.remove('show'); }, 3000);
+  
+  showSaveStatus('Открыто! Выпало: ' + randomItem.name, 'success');
 }
 function checkAchievements() {
 const state = { level, foodCount, drinkCount, tickleCount, eyeClickCount, totalXp, gamesWon };
@@ -2002,11 +2086,13 @@ if (result === 'player') {
 tttPlayerScore++; elements.tttStatus.textContent = 'Победа! +20 XP';
 elements.bubble.textContent = 'Хорошо...'; elements.bubble.classList.add('loser', 'show'); elements.mouth.classList.add('loser');
 addXp(20, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
+coins += 10
 } else if (result === 'blob') {
 tttBlobScore++; gamesWon++; elements.tttStatus.textContent = 'Я победил! +10 XP';
 elements.bubble.textContent = 'Ура!'; elements.bubble.classList.add('winner', 'show'); elements.mouth.classList.add('winner');
 elements.eyes.forEach(function(e) { e.classList.add('winner'); });
 addXp(10, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
+coins += 5;
 } else {
 tttDraws++; elements.tttStatus.textContent = 'Ничья! +5 XP';
 elements.bubble.textContent = 'Ничья!'; addXp(5, elements.blobContainer.getBoundingClientRect().left + 120, elements.blobContainer.getBoundingClientRect().top);
@@ -2046,24 +2132,61 @@ const containerWidth = elements.obstacleContainer.offsetWidth;
 obstacle.style.left = Math.random() * (containerWidth - size) + 'px';
 obstacle.style.top = '-50px'; obstacle.dataset.y = -50; obstacle.dataset.w = size; obstacle.dataset.h = size;
 elements.obstacleContainer.appendChild(obstacle); obstacles.push(obstacle);
+
+if (Math.random() < 0.3) {
+    const coin = document.createElement('div');
+    coin.className = 'obstacle';
+    coin.style.background = 'transparent';
+    coin.style.borderRadius = '50%';
+    coin.style.border = '3px solid #ffca28';
+    coin.style.boxShadow = '0 0 10px #ffca28';
+    const coinSize = 25;
+    coin.style.width = coinSize + 'px'; coin.style.height = coinSize + 'px';
+    coin.style.left = Math.random() * (containerWidth - coinSize) + 'px';
+    coin.style.top = '-50px';
+    coin.dataset.y = -50; coin.dataset.w = coinSize; coin.dataset.h = coinSize;
+    coin.dataset.isCoin = 'true';
+    elements.obstacleContainer.appendChild(coin); obstacles.push(coin);
+  }
 }
 function updateObstacleGame() {
-if (!obstacleGameActive) return;
-const playerRect = { x: obstaclePlayerX + 8, y: obstaclePlayerY + 8, w: 34, h: 34 };
-obstacles.forEach((obstacle, index) => {
-let y = parseFloat(obstacle.dataset.y); y += obstacleSpeed;
-obstacle.dataset.y = y; obstacle.style.top = y + 'px';
-const containerHeight = elements.obstacleContainer.offsetHeight;
-if (y > containerHeight) { obstacle.remove(); obstacles.splice(index, 1); obstacleScore++; elements.obstacleScore.textContent = obstacleScore; if (obstacleScore % 5 === 0) { obstacleSpeed += obstacleSpeedIncrease; } }
-const obsX = parseFloat(obstacle.style.left); const obsY = y;
-const obsW = parseFloat(obstacle.dataset.w); const obsH = parseFloat(obstacle.dataset.h);
-if (playerRect.x < obsX + obsW && playerRect.x + playerRect.w > obsX && playerRect.y < obsY + obsH && playerRect.y + playerRect.h > obsY) {
-stopObstacleGame(); elements.obstacleStatus.textContent = 'Игра окончена! Счёт: ' + obstacleScore;
-if (obstacleScore > obstacleBest) { obstacleBest = obstacleScore; elements.obstacleBest.textContent = obstacleBest; }
-addXp(obstacleScore * 2, elements.obstacleContainer.getBoundingClientRect().left + 140, elements.obstacleContainer.getBoundingClientRect().top + 140);
-}
-});
-requestAnimationFrame(updateObstacleGame);
+  if (!obstacleGameActive) return;
+  const playerRect = { x: obstaclePlayerX + 8, y: obstaclePlayerY + 8, w: 34, h: 34 };
+  obstacles.forEach((obstacle, index) => {
+    let y = parseFloat(obstacle.dataset.y); y += obstacleSpeed;
+    obstacle.dataset.y = y; obstacle.style.top = y + 'px';
+    const containerHeight = elements.obstacleContainer.offsetHeight;
+    if (y > containerHeight) { obstacle.remove(); obstacles.splice(index, 1); 
+      if (!obstacle.dataset.isCoin) { // ← добавьте эту проверку
+        obstacleScore++; elements.obstacleScore.textContent = obstacleScore; if (obstacleScore % 5 === 0) { obstacleSpeed += obstacleSpeedIncrease; } 
+      }
+    }
+    const obsX = parseFloat(obstacle.style.left); const obsY = y;
+    const obsW = parseFloat(obstacle.dataset.w); const obsH = parseFloat(obstacle.dataset.h);
+    if (playerRect.x < obsX + obsW && playerRect.x + playerRect.w > obsX && playerRect.y < obsY + obsH && playerRect.y + playerRect.h > obsY) {
+      if (obstacle.dataset.isCoin === 'true') { // ← добавьте проверку на монетку
+        // Собрали монетку!
+        obstacle.remove(); obstacles.splice(index, 1);
+        coins += 1;
+        updateDisplay();
+        // Эффект сбора
+        const coinGain = document.createElement('div');
+        coinGain.className = 'xp-gain';
+        coinGain.textContent = '+1 💰';
+        coinGain.style.color = '#ffca28';
+        coinGain.style.left = (obstaclePlayerX + 25) + 'px';
+        coinGain.style.top = (obstaclePlayerY) + 'px';
+        elements.obstacleContainer.appendChild(coinGain);
+        setTimeout(() => coinGain.remove(), 1000);
+      } else {
+        // Столкнулись с препятствием!
+        stopObstacleGame(); elements.obstacleStatus.textContent = 'Игра окончена! Счёт: ' + obstacleScore;
+        if (obstacleScore > obstacleBest) { obstacleBest = obstacleScore; elements.obstacleBest.textContent = obstacleBest; }
+        addXp(obstacleScore * 2, elements.obstacleContainer.getBoundingClientRect().left + 140, elements.obstacleContainer.getBoundingClientRect().top + 140);
+      }
+    }
+  });
+  requestAnimationFrame(updateObstacleGame);
 }
 let obstacleDragging = false;
 function startObstacleDrag(e) { if (!obstacleGameActive) return; e.preventDefault(); obstacleDragging = true; }
@@ -2299,6 +2422,24 @@ if (password.length < 6) { showAuthError('Пароль должен быть м�
 if (password !== confirm) { showAuthError('Пароли не совпадают'); return; }
 signUp(email, password);
 });
+if (elements.collectionBtn) {
+  elements.collectionBtn.addEventListener('click', function() {
+    elements.collectionCoins.textContent = coins;
+    renderCollectionItems();
+    openModal(elements.collectionModal);
+  });
+}
+if (elements.collectionClose) {
+  elements.collectionClose.addEventListener('click', function() { closeModal(elements.collectionModal); });
+}
+if (elements.collectionModal) {
+  elements.collectionModal.addEventListener('click', function(e) {
+    if (e.target.id === 'collectionModal') closeModal(elements.collectionModal);
+  });
+}
+if (elements.openCaseBtn) {
+  elements.openCaseBtn.addEventListener('click', openCase);
+}
 }
 init();
 </script>
